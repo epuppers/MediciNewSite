@@ -13,6 +13,10 @@
 </head>
 <body>
 
+<!-- Custom cursor -->
+<div class="custom-cursor-dot"></div>
+<div class="custom-cursor-ring"></div>
+
 <!-- Scanline overlay -->
 <div class="scanlines"></div>
 
@@ -36,12 +40,14 @@
 
 <!-- ===== HERO ===== -->
 <section class="hero section" id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-particles"></div>
   <div class="hero-content">
     <div class="hero-badge">
       <span class="hero-badge-dot"></span>
       Now active with funds across private markets
     </div>
-    <h1 class="hero-headline">Garbage In,<br><span>Answers Out.</span></h1>
+    <h1 class="hero-headline"><span class="hero-word">Garbage</span> <span class="hero-word">In,</span><br><span class="hero-word hero-gradient"><span class="hero-word-inner" data-glitch="true">Answers</span></span> <span class="hero-word hero-gradient">Out.</span></h1>
     <p class="hero-sub">Ask a question. Get a source-cited answer in seconds.</p>
     <p class="hero-description">Your fund's data is scattered across 800 files, 12 folders, and 4 people's inboxes. Ask a question, get a source-cited answer in seconds. No workflow engineering. No data entry. Just outcomes.</p>
     <div class="hero-ctas">
@@ -372,6 +378,9 @@
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
