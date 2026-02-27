@@ -1,20 +1,20 @@
 @font-face {
   font-family: 'Aurach Heavy';
-  src: url('../Aurach Heavy.ttf') format('truetype');
+  src: url('../fonts/aurach-heavy.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Aurach Tri';
-  src: url('../Aurach Tri.ttf') format('truetype');
+  src: url('../fonts/aurach-tri.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Aurach Bi';
-  src: url('../Aurach Bi.ttf') format('truetype');
+  src: url('../fonts/aurach-bi.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
