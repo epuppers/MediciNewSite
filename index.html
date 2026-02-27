@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEDICI — Intelligent Infrastructure for Fund Operations</title>
+<meta name="description" content="Complex work shouldn't feel complex. Medici is intelligent infrastructure for fund operations. Garbage in, answers out.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   DESIGN TOKENS — from Cosimo UX system
+   ============================================ */
+:root {
+  --taupe-1: #E8E6EC;
+  --taupe-2: #B4B2B9;
+  --taupe-3: #87868B;
+  --taupe-4: #5A595C;
+  --taupe-5: #2D2D2E;
+
+  --berry-1: #E0D0E1;
+  --berry-2: #C4A6C5;
+  --berry-3: #8B4F8D;
+  --berry-4: #5D355E;
+  --berry-5: #2E1A2F;
+
+  --violet-1: #D8C8E2;
+  --violet-2: #A383B4;
+  --violet-3: #74418F;
+  --violet-4: #4D2B5F;
+  --violet-5: #271630;
+
+  --chinese-3: #7F6485;
+  --chinese-4: #4A2E50;
+  --chinese-5: #2A182E;
+
+  --blue-1: #CCE7F8;
+  --blue-2: #9BD0F2;
+  --blue-3: #749CB5;
+
+  --white: #FFFFFF;
+  --off-white: #F8F6FA;
+  --green: #3D8B40;
+  --red: #C04848;
+  --amber: #B8862B;
+
+  --pixel: 'Rajdhani', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: auto;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--taupe-1);
+  background: var(--taupe-5);
+  overflow-x: hidden;
+  cursor: default;
+}
+
+::selection {
+  background: var(--violet-3);
+  color: var(--white);
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--taupe-5); }
+::-webkit-scrollbar-thumb {
+  background: var(--taupe-3);
+  border: 1px solid var(--taupe-4);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--violet-3); }
+
+a { color: inherit; text-decoration: none; }
+
+/* ============================================
+   MOUSE-REACTIVE GRID BACKGROUND
+   ============================================ */
+#grid-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ============================================
+   SCANLINE OVERLAY
+   ============================================ */
+.scanlines {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 0 40px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(45,45,46,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: all 0.3s ease;
+}
+
+.nav.scrolled {
+  background: rgba(45,45,46,0.96);
+  border-bottom: 2px solid;
+  border-image: linear-gradient(90deg, var(--taupe-4), var(--berry-3), var(--violet-3), var(--taupe-4)) 1;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-mark {
+  width: 28px;
+  height: 28px;
+  background: var(--violet-3);
+  border: 1px solid;
+  border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.nav-logo:hover .logo-mark { transform: rotate(45deg); }
+
+.logo-mark-inner {
+  width: 10px;
+  height: 10px;
+  background: var(--berry-1);
+  border: 1px solid var(--violet-2);
+}
+
+.logo-title {
+  font-family: var(--pixel);
+  font-weight: 600;
+  font-size: 24px;
+  color: var(--taupe-1);
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav-link {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--violet-3);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover { color: var(--taupe-1); }
+.nav-link:hover::after { width: 100%; }
+
+.nav-cta {
+  padding: 7px 18px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--violet-3);
+  border: 2px solid;
+  border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: all 0.2s ease;
+}
+
+.nav-cta:hover {
+  background: var(--violet-4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(116,65,143,0.3);
+}
+
+.nav-cta:active {
+  border-color: var(--violet-5) var(--violet-2) var(--violet-2) var(--violet-5);
+  transform: translateY(0);
+}
+
+/* ============================================
+   SECTION WRAPPER
+   ============================================ */
+.section {
+  position: relative;
+  z-index: 1;
+  padding: 120px 60px;
+}
+
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 56px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.04) 3px,
+      rgba(0,0,0,0.04) 5px
+    );
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 900px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--green);
+  border: 1px solid var(--green);
+  background: rgba(61,139,64,0.08);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 40px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.6s 0.3s ease forwards;
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(61,139,64,0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(61,139,64,0); }
+}
+
+.hero-headline {
+  font-family: var(--pixel);
+  font-weight: 700;
+  font-size: clamp(48px, 7vw, 96px);
+  color: var(--white);
+  letter-spacing: 2px;
+  line-height: 1.05;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+  margin-bottom: 10px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.5s ease forwards;
+}
+
+.hero-headline span {
+  display: inline;
+  background: linear-gradient(135deg, var(--berry-2), var(--violet-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--taupe-3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.7s ease forwards;
+}
+
+.hero-description {
+  font-family: var(--sans);
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--taupe-2);
+  max-width: 680px;
+  margin: 0 auto 48px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.9s ease forwards;
+}
+
+.hero-ctas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  opacity: 0;
+  animation: fadeUp 0.8s 1.1s ease forwards;
+}
+
+.btn-primary {
+  padding: 14px 36px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--violet-3);
+  border: 2px solid;
+  border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-primary:hover::before { left: 100%; }
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(116,65,143,0.35);
+  background: var(--berry-3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  border-color: var(--violet-5) var(--violet-2) var(--violet-2) var(--violet-5);
+}
+
+.btn-secondary {
+  padding: 14px 36px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--taupe-2);
+  background: transparent;
+  border: 2px solid;
+  border-color: var(--taupe-3) var(--taupe-4) var(--taupe-4) var(--taupe-3);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.25s ease;
+}
+
+.btn-secondary:hover {
+  color: var(--white);
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+  background: rgba(255,255,255,0.04);
+  transform: translateY(-2px);
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeUp 0.6s 1.5s ease forwards;
+}
+
+.scroll-indicator span {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--taupe-3);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: var(--taupe-4);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-line::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: var(--violet-3);
+  animation: scrollPulse 2s infinite;
+}
+
+@keyframes scrollPulse {
+  0% { top: -50%; }
+  100% { top: 150%; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   PAIN SECTION — THE COST OF DOING NOTHING
+   ============================================ */
+.pain-section {
+  background: var(--taupe-5);
+  border-top: 2px solid var(--taupe-4);
+  border-bottom: 2px solid var(--taupe-4);
+  position: relative;
+}
+
+.pain-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    rgba(0,0,0,0.06) 4px,
+    rgba(0,0,0,0.06) 6px
+  );
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--taupe-3);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.section-title {
+  font-family: var(--pixel);
+  font-weight: 700;
+  font-size: clamp(32px, 4vw, 56px);
+  color: var(--white);
+  letter-spacing: 1px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+}
+
+.section-desc {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--taupe-2);
+  max-width: 560px;
+  margin-bottom: 64px;
+}
+
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  position: relative;
+}
+
+.pain-card {
+  background: rgba(255,255,255,0.02);
+  border: 2px solid;
+  border-color: var(--taupe-3) var(--taupe-5) var(--taupe-5) var(--taupe-3);
+  padding: 40px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s ease;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.pain-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pain-card:hover {
+  background: rgba(139,79,141,0.04);
+  border-color: var(--berry-3) var(--berry-5) var(--berry-5) var(--berry-3);
+}
+
+.pain-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--violet-3), var(--berry-3));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.pain-card:hover::before { transform: scaleX(1); }
+
+.pain-number {
+  font-family: var(--pixel);
+  font-weight: 600;
+  font-size: 64px;
+  color: var(--red);
+  line-height: 1;
+  margin-bottom: 8px;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+}
+
+.pain-number.green { color: var(--green); }
+
+.pain-unit {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.pain-label {
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--taupe-2);
+  line-height: 1.5;
+}
+
+.pain-after {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 4px 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--green);
+  border: 1px solid var(--green);
+  background: rgba(61,139,64,0.06);
+}
+
+/* ============================================
+   DEMO SECTION — INTERACTIVE TERMINAL
+   ============================================ */
+.demo-section {
+  background: #1a1a1c;
+  padding: 120px 60px;
+  position: relative;
+}
+
+.demo-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--taupe-5), var(--berry-3), var(--violet-3), var(--taupe-5));
+}
+
+.demo-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--taupe-5), var(--violet-3), var(--berry-3), var(--taupe-5));
+}
+
+.demo-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.terminal-frame {
+  max-width: 860px;
+  margin: 0 auto;
+  border: 2px solid;
+  border-color: var(--taupe-3) #111 #111 var(--taupe-3);
+  background: #0a0a0c;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--taupe-5);
+  border-bottom: 1px solid var(--taupe-4);
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+
+.terminal-dot.red {
+  background: var(--red);
+  border-color: #e06060 #802020 #802020 #e06060;
+}
+
+.terminal-dot.amber {
+  background: var(--amber);
+  border-color: #d4a030 #8a6420 #8a6420 #d4a030;
+}
+
+.terminal-dot.green {
+  background: var(--green);
+  border-color: #5aad5c #2a6b2c #2a6b2c #5aad5c;
+}
+
+.terminal-stripe {
+  flex: 1;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--taupe-4) 0px,
+    var(--taupe-4) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+}
+
+.terminal-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-2);
+}
+
+.terminal-body {
+  padding: 24px;
+  min-height: 380px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--taupe-2);
+  position: relative;
+}
+
+.terminal-line {
+  margin-bottom: 4px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all 0.3s ease;
+}
+
+.terminal-line.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.t-prompt {
+  color: var(--berry-2);
+  font-weight: 600;
+}
+
+.t-user {
+  color: var(--white);
+}
+
+.t-system {
+  color: var(--taupe-3);
+  font-size: 11px;
+}
+
+.t-response {
+  color: var(--taupe-1);
+}
+
+.t-source {
+  color: var(--blue-3);
+  font-size: 11px;
+}
+
+.t-accent {
+  color: var(--green);
+  font-weight: 600;
+}
+
+.t-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: var(--berry-2);
+  animation: blink 1s infinite;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.terminal-prompt-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-top: 1px solid var(--taupe-4);
+  background: rgba(255,255,255,0.02);
+}
+
+.prompt-icon {
+  font-family: var(--pixel);
+  font-size: 18px;
+  color: var(--violet-3);
+}
+
+.prompt-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.prompt-btn {
+  padding: 6px 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--taupe-2);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--taupe-4);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+}
+
+.prompt-btn:hover {
+  color: var(--white);
+  border-color: var(--violet-3);
+  background: rgba(116,65,143,0.15);
+}
+
+.prompt-btn.active {
+  color: var(--white);
+  border-color: var(--violet-3);
+  background: var(--violet-4);
+}
+
+/* ============================================
+   PILLARS SECTION — HOW IT WORKS
+   ============================================ */
+.pillars-section {
+  background: var(--off-white);
+  position: relative;
+}
+
+.pillars-section .section-title,
+.pillars-section .section-label {
+  color: var(--taupe-5);
+}
+
+.pillars-section .section-label { color: var(--taupe-3); }
+
+.pillars-section .section-desc { color: var(--taupe-4); }
+
+.pillar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.pillar-card {
+  background: var(--white);
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+  padding: 40px 32px;
+  position: relative;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.pillar-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pillar-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  border-color: var(--violet-2) var(--violet-4) var(--violet-4) var(--violet-2);
+}
+
+.pillar-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--violet-3);
+  border: 2px solid;
+  border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--pixel);
+  font-size: 24px;
+  color: var(--white);
+  margin-bottom: 24px;
+}
+
+.pillar-title {
+  font-family: var(--pixel);
+  font-weight: 600;
+  font-size: 26px;
+  color: var(--taupe-5);
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.pillar-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--taupe-4);
+  margin-bottom: 20px;
+}
+
+.pillar-detail {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--taupe-3);
+  line-height: 1.6;
+  padding-top: 16px;
+  border-top: 1px solid var(--taupe-1);
+}
+
+/* ============================================
+   USE CASES — INTERACTIVE ACCORDION
+   ============================================ */
+.usecases-section {
+  background: var(--taupe-5);
+  position: relative;
+}
+
+.usecases-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent 4px,
+      rgba(0,0,0,0.03) 4px,
+      rgba(0,0,0,0.03) 6px
+    );
+}
+
+.usecase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+}
+
+.usecase-item {
+  border: 2px solid;
+  border-color: var(--taupe-3) var(--taupe-5) var(--taupe-5) var(--taupe-3);
+  background: rgba(255,255,255,0.02);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.usecase-item.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.usecase-item:hover,
+.usecase-item.open {
+  border-color: var(--berry-3) var(--berry-5) var(--berry-5) var(--berry-3);
+  background: rgba(139,79,141,0.03);
+}
+
+.usecase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.usecase-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.usecase-num {
+  font-family: var(--pixel);
+  font-weight: 600;
+  font-size: 32px;
+  color: var(--violet-3);
+  min-width: 50px;
+}
+
+.usecase-name {
+  font-family: var(--pixel);
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--taupe-1);
+  letter-spacing: 0.5px;
+}
+
+.usecase-toggle {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--taupe-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--pixel);
+  font-size: 24px;
+  color: var(--taupe-3);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.usecase-item.open .usecase-toggle {
+  background: var(--violet-3);
+  border-color: var(--violet-2);
+  color: var(--white);
+  transform: rotate(45deg);
+}
+
+.usecase-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.usecase-body-inner {
+  padding: 0 32px 32px 102px;
+}
+
+.usecase-desc {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--taupe-2);
+  margin-bottom: 20px;
+  max-width: 600px;
+}
+
+.usecase-stats {
+  display: flex;
+  gap: 32px;
+}
+
+.usecase-stat {
+  padding: 12px 20px;
+  border: 1px solid var(--taupe-4);
+  background: rgba(0,0,0,0.2);
+}
+
+.usecase-stat-value {
+  font-family: var(--pixel);
+  font-weight: 600;
+  font-size: 28px;
+  color: var(--green);
+  margin-bottom: 2px;
+}
+
+.usecase-stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ============================================
+   TRUST STRIP
+   ============================================ */
+.trust-section {
+  background: #1a1a1c;
+  padding: 80px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.trust-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--violet-3), transparent);
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.trust-item {
+  padding: 40px 32px;
+  text-align: center;
+  border-right: 1px solid var(--taupe-4);
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.trust-item:last-child { border-right: none; }
+
+.trust-item:hover {
+  background: rgba(116,65,143,0.04);
+}
+
+.trust-icon {
+  font-family: var(--pixel);
+  font-size: 36px;
+  color: var(--violet-3);
+  margin-bottom: 16px;
+}
+
+.trust-title {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--taupe-1);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+.trust-desc {
+  font-size: 13px;
+  color: var(--taupe-3);
+  line-height: 1.5;
+}
+
+/* ============================================
+   TESTIMONIAL / PROOF SECTION
+   ============================================ */
+.proof-section {
+  background: var(--off-white);
+  position: relative;
+}
+
+.proof-section .section-title,
+.proof-section .section-label { color: var(--taupe-5); }
+.proof-section .section-label { color: var(--taupe-3); }
+
+.proof-quote {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.proof-quote.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.6s ease;
+}
+
+.proof-text {
+  font-family: var(--sans);
+  font-size: 24px;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--taupe-5);
+  margin-bottom: 24px;
+}
+
+.proof-text::before {
+  content: '"';
+  font-family: var(--pixel);
+  font-size: 64px;
+  color: var(--violet-3);
+  display: block;
+  line-height: 0.5;
+  margin-bottom: 16px;
+}
+
+.proof-attr {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--taupe-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.proof-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  margin-top: 64px;
+  flex-wrap: wrap;
+}
+
+.proof-logo-item {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-3);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 12px 24px;
+  border: 1px solid var(--taupe-2);
+  transition: all 0.3s ease;
+}
+
+.proof-logo-item:hover {
+  color: var(--violet-3);
+  border-color: var(--violet-2);
+}
+
+/* ============================================
+   CTA SECTION
+   ============================================ */
+.cta-section {
+  background: var(--taupe-5);
+  padding: 120px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--taupe-5), var(--berry-3), var(--violet-3), var(--berry-3), var(--taupe-5));
+}
+
+.cta-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cta-inner .section-title {
+  margin-bottom: 20px;
+}
+
+.cta-desc {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--taupe-2);
+  margin-bottom: 48px;
+}
+
+.cta-form {
+  display: flex;
+  gap: 2px;
+  max-width: 500px;
+  margin: 0 auto 24px;
+}
+
+.cta-input {
+  flex: 1;
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--white);
+  background: rgba(255,255,255,0.04);
+  border: 2px solid;
+  border-color: var(--taupe-3) var(--taupe-5) var(--taupe-5) var(--taupe-3);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.cta-input::placeholder { color: var(--taupe-4); }
+
+.cta-input:focus {
+  border-color: var(--violet-3);
+  box-shadow: 0 0 0 1px rgba(116,65,143,0.3);
+}
+
+.cta-submit {
+  padding: 14px 32px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--violet-3);
+  border: 2px solid;
+  border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.cta-submit:hover {
+  background: var(--berry-3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(116,65,143,0.3);
+}
+
+.cta-submit:active {
+  border-color: var(--violet-5) var(--violet-2) var(--violet-2) var(--violet-5);
+  transform: translateY(0);
+}
+
+.cta-note {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-4);
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+  padding: 40px 60px;
+  background: #111113;
+  border-top: 1px solid var(--taupe-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-text {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-4);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-link {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-4);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.footer-link:hover { color: var(--taupe-2); }
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 900px) {
+  .section { padding: 80px 24px; }
+  .demo-section { padding: 80px 24px; }
+  .pain-grid { grid-template-columns: 1fr; }
+  .pillar-grid { grid-template-columns: 1fr; }
+  .trust-grid { grid-template-columns: repeat(2, 1fr); }
+  .trust-item { border-bottom: 1px solid var(--taupe-4); }
+  .nav { padding: 0 20px; }
+  .nav-links { gap: 16px; }
+  .hero-ctas { flex-direction: column; }
+  .usecase-body-inner { padding-left: 32px; }
+  .usecase-stats { flex-direction: column; gap: 12px; }
+  .cta-form { flex-direction: column; }
+  .footer { flex-direction: column; gap: 16px; text-align: center; }
+}
+
+@media (max-width: 600px) {
+  .nav-links .nav-link { display: none; }
+  .trust-grid { grid-template-columns: 1fr; }
+  .proof-logos { gap: 16px; }
+}
+
+/* ============================================
+   ANIMATED COUNTER
+   ============================================ */
+.counter-animated {
+  display: inline;
+}
+
+/* ============================================
+   FLOATING PARTICLES (CSS-only ambient)
+   ============================================ */
+.ambient-particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--violet-3);
+  opacity: 0;
+  animation: float-particle linear infinite;
+}
+
+@keyframes float-particle {
+  0% { opacity: 0; transform: translateY(0) translateX(0); }
+  10% { opacity: 0.4; }
+  90% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-200px) translateX(40px); }
+}
+</style>
+</head>
+<body>
+
+<!-- Scanline overlay -->
+<div class="scanlines"></div>
+
+<!-- Mouse-reactive grid -->
+<canvas id="grid-canvas"></canvas>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo">
+    <div class="logo-mark"><div class="logo-mark-inner"></div></div>
+    <div class="logo-title">MEDICI</div>
+  </a>
+  <div class="nav-links">
+    <a href="#product" class="nav-link">Product</a>
+    <a href="#how" class="nav-link">How It Works</a>
+    <a href="#usecases" class="nav-link">Use Cases</a>
+    <a href="#contact" class="nav-link">Contact</a>
+    <a href="#contact" class="nav-cta">Request Pilot</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero section" id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Now in active pilot with funds
+    </div>
+    <h1 class="hero-headline">Garbage In,<br><span>Answers Out.</span></h1>
+    <p class="hero-sub">Intelligent Infrastructure for Fund Operations</p>
+    <p class="hero-description">Your fund's data is scattered across 800 files, 12 folders, and 4 people's inboxes. Ask a question, get a source-cited answer in seconds. No workflow engineering. No data entry. Just outcomes.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">Start a Pilot</a>
+      <a href="#product" class="btn-secondary">See It Work</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ===== PAIN SECTION ===== -->
+<section class="pain-section section" id="pain">
+  <div class="section-inner">
+    <div class="section-label">The Cost of Manual Operations</div>
+    <h2 class="section-title">Your team burns time<br>on work that shouldn't exist.</h2>
+    <p class="section-desc">Every hour spent on data entry, reconciliation, and searching through documents is an hour not spent on deals, LP relationships, or portfolio strategy.</p>
+
+    <div class="pain-grid">
+      <div class="pain-card" data-delay="0">
+        <div class="pain-number" data-target="40" data-suffix="+">0</div>
+        <div class="pain-unit">Hours per building</div>
+        <div class="pain-label">Typical time to extract, reconcile, and format rent rolls from raw data across a portfolio of properties.</div>
+        <div class="pain-after">→ With Medici: 15 min</div>
+      </div>
+      <div class="pain-card" data-delay="100">
+        <div class="pain-number" data-target="170" data-prefix="$" data-suffix="K">0</div>
+        <div class="pain-unit">Annual fund admin costs</div>
+        <div class="pain-label">What a mid-market fund pays annually for admin platforms, legal workflows, and compliance tooling — before headcount.</div>
+        <div class="pain-after">→ Consolidate to one system</div>
+      </div>
+      <div class="pain-card" data-delay="200">
+        <div class="pain-number green" data-target="10" data-suffix="s">0</div>
+        <div class="pain-unit">Time to answer</div>
+        <div class="pain-label">Ask "what did we commit to LPs on co-invest terms?" — get the answer with the source document cited. Every time.</div>
+        <div class="pain-after">→ Source-cited accuracy</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DEMO SECTION ===== -->
+<section class="demo-section" id="product">
+  <div class="section-inner">
+    <div class="demo-header">
+      <div class="section-label" style="color:var(--taupe-3);text-align:center;">Live Product Demo</div>
+      <h2 class="section-title" style="text-align:center;">Ask anything.<br>Get the work delivered.</h2>
+    </div>
+
+    <div class="terminal-frame">
+      <div class="terminal-bar">
+        <div class="terminal-dot red"></div>
+        <div class="terminal-dot amber"></div>
+        <div class="terminal-dot green"></div>
+        <div class="terminal-stripe"></div>
+        <span class="terminal-label">COSIMO — Applied Intelligence</span>
+      </div>
+      <div class="terminal-body" id="terminal-body">
+        <!-- Lines injected by JS -->
+      </div>
+      <div class="terminal-prompt-bar">
+        <span class="prompt-icon">▸</span>
+        <div class="prompt-buttons">
+          <button class="prompt-btn active" onclick="runDemo(0)">Due Diligence</button>
+          <button class="prompt-btn" onclick="runDemo(1)">LP Reporting</button>
+          <button class="prompt-btn" onclick="runDemo(2)">Rent Roll</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PILLARS SECTION ===== -->
+<section class="pillars-section section" id="how">
+  <div class="section-inner">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Three things generic AI<br>can't do for you.</h2>
+    <p class="section-desc">ChatGPT forgets what you told it three documents ago. We remember all 800 of your files — every number, every clause — and handle the complexity general LLMs collapse on.</p>
+
+    <div class="pillar-grid">
+      <div class="pillar-card" data-delay="0">
+        <div class="pillar-icon">◈</div>
+        <h3 class="pillar-title">Data Integrity</h3>
+        <p class="pillar-text">Your fund data is structured into a knowledge graph that understands relationships — between entities, documents, time periods, and versions. Every answer is traceable to its source.</p>
+        <div class="pillar-detail">Graph architecture handles contradictory documents, version control across time, and context that spans hundreds of files. Accuracy infrastructure, not pattern matching.</div>
+      </div>
+      <div class="pillar-card" data-delay="150">
+        <div class="pillar-icon">↻</div>
+        <h3 class="pillar-title">Compounding Workflows</h3>
+        <p class="pillar-text">Medici learns how your firm works. The first time you build a report, it takes ten minutes. The second time, it's automatic. Workflows compound over time and across your team.</p>
+        <div class="pillar-detail">Our lesson system captures your firm's institutional knowledge — processes, formats, preferences. New hires get your best analyst's judgment from day one. Your workflows become infrastructure.</div>
+      </div>
+      <div class="pillar-card" data-delay="300">
+        <div class="pillar-icon">▣</div>
+        <h3 class="pillar-title">Full-Stack Execution</h3>
+        <p class="pillar-text">Other tools analyze. Medici delivers. From question to finished deliverable — the financial statement, the compliance report, the LP letter — with zero manual work between.</p>
+        <div class="pillar-detail">Search, file manipulation, code execution, organizational memory, and polished output in one system. Not a chatbot. Not a dashboard. The execution layer for knowledge work.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USE CASES ===== -->
+<section class="usecases-section section" id="usecases">
+  <div class="section-inner">
+    <div class="section-label">Use Cases</div>
+    <h2 class="section-title">Work that used to take days.<br>Now takes minutes.</h2>
+    <p class="section-desc" style="margin-bottom:48px;">Fund managers, CFOs, COOs, and analysts across private markets use Medici to eliminate the manual grind from their highest-volume workflows.</p>
+
+    <div class="usecase-list">
+      <div class="usecase-item" data-delay="0">
+        <div class="usecase-header" onclick="toggleUsecase(this)">
+          <div class="usecase-left">
+            <span class="usecase-num">01</span>
+            <span class="usecase-name">Due Diligence Acceleration</span>
+          </div>
+          <div class="usecase-toggle">+</div>
+        </div>
+        <div class="usecase-body">
+          <div class="usecase-body-inner">
+            <p class="usecase-desc">A deal team evaluating a new investment feeds a data room full of CIMs, financial statements, and legal docs into Medici. Key financial and legal data is automatically extracted, structured, and ready for analysis. The team focuses on judgment, not data entry.</p>
+            <div class="usecase-stats">
+              <div class="usecase-stat">
+                <div class="usecase-stat-value">90%</div>
+                <div class="usecase-stat-label">Reduction in extraction time</div>
+              </div>
+              <div class="usecase-stat">
+                <div class="usecase-stat-value">10s</div>
+                <div class="usecase-stat-label">Avg. answer time</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="usecase-item" data-delay="100">
+        <div class="usecase-header" onclick="toggleUsecase(this)">
+          <div class="usecase-left">
+            <span class="usecase-num">02</span>
+            <span class="usecase-name">Regulatory Reporting</span>
+          </div>
+          <div class="usecase-toggle">+</div>
+        </div>
+        <div class="usecase-body">
+          <div class="usecase-body-inner">
+            <p class="usecase-desc">A fund CFO preparing Form ADV or K-1 documents pulls data from dozens of disconnected sources. With Medici, forms are pre-populated with validated, traceable data. Days of manual compilation become a review step.</p>
+            <div class="usecase-stats">
+              <div class="usecase-stat">
+                <div class="usecase-stat-value">Days → Hours</div>
+                <div class="usecase-stat-label">Filing preparation</div>
+              </div>
+              <div class="usecase-stat">
+                <div class="usecase-stat-value">100%</div>
+                <div class="usecase-stat-label">Source-cited traceability</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="usecase-item" data-delay="200">
+        <div class="usecase-header" onclick="toggleUsecase(this)">
+          <div class="usecase-left">
+            <span class="usecase-num">03</span>
+            <span class="usecase-name">Investor Relations</span>
+          </div>
+          <div class="usecase-toggle">+</div>
+        </div>
+        <div class="usecase-body">
+          <div class="usecase-body-inner">
+            <p class="usecase-desc">LPs ask about commitment terms, performance history, or distribution schedules. Instead of digging through archives, your IR team asks Medici and gets an accurate, source-cited response they can forward directly.</p>
+            <div class="usecase-stats">
+              <div class="usecase-stat">
+                <div class="usecase-stat-value">800+</div>
+                <div class="usecase-stat-label">Files searchable instantly</div>
+              </div>
+              <div class="usecase-stat">
+                <div class="usecase-stat-value">Zero</div>
+                <div class="usecase-stat-label">Manual lookup required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="usecase-item" data-delay="300">
+        <div class="usecase-header" onclick="toggleUsecase(this)">
+          <div class="usecase-left">
+            <span class="usecase-num">04</span>
+            <span class="usecase-name">Portfolio Monitoring</span>
+          </div>
+          <div class="usecase-toggle">+</div>
+        </div>
+        <div class="usecase-body">
+          <div class="usecase-body-inner">
+            <p class="usecase-desc">Track allocation drift, covenant compliance, fee calculations, and waterfall distributions across your entire portfolio. Medici flags anomalies and generates reports you can stand behind — every number traceable to its source.</p>
+            <div class="usecase-stats">
+              <div class="usecase-stat">
+                <div class="usecase-stat-value">Real-time</div>
+                <div class="usecase-stat-label">Portfolio visibility</div>
+              </div>
+              <div class="usecase-stat">
+                <div class="usecase-stat-value">Automated</div>
+                <div class="usecase-stat-label">Drift & covenant alerts</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST STRIP ===== -->
+<section class="trust-section">
+  <div class="trust-grid">
+    <div class="trust-item">
+      <div class="trust-icon">◈</div>
+      <div class="trust-title">Source-Cited</div>
+      <div class="trust-desc">Every answer traces back to the original document, page, and clause. Decisions you can audit.</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">⬡</div>
+      <div class="trust-title">Your Data Stays Yours</div>
+      <div class="trust-desc">We do not train on your data. Encrypted infrastructure with client-isolated environments.</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">↻</div>
+      <div class="trust-title">Learns Over Time</div>
+      <div class="trust-desc">Institutional knowledge compounds. The system gets more accurate and efficient the longer you use it.</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">▣</div>
+      <div class="trust-title">High-Touch Onboarding</div>
+      <div class="trust-desc">Not self-serve SaaS. We work with your team to identify pain points and configure the system for your workflows.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROOF SECTION ===== -->
+<section class="proof-section section" id="proof">
+  <div class="section-inner" style="text-align:center;">
+    <div class="section-label" style="text-align:center;">Who Uses Medici</div>
+    <h2 class="section-title" style="margin-bottom:48px;">Private market funds, fund administrators,<br>professional services.</h2>
+
+    <div class="proof-quote">
+      <p class="proof-text">A workflow that previously took 40 hours per building now completes in 15 minutes. One team member threatened to quit if they couldn't keep using the system.</p>
+      <p class="proof-attr">— Pilot client, tax-adjacent PE / real estate fund</p>
+    </div>
+
+    <div class="proof-logos">
+      <div class="proof-logo-item">Private Equity</div>
+      <div class="proof-logo-item">Real Estate Funds</div>
+      <div class="proof-logo-item">Fund Administration</div>
+      <div class="proof-logo-item">Professional Services</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA SECTION ===== -->
+<section class="cta-section" id="contact">
+  <div class="cta-inner">
+    <div class="section-label" style="text-align:center;">Get Started</div>
+    <h2 class="section-title" style="text-align:center;">See what Medici does<br>with your data.</h2>
+    <p class="cta-desc">We run a focused pilot with your team — your data, your workflows, your pain points. No generic demo. You'll know within weeks whether this changes how your fund operates.</p>
+
+    <form class="cta-form" onsubmit="handleSubmit(event)">
+      <input type="email" class="cta-input" placeholder="you@yourfund.com" required>
+      <button type="submit" class="cta-submit">Request Pilot</button>
+    </form>
+    <p class="cta-note">We'll reach out within 24 hours to schedule a conversation.</p>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-left">
+    <div class="logo-mark" style="width:20px;height:20px;">
+      <div class="logo-mark-inner" style="width:7px;height:7px;"></div>
+    </div>
+    <span class="footer-text">© 2026 Medici Technologies Inc.</span>
+  </div>
+  <div class="footer-links">
+    <a href="mailto:hello@medici.ai" class="footer-link">hello@medici.ai</a>
+    <a href="#" class="footer-link">Privacy</a>
+    <a href="#" class="footer-link">Terms</a>
+  </div>
+</footer>
+
+<!-- ============================================
+     JAVASCRIPT
+     ============================================ -->
+<script>
+// ============================================
+// MOUSE-REACTIVE GRID BACKGROUND
+// ============================================
+const canvas = document.getElementById('grid-canvas');
+const ctx = canvas.getContext('2d');
+let mouseX = -1000, mouseY = -1000;
+let animFrame;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function drawGrid() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const spacing = 40;
+  const maxDist = 200;
+
+  for (let x = 0; x < canvas.width; x += spacing) {
+    for (let y = 0; y < canvas.height; y += spacing) {
+      const dx = mouseX - x;
+      const dy = mouseY - y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const influence = Math.max(0, 1 - dist / maxDist);
+
+      const size = 1 + influence * 3;
+      const alpha = 0.04 + influence * 0.25;
+
+      const r = 116 + influence * 23;
+      const g = 65 - influence * 15;
+      const b = 143 + influence * 10;
+
+      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      ctx.fillRect(x - size / 2, y - size / 2, size, size);
+    }
+  }
+
+  animFrame = requestAnimationFrame(drawGrid);
+}
+
+drawGrid();
+
+// ============================================
+// NAVIGATION SCROLL
+// ============================================
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ============================================
+// SCROLL REVEAL — INTERSECTION OBSERVER
+// ============================================
+const revealElements = document.querySelectorAll('.pain-card, .pillar-card, .usecase-item, .proof-quote');
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const delay = parseInt(entry.target.dataset.delay || '0');
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, delay);
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+// ============================================
+// ANIMATED COUNTERS
+// ============================================
+const counterElements = document.querySelectorAll('.pain-number[data-target]');
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCounter(entry.target);
+      counterObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+counterElements.forEach(el => counterObserver.observe(el));
+
+function animateCounter(el) {
+  const target = parseInt(el.dataset.target);
+  const prefix = el.dataset.prefix || '';
+  const suffix = el.dataset.suffix || '';
+  const duration = 1500;
+  const start = performance.now();
+
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease out cubic
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(eased * target);
+    el.textContent = prefix + current + suffix;
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+  requestAnimationFrame(update);
+}
+
+// ============================================
+// INTERACTIVE TERMINAL DEMO
+// ============================================
+const demos = [
+  {
+    title: 'Due Diligence',
+    lines: [
+      { type: 'system', text: '◈ Connected to fund data room — 347 files indexed' },
+      { type: 'prompt', text: '▸ ' },
+      { type: 'user', text: 'Pull the key financial metrics from the Riverside CIM and compare against our underwriting assumptions.' },
+      { type: 'system', text: '⟳ Searching 347 documents... 3 sources identified' },
+      { type: 'response', text: 'Revenue: $24.3M (CIM) vs $22.8M (our model) — <span class="t-accent">+6.6% variance</span>' },
+      { type: 'response', text: 'EBITDA margin: 31.2% (CIM) vs 28.5% (model) — CIM includes one-time licensing revenue of $890K' },
+      { type: 'response', text: 'Net debt: $8.1M — within covenant threshold of $12M' },
+      { type: 'source', text: '⌇ Sources: Riverside_CIM_Q3.pdf (p.14, 27), Fund_III_Model_v4.xlsx (tab: Assumptions), LP_Side_Letter_2024.docx (§4.2)' },
+      { type: 'system', text: '✓ Comparison table exported to Fund_III_Riverside_Analysis.xlsx' },
+    ]
+  },
+  {
+    title: 'LP Reporting',
+    lines: [
+      { type: 'system', text: '◈ Connected to fund entity — 812 files indexed' },
+      { type: 'prompt', text: '▸ ' },
+      { type: 'user', text: 'Draft the Q4 LP letter for Fund II. Include performance summary, notable exits, and pipeline commentary.' },
+      { type: 'system', text: '⟳ Analyzing portfolio data, prior LP letters, and exit memos...' },
+      { type: 'response', text: 'Fund II returned <span class="t-accent">18.4% net IRR</span> for Q4, driven by the Apex Health exit at 3.2x MOIC.' },
+      { type: 'response', text: 'Two follow-on investments closed: Sterling Logistics ($4.2M) and Novus Data ($2.8M).' },
+      { type: 'response', text: 'Pipeline includes 6 active opportunities — 2 at term sheet stage.' },
+      { type: 'source', text: '⌇ Sources: Fund_II_NAV_Q4.xlsx, Apex_Exit_Memo.pdf, Pipeline_Tracker.xlsx, Q3_LP_Letter.docx (for tone/format)' },
+      { type: 'system', text: '✓ Draft exported to Fund_II_Q4_LP_Letter.docx — formatted per prior quarter template' },
+    ]
+  },
+  {
+    title: 'Rent Roll',
+    lines: [
+      { type: 'system', text: '◈ Connected to property portfolio — 156 files indexed' },
+      { type: 'prompt', text: '▸ ' },
+      { type: 'user', text: 'Extract and standardize rent rolls for the 42nd Street property. Match format from last quarter.' },
+      { type: 'system', text: '⟳ Processing 42ndSt_RentRoll_Raw.pdf... running extraction workflow "Rent Roll Standardization"' },
+      { type: 'response', text: '<span class="t-accent">47 units</span> extracted. 3 vacant. Avg rent: $4,280/mo. Occupancy: 93.6%.' },
+      { type: 'response', text: 'Floor assignments inferred from unit numbering scheme (1xx = Floor 1, etc.)' },
+      { type: 'response', text: 'Lease expiration clustering: 18 units expire Q2 2026 — flagged for renewal planning.' },
+      { type: 'source', text: '⌇ Sources: 42ndSt_RentRoll_Raw.pdf, Previous: 42ndSt_Q3_Standardized.xlsx (format template)' },
+      { type: 'system', text: '✓ Exported to 42ndSt_Q4_RentRoll_Standardized.xlsx — 47 rows, 14 columns, format matched' },
+    ]
+  }
+];
+
+let currentDemo = 0;
+let demoRunning = false;
+
+function runDemo(index) {
+  if (demoRunning) return;
+
+  // Update active button
+  document.querySelectorAll('.prompt-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === index);
+  });
+
+  currentDemo = index;
+  demoRunning = true;
+
+  const body = document.getElementById('terminal-body');
+  body.innerHTML = '';
+
+  const demo = demos[index];
+  let lineIndex = 0;
+
+  function addLine() {
+    if (lineIndex >= demo.lines.length) {
+      demoRunning = false;
+      return;
+    }
+
+    const line = demo.lines[lineIndex];
+    const el = document.createElement('div');
+    el.className = 'terminal-line';
+
+    if (line.type === 'prompt') {
+      el.innerHTML = `<span class="t-prompt">${line.text}</span>`;
+      el.classList.add('visible');
+      body.appendChild(el);
+      lineIndex++;
+      // Next line is user input — type it out
+      if (lineIndex < demo.lines.length && demo.lines[lineIndex].type === 'user') {
+        const userLine = demo.lines[lineIndex];
+        const userEl = body.lastElementChild;
+        typeText(userEl, userLine.text, () => {
+          lineIndex++;
+          setTimeout(addLine, 400);
+        });
+      } else {
+        setTimeout(addLine, 200);
+      }
+      return;
+    }
+
+    if (line.type === 'user') {
+      // Should be handled by prompt case above
+      lineIndex++;
+      setTimeout(addLine, 200);
+      return;
+    }
+
+    let cls = 't-' + line.type;
+    el.innerHTML = `<span class="${cls}">${line.text}</span>`;
+    body.appendChild(el);
+
+    // Scroll terminal
+    body.scrollTop = body.scrollHeight;
+
+    setTimeout(() => {
+      el.classList.add('visible');
+      lineIndex++;
+      const nextDelay = line.type === 'system' ? 600 : 350;
+      setTimeout(addLine, nextDelay);
+    }, 50);
+  }
+
+  addLine();
+}
+
+function typeText(container, text, callback) {
+  const span = document.createElement('span');
+  span.className = 't-user';
+  container.appendChild(span);
+
+  const cursor = document.createElement('span');
+  cursor.className = 't-cursor';
+  container.appendChild(cursor);
+
+  let i = 0;
+  const speed = 25;
+
+  function type() {
+    if (i < text.length) {
+      span.textContent += text[i];
+      i++;
+      setTimeout(type, speed + Math.random() * 20);
+    } else {
+      cursor.remove();
+      if (callback) setTimeout(callback, 300);
+    }
+  }
+
+  type();
+}
+
+// Auto-start first demo when in view
+const terminalObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      setTimeout(() => runDemo(0), 500);
+      terminalObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+terminalObserver.observe(document.querySelector('.terminal-frame'));
+
+// ============================================
+// USE CASE ACCORDION
+// ============================================
+function toggleUsecase(header) {
+  const item = header.parentElement;
+  const body = item.querySelector('.usecase-body');
+  const isOpen = item.classList.contains('open');
+
+  // Close all
+  document.querySelectorAll('.usecase-item.open').forEach(openItem => {
+    openItem.classList.remove('open');
+    openItem.querySelector('.usecase-body').style.maxHeight = '0';
+  });
+
+  // Open clicked (if it was closed)
+  if (!isOpen) {
+    item.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+
+// ============================================
+// CTA FORM
+// ============================================
+function handleSubmit(e) {
+  e.preventDefault();
+  const input = e.target.querySelector('.cta-input');
+  const btn = e.target.querySelector('.cta-submit');
+  const originalText = btn.textContent;
+
+  btn.textContent = 'Sent ✓';
+  btn.style.background = 'var(--green)';
+  btn.style.borderColor = '#5aad5c #2a6b2c #2a6b2c #5aad5c';
+
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.style.background = '';
+    btn.style.borderColor = '';
+    input.value = '';
+  }, 3000);
+}
+
+// ============================================
+// SMOOTH SCROLL FOR NAV LINKS
+// ============================================
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// ============================================
+// PARALLAX — subtle depth effect on hero
+// ============================================
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const hero = document.querySelector('.hero-content');
+  if (hero && scrolled < window.innerHeight) {
+    hero.style.transform = `translateY(${scrolled * 0.15}px)`;
+    hero.style.opacity = 1 - (scrolled / (window.innerHeight * 0.8));
+  }
+});
+</script>
+</body>
+</html>
