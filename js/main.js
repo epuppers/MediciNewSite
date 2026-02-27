@@ -65,140 +65,52 @@ function drawGrid() {
 drawGrid();
 
 // ============================================
-// CUSTOM CURSOR
+// CUSTOM CURSOR — mix-blend-mode: difference
 // ============================================
-const cursorDot = document.querySelector('.custom-cursor-dot');
-const cursorRing = document.querySelector('.custom-cursor-ring');
-
+const cursor = document.querySelector('.cursor');
 let cursorVisible = false;
 
-document.addEventListener('mousemove', (e) => {
-  if (!cursorVisible) {
-    cursorVisible = true;
-    cursorDot.style.opacity = '1';
-    cursorRing.style.opacity = '0.6';
-  }
-  gsap.set(cursorDot, { x: e.clientX, y: e.clientY });
-  gsap.to(cursorRing, { x: e.clientX, y: e.clientY, duration: 0.15, ease: 'power2.out' });
-});
-
-document.addEventListener('mouseleave', () => {
-  cursorVisible = false;
-  cursorDot.style.opacity = '0';
-  cursorRing.style.opacity = '0';
-});
-
-// Scale ring on interactive element hover
-document.querySelectorAll('a, button, .prompt-btn, .nav-cta, .btn-primary, .btn-secondary, .usecase-header, input').forEach(el => {
-  el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
-  el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
-});
-
-// Initially hidden until mouse moves
-cursorDot.style.opacity = '0';
-cursorRing.style.opacity = '0';
-
-// ============================================
-// HERO GLOW FOLLOW
-// ============================================
-const heroSection = document.querySelector('.hero');
-const heroGlow = document.querySelector('.hero-glow');
-
-heroSection.addEventListener('mousemove', (e) => {
-  const rect = heroSection.getBoundingClientRect();
-  gsap.to(heroGlow, {
-    x: e.clientX,
-    y: e.clientY - rect.top + window.scrollY,
-    duration: 0.3,
-    ease: 'power2.out'
-  });
-});
-
-// ============================================
-// HERO PARTICLE TRAIL
-// ============================================
-const heroParticles = document.querySelector('.hero-particles');
-let particleThrottle = 0;
-
-heroSection.addEventListener('mousemove', (e) => {
-  const now = Date.now();
-  if (now - particleThrottle < 30) return; // throttle to ~33fps
-  particleThrottle = now;
-
-  const rect = heroSection.getBoundingClientRect();
-
-  for (let i = 0; i < 2; i++) {
-    const particle = document.createElement('div');
-    particle.className = 'hero-particle';
-
-    const colors = ['rgba(116,65,143,0.8)', 'rgba(139,79,141,0.7)', 'rgba(196,166,197,0.6)', 'rgba(163,131,180,0.7)'];
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const size = 2 + Math.random() * 3;
-
-    particle.style.cssText = `
-      left: ${e.clientX - rect.left + (Math.random() - 0.5) * 20}px;
-      top: ${e.clientY - rect.top + (Math.random() - 0.5) * 20}px;
-      width: ${size}px;
-      height: ${size}px;
-      background: ${color};
-      box-shadow: 0 0 ${size * 2}px ${color};
-    `;
-
-    heroParticles.appendChild(particle);
-
-    gsap.to(particle, {
-      opacity: 0,
-      y: -(20 + Math.random() * 30),
-      x: (Math.random() - 0.5) * 30,
-      scale: 0,
-      duration: 0.5 + Math.random() * 0.3,
-      ease: 'power2.out',
-      onComplete: () => particle.remove()
-    });
-  }
-});
-
-// ============================================
-// HERO MAGNETIC TEXT DISTORTION
-// ============================================
-const heroWords = document.querySelectorAll('.hero-headline .hero-word');
-const magneticThreshold = 150;
-
-heroSection.addEventListener('mousemove', (e) => {
-  heroWords.forEach(word => {
-    const rect = word.getBoundingClientRect();
-    const wordCenterX = rect.left + rect.width / 2;
-    const wordCenterY = rect.top + rect.height / 2;
-
-    const dx = e.clientX - wordCenterX;
-    const dy = e.clientY - wordCenterY;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-
-    if (dist < magneticThreshold) {
-      const force = (1 - dist / magneticThreshold) * 8;
-      const pushX = -(dx / dist) * force;
-      const pushY = -(dy / dist) * force;
-      gsap.to(word, { x: pushX, y: pushY, duration: 0.3, ease: 'power2.out' });
-    } else {
-      gsap.to(word, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
+// Only enable on pointer devices (no touch)
+if (window.matchMedia('(pointer: fine)').matches && cursor) {
+  document.addEventListener('mousemove', (e) => {
+    if (!cursorVisible) {
+      cursorVisible = true;
+      gsap.to(cursor, { opacity: 1, duration: 0.3 });
     }
+    gsap.to(cursor, {
+      x: e.clientX,
+      y: e.clientY,
+      duration: 0.15,
+      ease: 'power2.out',
+      overwrite: 'auto'
+    });
   });
-});
 
-heroSection.addEventListener('mouseleave', () => {
-  heroWords.forEach(word => {
-    gsap.to(word, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
+  document.addEventListener('mouseleave', () => {
+    cursorVisible = false;
+    gsap.to(cursor, { opacity: 0, duration: 0.3 });
   });
-});
+
+  // Shrink on interactive elements
+  const interactiveSelector = 'a, button, .prompt-btn, .nav-cta, .btn-primary, .btn-secondary, .usecase-header, input, .integration-item';
+  document.querySelectorAll(interactiveSelector).forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      gsap.to(cursor, { width: 20, height: 20, duration: 0.3, ease: 'power3.out' });
+    });
+    el.addEventListener('mouseleave', () => {
+      gsap.to(cursor, { width: 48, height: 48, duration: 0.3, ease: 'power3.out' });
+    });
+  });
+}
 
 // ============================================
-// HERO TEXT ANIMATION (on page load)
+// HERO TEXT ANIMATION — clip reveal
 // ============================================
 const heroTimeline = gsap.timeline({ delay: 0.3 });
 
-// Set initial state
+// Set initial states — words hidden below their overflow:hidden containers
 gsap.set('.hero-badge', { opacity: 0, y: 20 });
-gsap.set('.hero-word', { opacity: 0, y: 30 });
+gsap.set('.hero-word', { yPercent: 110 });
 gsap.set('.hero-sub', { opacity: 0 });
 gsap.set('.hero-description', { opacity: 0, y: 20 });
 gsap.set('.hero-ctas', { opacity: 0, y: 20 });
@@ -207,40 +119,40 @@ gsap.set('.scroll-indicator', { opacity: 0, y: 10 });
 // Badge fades in
 heroTimeline.to('.hero-badge', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
 
-// Words animate in staggered
+// Words clip-reveal up (slide into view from below overflow:hidden line)
 heroTimeline.to('.hero-word', {
-  opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out'
+  yPercent: 0, duration: 0.8, stagger: 0.08, ease: 'power3.out'
 }, '-=0.1');
 
 // Glitch the word "Answers"
 heroTimeline.call(() => {
-  const glitchEl = document.querySelector('[data-glitch="true"]');
+  const glitchEl = document.querySelector('[data-glitch]');
   if (glitchEl) {
     glitchEl.classList.add('glitch-active');
     setTimeout(() => glitchEl.classList.remove('glitch-active'), 400);
   }
-}, null, '+=0.1');
+}, null, '+=0.05');
 
 // Typewriter for subtitle
 const heroSub = document.querySelector('.hero-sub');
 const subtitleText = heroSub.textContent;
 heroSub.textContent = '';
 
-heroTimeline.to('.hero-sub', { opacity: 1, duration: 0.1 }, '+=0.2');
+heroTimeline.to('.hero-sub', { opacity: 1, duration: 0.1 }, '+=0.15');
 heroTimeline.call(() => {
   let i = 0;
-  const cursor = document.createElement('span');
-  cursor.className = 't-cursor';
-  cursor.style.cssText = 'display:inline-block;width:8px;height:14px;background:var(--berry-2);animation:blink 1s infinite;vertical-align:middle;margin-left:2px;';
-  heroSub.appendChild(cursor);
+  const typeCursor = document.createElement('span');
+  typeCursor.className = 't-cursor';
+  typeCursor.style.cssText = 'display:inline-block;width:8px;height:14px;background:var(--berry-2);animation:blink 1s infinite;vertical-align:middle;margin-left:2px;';
+  heroSub.appendChild(typeCursor);
 
   function typeChar() {
     if (i < subtitleText.length) {
-      cursor.before(subtitleText[i]);
+      typeCursor.before(subtitleText[i]);
       i++;
       setTimeout(typeChar, 30 + Math.random() * 20);
     } else {
-      setTimeout(() => cursor.remove(), 1500);
+      setTimeout(() => typeCursor.remove(), 1500);
     }
   }
   typeChar();
@@ -260,32 +172,51 @@ lenis.on('scroll', ({ scroll }) => {
 });
 
 // ============================================
-// GSAP SCROLL REVEAL — replacing IntersectionObserver
+// SECTION TITLE CLIP REVEAL — HTML-aware word split
 // ============================================
+function wrapSectionTitleWords(titleEl) {
+  const html = titleEl.innerHTML;
 
-// Section title word-by-word animation
+  // Split by <br> variants into lines
+  const lines = html.split(/<br\s*\/?>/i);
+
+  const wrapped = lines.map(line => {
+    // Split text from HTML tags, only wrap text nodes
+    const parts = line.split(/(<[^>]+>)/);
+    const wordified = parts.map(part => {
+      if (part.startsWith('<')) return part; // preserve HTML tags
+      return part.replace(/(\S+)/g, '<span class="reveal-word">$1</span>');
+    }).join('');
+    return '<span class="reveal-line">' + wordified + '</span>';
+  }).join('<br>');
+
+  titleEl.innerHTML = wrapped;
+}
+
 document.querySelectorAll('.section-title').forEach(title => {
-  // Skip if already in hero (handled by hero animation)
+  // Skip hero titles (handled by hero animation)
   if (title.closest('.hero')) return;
 
-  const html = title.innerHTML;
-  // Split text nodes into words, preserving <br> and other tags
-  const wrapped = html.replace(/([^\s<>]+)/g, '<span class="word" style="display:inline-block;opacity:0;transform:translateY(20px)">$1</span>');
-  title.innerHTML = wrapped;
+  wrapSectionTitleWords(title);
+
+  // Set initial state
+  gsap.set(title.querySelectorAll('.reveal-word'), { yPercent: 110 });
 
   ScrollTrigger.create({
     trigger: title,
     start: 'top 85%',
     once: true,
     onEnter: () => {
-      gsap.to(title.querySelectorAll('.word'), {
-        opacity: 1, y: 0, duration: 0.5, stagger: 0.04, ease: 'power2.out'
+      gsap.to(title.querySelectorAll('.reveal-word'), {
+        yPercent: 0, duration: 0.7, stagger: 0.04, ease: 'power3.out'
       });
     }
   });
 });
 
-// Cards and elements — scroll reveal with scale
+// ============================================
+// GSAP SCROLL REVEAL — cards and elements
+// ============================================
 const revealSelectors = '.pain-card, .pillar-card, .step-item, .integration-item, .usecase-item, .proof-quote';
 
 document.querySelectorAll(revealSelectors).forEach(el => {
@@ -297,8 +228,11 @@ document.querySelectorAll(revealSelectors).forEach(el => {
     once: true,
     onEnter: () => {
       gsap.fromTo(el,
-        { opacity: 0, y: 40, scale: 0.97 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.7, delay: delay, ease: 'power2.out',
+        { opacity: 0, y: 40, scale: 0.95 },
+        {
+          opacity: 1, y: 0, scale: 1,
+          duration: 1, delay: delay,
+          ease: 'power3.out',
           onStart: () => el.classList.add('visible')
         }
       );
@@ -317,7 +251,7 @@ document.querySelectorAll('.section-label, .section-desc').forEach(el => {
     onEnter: () => {
       gsap.fromTo(el,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
       );
     }
   });
@@ -347,7 +281,6 @@ function animateCounter(el) {
   function update(now) {
     const elapsed = now - start;
     const progress = Math.min(elapsed / duration, 1);
-    // Ease out cubic
     const eased = 1 - Math.pow(1 - progress, 3);
     const current = Math.round(eased * target);
     el.textContent = prefix + current + suffix;
@@ -408,43 +341,43 @@ const demos = [
   {
     title: 'Due Diligence',
     lines: [
-      { type: 'system', text: '◈ Connected to fund data room — 347 files indexed' },
-      { type: 'prompt', text: '▸ ' },
+      { type: 'system', text: '\u25C8 Connected to fund data room \u2014 347 files indexed' },
+      { type: 'prompt', text: '\u25B8 ' },
       { type: 'user', text: 'Pull the key financial metrics from the Riverside CIM and compare against our underwriting assumptions.' },
-      { type: 'system', text: '⟳ Searching 347 documents... 3 sources identified' },
-      { type: 'response', text: 'Revenue: $24.3M (CIM) vs $22.8M (our model) — <span class="t-accent">+6.6% variance</span>' },
-      { type: 'response', text: 'EBITDA margin: 31.2% (CIM) vs 28.5% (model) — CIM includes one-time licensing revenue of $890K' },
-      { type: 'response', text: 'Net debt: $8.1M — within covenant threshold of $12M' },
-      { type: 'source', text: '⌇ Sources: Riverside_CIM_Q3.pdf (p.14, 27), Fund_III_Model_v4.xlsx (tab: Assumptions), LP_Side_Letter_2024.docx (§4.2)' },
-      { type: 'system', text: '✓ Comparison table exported to Fund_III_Riverside_Analysis.xlsx' },
+      { type: 'system', text: '\u27F3 Searching 347 documents... 3 sources identified' },
+      { type: 'response', text: 'Revenue: $24.3M (CIM) vs $22.8M (our model) \u2014 <span class="t-accent">+6.6% variance</span>' },
+      { type: 'response', text: 'EBITDA margin: 31.2% (CIM) vs 28.5% (model) \u2014 CIM includes one-time licensing revenue of $890K' },
+      { type: 'response', text: 'Net debt: $8.1M \u2014 within covenant threshold of $12M' },
+      { type: 'source', text: '\u2307 Sources: Riverside_CIM_Q3.pdf (p.14, 27), Fund_III_Model_v4.xlsx (tab: Assumptions), LP_Side_Letter_2024.docx (\u00A74.2)' },
+      { type: 'system', text: '\u2713 Comparison table exported to Fund_III_Riverside_Analysis.xlsx' },
     ]
   },
   {
     title: 'LP Reporting',
     lines: [
-      { type: 'system', text: '◈ Connected to fund entity — 812 files indexed' },
-      { type: 'prompt', text: '▸ ' },
+      { type: 'system', text: '\u25C8 Connected to fund entity \u2014 812 files indexed' },
+      { type: 'prompt', text: '\u25B8 ' },
       { type: 'user', text: 'Draft the Q4 LP letter for Fund II. Include performance summary, notable exits, and pipeline commentary.' },
-      { type: 'system', text: '⟳ Analyzing portfolio data, prior LP letters, and exit memos...' },
+      { type: 'system', text: '\u27F3 Analyzing portfolio data, prior LP letters, and exit memos...' },
       { type: 'response', text: 'Fund II returned <span class="t-accent">18.4% net IRR</span> for Q4, driven by the Apex Health exit at 3.2x MOIC.' },
       { type: 'response', text: 'Two follow-on investments closed: Sterling Logistics ($4.2M) and Novus Data ($2.8M).' },
-      { type: 'response', text: 'Pipeline includes 6 active opportunities — 2 at term sheet stage.' },
-      { type: 'source', text: '⌇ Sources: Fund_II_NAV_Q4.xlsx, Apex_Exit_Memo.pdf, Pipeline_Tracker.xlsx, Q3_LP_Letter.docx (for tone/format)' },
-      { type: 'system', text: '✓ Draft exported to Fund_II_Q4_LP_Letter.docx — formatted per prior quarter template' },
+      { type: 'response', text: 'Pipeline includes 6 active opportunities \u2014 2 at term sheet stage.' },
+      { type: 'source', text: '\u2307 Sources: Fund_II_NAV_Q4.xlsx, Apex_Exit_Memo.pdf, Pipeline_Tracker.xlsx, Q3_LP_Letter.docx (for tone/format)' },
+      { type: 'system', text: '\u2713 Draft exported to Fund_II_Q4_LP_Letter.docx \u2014 formatted per prior quarter template' },
     ]
   },
   {
     title: 'Rent Roll',
     lines: [
-      { type: 'system', text: '◈ Connected to property portfolio — 156 files indexed' },
-      { type: 'prompt', text: '▸ ' },
+      { type: 'system', text: '\u25C8 Connected to property portfolio \u2014 156 files indexed' },
+      { type: 'prompt', text: '\u25B8 ' },
       { type: 'user', text: 'Extract and standardize rent rolls for the 42nd Street property. Match format from last quarter.' },
-      { type: 'system', text: '⟳ Processing 42ndSt_RentRoll_Raw.pdf... running extraction workflow "Rent Roll Standardization"' },
+      { type: 'system', text: '\u27F3 Processing 42ndSt_RentRoll_Raw.pdf... running extraction workflow "Rent Roll Standardization"' },
       { type: 'response', text: '<span class="t-accent">47 units</span> extracted. 3 vacant. Avg rent: $4,280/mo. Occupancy: 93.6%.' },
       { type: 'response', text: 'Floor assignments inferred from unit numbering scheme (1xx = Floor 1, etc.)' },
-      { type: 'response', text: 'Lease expiration clustering: 18 units expire Q2 2026 — flagged for renewal planning.' },
-      { type: 'source', text: '⌇ Sources: 42ndSt_RentRoll_Raw.pdf, Previous: 42ndSt_Q3_Standardized.xlsx (format template)' },
-      { type: 'system', text: '✓ Exported to 42ndSt_Q4_RentRoll_Standardized.xlsx — 47 rows, 14 columns, format matched' },
+      { type: 'response', text: 'Lease expiration clustering: 18 units expire Q2 2026 \u2014 flagged for renewal planning.' },
+      { type: 'source', text: '\u2307 Sources: 42ndSt_RentRoll_Raw.pdf, Previous: 42ndSt_Q3_Standardized.xlsx (format template)' },
+      { type: 'system', text: '\u2713 Exported to 42ndSt_Q4_RentRoll_Standardized.xlsx \u2014 47 rows, 14 columns, format matched' },
     ]
   }
 ];
@@ -499,7 +432,6 @@ function runDemo(index) {
     }
 
     if (line.type === 'user') {
-      // Should be handled by prompt case above
       lineIndex++;
       setTimeout(addLine, 200);
       return;
@@ -528,9 +460,9 @@ function typeText(container, text, callback) {
   span.className = 't-user';
   container.appendChild(span);
 
-  const cursor = document.createElement('span');
-  cursor.className = 't-cursor';
-  container.appendChild(cursor);
+  const typeCursor = document.createElement('span');
+  typeCursor.className = 't-cursor';
+  container.appendChild(typeCursor);
 
   let i = 0;
   const speed = 25;
@@ -541,7 +473,7 @@ function typeText(container, text, callback) {
       i++;
       setTimeout(type, speed + Math.random() * 20);
     } else {
-      cursor.remove();
+      typeCursor.remove();
       if (callback) setTimeout(callback, 300);
     }
   }
@@ -587,7 +519,7 @@ function handleSubmit(e) {
   const btn = e.target.querySelector('.cta-submit');
   const originalText = btn.textContent;
 
-  btn.textContent = 'Sent ✓';
+  btn.textContent = 'Sent \u2713';
   btn.style.background = 'var(--green)';
   btn.style.borderColor = '#39FF14 #1A7A0A #1A7A0A #39FF14';
 
