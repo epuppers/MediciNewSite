@@ -60,7 +60,7 @@ window.addEventListener('scroll', () => {
 // ============================================
 // SCROLL REVEAL — INTERSECTION OBSERVER
 // ============================================
-const revealElements = document.querySelectorAll('.pain-card, .pillar-card, .usecase-item, .proof-quote');
+const revealElements = document.querySelectorAll('.pain-card, .pillar-card, .usecase-item, .proof-quote, .step-item, .integration-item');
 
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
