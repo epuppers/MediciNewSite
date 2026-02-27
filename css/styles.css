@@ -1,20 +1,6 @@
 @font-face {
-  font-family: 'Aurach Heavy';
-  src: url('../fonts/aurach-heavy.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Aurach Tri';
-  src: url('../fonts/aurach-tri.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Aurach Bi';
-  src: url('../fonts/aurach-bi.ttf') format('truetype');
+  font-family: 'Dream Orphanage';
+  src: url('../fonts/dream-orphanage-rg.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -56,9 +42,7 @@
   --red: #C04848;
   --amber: #B8862B;
 
-  --pixel-heavy: 'Aurach Heavy', monospace;
-  --pixel: 'Aurach Tri', monospace;
-  --pixel-light: 'Aurach Bi', monospace;
+  --pixel: 'Dream Orphanage', monospace;
   --mono: 'IBM Plex Mono', monospace;
   --sans: 'DM Sans', sans-serif;
 }
@@ -328,7 +312,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .hero-headline {
-  font-family: var(--pixel-heavy);
+  font-family: var(--pixel);
   font-size: clamp(48px, 7vw, 96px);
   color: var(--white);
   letter-spacing: 2px;
@@ -525,7 +509,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .section-title {
-  font-family: var(--pixel-heavy);
+  font-family: var(--pixel);
   font-size: clamp(32px, 4vw, 56px);
   color: var(--white);
   letter-spacing: 1px;
@@ -791,7 +775,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .prompt-icon {
-  font-family: var(--pixel-light);
+  font-family: var(--pixel);
   font-size: 18px;
   color: var(--violet-3);
 }
@@ -882,7 +866,7 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--pixel-light);
+  font-family: var(--pixel);
   font-size: 24px;
   color: var(--white);
   margin-bottom: 24px;
@@ -998,7 +982,7 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--pixel-light);
+  font-family: var(--pixel);
   font-size: 24px;
   color: var(--taupe-3);
   transition: all 0.3s ease;
@@ -1097,7 +1081,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .trust-icon {
-  font-family: var(--pixel-light);
+  font-family: var(--pixel);
   font-size: 36px;
   color: var(--violet-3);
   margin-bottom: 16px;
@@ -1156,7 +1140,7 @@ a { color: inherit; text-decoration: none; }
 
 .proof-text::before {
   content: '"';
-  font-family: var(--pixel-light);
+  font-family: var(--pixel);
   font-size: 64px;
   color: var(--violet-3);
   display: block;
