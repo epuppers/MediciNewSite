@@ -160,48 +160,49 @@ gsap.to('.hero-glyph', {
   }
 });
 
-// ========== GSAP SCROLL REVEALS (replaces IntersectionObserver) ==========
-document.querySelectorAll('.reveal').forEach(el => {
-  gsap.to(el, {
-    opacity: 1,
-    y: 0,
-    duration: 1,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: el,
-      start: 'top 85%',
-      once: true
-    }
-  });
+// ========== GSAP SCROLL REVEALS ==========
+
+// Terminal section
+gsap.from('.terminal-intro-right', {
+  opacity: 0, y: 20, duration: 0.8,
+  ease: 'power3.out',
+  scrollTrigger: { trigger: '.terminal-intro', start: 'top 80%', once: true }
+});
+gsap.from('.terminal-stage', {
+  opacity: 0, y: 30, duration: 1,
+  ease: 'power3.out',
+  scrollTrigger: { trigger: '.terminal-stage', start: 'top 85%', once: true }
 });
 
 // Architecture cards stagger
-gsap.from('.arch-card', {
-  opacity: 0,
-  y: 40,
-  scale: 0.97,
-  stagger: 0.15,
-  duration: 0.8,
-  ease: 'power3.out',
-  scrollTrigger: {
-    trigger: '.arch-grid',
-    start: 'top 80%',
-    once: true
+gsap.set('.arch-card', { opacity: 0, y: 40 });
+ScrollTrigger.create({
+  trigger: '.arch-grid',
+  start: 'top 80%',
+  once: true,
+  onEnter: () => {
+    gsap.to('.arch-card', {
+      opacity: 1, y: 0,
+      stagger: 0.15,
+      duration: 0.8,
+      ease: 'power3.out'
+    });
   }
 });
 
 // Case cards stagger
-gsap.from('.case-card', {
-  opacity: 0,
-  y: 40,
-  scale: 0.97,
-  stagger: 0.12,
-  duration: 0.8,
-  ease: 'power3.out',
-  scrollTrigger: {
-    trigger: '.cases-grid',
-    start: 'top 80%',
-    once: true
+gsap.set('.case-card', { opacity: 0, y: 40 });
+ScrollTrigger.create({
+  trigger: '.cases-grid',
+  start: 'top 80%',
+  once: true,
+  onEnter: () => {
+    gsap.to('.case-card', {
+      opacity: 1, y: 0,
+      stagger: 0.12,
+      duration: 0.8,
+      ease: 'power3.out'
+    });
   }
 });
 

@@ -825,10 +825,6 @@ footer {
   to { opacity: 1; }
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-}
 
 /* ========== CUSTOM CURSOR ========== */
 body, a, button, .term-tab, .btn-main, .btn-line {
