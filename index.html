@@ -3,375 +3,186 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MEDICI — Garbage In, Answers Out</title>
-<meta name="description" content="Your fund's data is scattered across hundreds of files. Ask a question, get a source-cited answer in seconds. Medici is the execution layer for fund operations.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<meta name="description" content="Medici — AI-powered intelligence platform for private market fund operations. Due diligence, LP reporting, and portfolio monitoring in seconds.">
+<title>MEDICI</title>
 <link rel="stylesheet" href="css/styles.css">
-<!-- Previously inline styles moved to css/styles.css -->
 </head>
 <body>
 
-<!-- Custom cursor -->
-<div class="cursor"></div>
+<!-- Custom Cursor -->
+<div class="custom-cursor-dot"></div>
+<div class="custom-cursor-ring"></div>
 
-<!-- Scanline overlay -->
-<div class="scanlines"></div>
-
-<!-- Mouse-reactive grid -->
-<canvas id="grid-canvas"></canvas>
-
-<!-- Navigation -->
-<nav class="nav" id="nav">
-  <a href="#" class="nav-logo">
-    <div class="logo-mark"><div class="logo-mark-inner"></div></div>
-    <div class="logo-title">MEDICI</div>
-  </a>
-  <div class="nav-links">
-    <a href="#product" class="nav-link">Product</a>
-    <a href="#how" class="nav-link">How It Works</a>
-    <a href="#usecases" class="nav-link">Use Cases</a>
-    <a href="#contact" class="nav-link">Contact</a>
-    <a href="#contact" class="nav-cta">Request Pilot</a>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">MEDICI</a>
+  <div class="nav-right">
+    <a href="#product">Product</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#cases">Cases</a>
+    <a href="#contact">Request Pilot</a>
   </div>
 </nav>
 
-<!-- ===== HERO ===== -->
-<section class="hero section" id="hero">
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glyph">M</div>
+  <div class="hero-dots"></div>
+  <div class="hero-accent-line"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-particles"></div>
+
   <div class="hero-content">
-    <div class="hero-badge">
-      <span class="hero-badge-dot"></span>
+    <div class="hero-status">
+      <span class="status-dot"></span>
       Now active with funds across private markets
     </div>
-    <h1 class="hero-headline"><span class="hero-line"><span class="hero-word">Garbage</span> <span class="hero-word">In,</span></span><br><span class="hero-line"><span class="hero-word accent" data-glitch>Answers</span> <span class="hero-word accent">Out.</span></span></h1>
-    <p class="hero-sub">Ask a question. Get a source-cited answer in seconds.</p>
-    <p class="hero-description">Your fund's data is scattered across 800 files, 12 folders, and 4 people's inboxes. Ask a question, get a source-cited answer in seconds. No workflow engineering. No data entry. Just outcomes.</p>
+    <h1 class="hero-headline">
+      <div class="h-line"><span class="h-large">Your fund's</span></div>
+      <div class="h-line"><span class="h-italic">intelligence.</span></div>
+      <div class="h-line"><span class="h-sub">Ask a question. Get a source-cited answer in seconds.</span></div>
+    </h1>
+  </div>
+
+  <div class="hero-bottom">
     <div class="hero-ctas">
-      <a href="#contact" class="btn-primary">Start a Pilot</a>
-      <a href="#product" class="btn-secondary">See It Work</a>
+      <a href="#contact" class="btn-main">Start a Pilot</a>
+      <a href="#product" class="btn-line">See It Work</a>
     </div>
-  </div>
-  <div class="scroll-indicator">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
-</section>
-
-<!-- ===== PAIN SECTION ===== -->
-<section class="pain-section section" id="pain">
-  <div class="section-inner">
-    <div class="section-label">The Status Quo</div>
-    <h2 class="section-title">Your team burns time<br>on work that shouldn't exist.</h2>
-    <p class="section-desc">Every hour spent on data entry, reconciliation, and searching through documents is an hour not spent on deals, LP relationships, or portfolio strategy.</p>
-
-    <div class="pain-grid">
-      <div class="pain-card" data-delay="0">
-        <div class="pain-number" data-target="40" data-suffix="+">0</div>
-        <div class="pain-unit">Hours per asset</div>
-        <div class="pain-label">Typical time to extract, reconcile, and format data from raw documents across a portfolio of assets.</div>
-        <div class="pain-after">→ With Medici: 15 min</div>
-      </div>
-      <div class="pain-card" data-delay="100">
-        <div class="pain-number" data-target="170" data-prefix="$" data-suffix="K">0</div>
-        <div class="pain-unit">Annual fund admin costs</div>
-        <div class="pain-label">What a mid-market fund pays annually for admin platforms, legal workflows, and compliance tooling — before headcount.</div>
-        <div class="pain-after">→ Consolidate to one system</div>
-      </div>
-      <div class="pain-card" data-delay="200">
-        <div class="pain-number green" data-target="10" data-suffix="s">0</div>
-        <div class="pain-unit">Time to answer</div>
-        <div class="pain-label">Ask "what did we commit to LPs on co-invest terms?" — get the answer with the source document cited. Every time.</div>
-        <div class="pain-after">→ Source-cited accuracy</div>
-      </div>
+    <div class="hero-scroll-hint">
+      <span class="scroll-line"></span>
+      Scroll
     </div>
   </div>
 </section>
 
-<!-- ===== DEMO SECTION ===== -->
-<section class="demo-section" id="product">
-  <div class="section-inner">
-    <div class="demo-header">
-      <div class="section-label" style="color:var(--taupe-3);text-align:center;">Live Product Demo</div>
-      <h2 class="section-title" style="text-align:center;">Ask anything.<br>Get the work delivered.</h2>
+<!-- TERMINAL -->
+<section class="terminal-section reveal" id="product">
+  <div class="terminal-intro">
+    <div class="terminal-intro-left">
+      <h2>Ask anything.<br>Get the <em>work</em> delivered.</h2>
     </div>
+    <div class="terminal-intro-right">
+      COSIMO — Applied Intelligence<br>
+      Live product · Not a mockup
+    </div>
+  </div>
 
+  <div class="terminal-stage">
     <div class="terminal-frame">
-      <div class="terminal-bar">
-        <div class="terminal-dot red"></div>
-        <div class="terminal-dot amber"></div>
-        <div class="terminal-dot green"></div>
-        <div class="terminal-stripe"></div>
-        <span class="terminal-label">COSIMO — Applied Intelligence</span>
-      </div>
-      <div class="terminal-body" id="terminal-body">
-        <!-- Lines injected by JS -->
-      </div>
-      <div class="terminal-prompt-bar">
-        <span class="prompt-icon">▸</span>
-        <div class="prompt-buttons">
-          <button class="prompt-btn active" onclick="runDemo(0)">Due Diligence</button>
-          <button class="prompt-btn" onclick="runDemo(1)">LP Reporting</button>
-          <button class="prompt-btn" onclick="runDemo(2)">Rent Roll</button>
+      <div class="term-chrome">
+        <div class="term-dots">
+          <div class="term-dot"></div>
+          <div class="term-dot"></div>
+          <div class="term-dot"></div>
         </div>
+        <div class="term-tabs">
+          <button class="term-tab active" onclick="runDemo(0)">Due Diligence</button>
+          <button class="term-tab" onclick="runDemo(1)">LP Reporting</button>
+          <button class="term-tab" onclick="runDemo(2)">Rent Roll</button>
+        </div>
+        <span class="term-version">cosimo v2.4.1</span>
       </div>
+
+      <div class="term-body active" id="terminal-body"></div>
     </div>
   </div>
 </section>
 
-<!-- ===== PILLARS SECTION ===== -->
-<section class="pillars-section section" id="how">
-  <div class="section-inner">
-    <div class="section-label">How It Works</div>
-    <h2 class="section-title">What generic AI<br>can't do for you.</h2>
-    <p class="section-desc">ChatGPT forgets what you told it three documents ago. We remember all 800 of your files — every number, every clause — and handle the complexity general LLMs collapse on.</p>
+<!-- ARCHITECTURE -->
+<section class="arch-section reveal" id="architecture">
+  <div class="arch-header">
+    <h2>Three things generic AI<br>will never do for your fund.</h2>
+    <div class="arch-header-num">III</div>
+  </div>
 
-    <div class="steps-row">
-      <div class="step-item" data-delay="0">
-        <div class="step-num">01</div>
-        <div class="step-title">Connect your data</div>
-        <div class="step-desc">Upload files, connect your cloud storage, or point us at a data room. We index everything and build a knowledge graph of your fund's information.</div>
-      </div>
-      <div class="step-item" data-delay="150">
-        <div class="step-num">02</div>
-        <div class="step-title">Ask or automate</div>
-        <div class="step-desc">Ask questions in plain English, or set up recurring workflows. Medici handles extraction, analysis, and document generation.</div>
-      </div>
-      <div class="step-item" data-delay="300">
-        <div class="step-num">03</div>
-        <div class="step-title">Get deliverables with full audit trail</div>
-        <div class="step-desc">Every output — spreadsheet, memo, report — comes with source citations. Traceable to the original document, page, and clause.</div>
-      </div>
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="arch-card-num">001</div>
+      <div class="arch-card-icon">◇</div>
+      <div class="arch-card-title">Data Integrity</div>
+      <div class="arch-card-text">Your fund data is structured into a knowledge graph that understands relationships — between entities, documents, time periods, and versions. Every answer is traceable to its source. Handles contradictory documents, version control across time, and context that spans hundreds of files.</div>
     </div>
-
-    <div class="pillar-grid">
-      <div class="pillar-card" data-delay="0">
-        <div class="pillar-icon">◈</div>
-        <h3 class="pillar-title">Data Integrity</h3>
-        <p class="pillar-text">Your fund data is structured into a knowledge graph that understands relationships — between entities, documents, time periods, and versions. Every answer is traceable to its source.</p>
-        <div class="pillar-detail">Graph architecture handles contradictory documents, version control across time, and context that spans hundreds of files. Accuracy infrastructure, not pattern matching.</div>
-      </div>
-      <div class="pillar-card" data-delay="150">
-        <div class="pillar-icon">↻</div>
-        <h3 class="pillar-title">Compounding Workflows</h3>
-        <p class="pillar-text">Medici learns how your firm works. The first time you build a report, it takes ten minutes. The second time, it's automatic. Workflows compound over time and across your team.</p>
-        <div class="pillar-detail">Our lesson system captures your firm's institutional knowledge — processes, formats, preferences. New hires get your best analyst's judgment from day one. Your workflows become infrastructure.</div>
-      </div>
-      <div class="pillar-card" data-delay="300">
-        <div class="pillar-icon">▣</div>
-        <h3 class="pillar-title">Full-Stack Execution</h3>
-        <p class="pillar-text">Other tools analyze. Medici delivers. From question to finished deliverable — the financial statement, the compliance report, the LP letter — with zero manual work between.</p>
-        <div class="pillar-detail">Search, file manipulation, code execution, organizational memory, and polished output in one system. Not a chatbot. Not a dashboard. The execution layer for knowledge work.</div>
-      </div>
+    <div class="arch-card">
+      <div class="arch-card-num">002</div>
+      <div class="arch-card-icon">⟳</div>
+      <div class="arch-card-title">Compounding Workflows</div>
+      <div class="arch-card-text">Medici learns how your firm works. The first time you build a report, it takes ten minutes. The second time, it's automatic. Workflows compound over time and across your team. New hires get your best analyst's judgment from day one.</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-card-num">003</div>
+      <div class="arch-card-icon">▣</div>
+      <div class="arch-card-title">Full-Stack Execution</div>
+      <div class="arch-card-text">Other tools analyze. Medici delivers. From question to finished deliverable — the financial statement, the compliance report, the LP letter — with zero manual work between. Not a chatbot. Not a dashboard. The execution layer for knowledge work.</div>
     </div>
   </div>
 </section>
 
-<!-- ===== USE CASES ===== -->
-<section class="usecases-section section" id="usecases">
-  <div class="section-inner">
-    <div class="section-label">Use Cases</div>
-    <h2 class="section-title">Work that used to take days.<br>Now takes minutes.</h2>
-    <p class="section-desc" style="margin-bottom:48px;">Fund managers, CFOs, COOs, and analysts across private markets use Medici to eliminate the manual grind from their highest-volume workflows.</p>
+<!-- QUOTE -->
+<section class="quote-section reveal">
+  <div class="quote-big-mark">"</div>
+  <p class="quote-text">
+    A workflow that previously took 40 hours per asset now completes in 15 minutes. One team member threatened to quit if they couldn't keep using the system.
+  </p>
+  <p class="quote-attr">— NYC-based PE fund</p>
+</section>
 
-    <div class="usecase-list">
-      <div class="usecase-item" data-delay="0">
-        <div class="usecase-header" onclick="toggleUsecase(this)">
-          <div class="usecase-left">
-            <span class="usecase-num">01</span>
-            <span class="usecase-name">Due Diligence Acceleration</span>
-          </div>
-          <div class="usecase-toggle">+</div>
-        </div>
-        <div class="usecase-body">
-          <div class="usecase-body-inner">
-            <p class="usecase-desc">A deal team evaluating a new investment feeds a data room full of CIMs, financial statements, and legal docs into Medici. Key financial and legal data is automatically extracted, structured, and ready for analysis. The team focuses on judgment, not data entry.</p>
-            <div class="usecase-stats">
-              <div class="usecase-stat">
-                <div class="usecase-stat-value">90%</div>
-                <div class="usecase-stat-label">Reduction in extraction time</div>
-              </div>
-              <div class="usecase-stat">
-                <div class="usecase-stat-value">10s</div>
-                <div class="usecase-stat-label">Avg. answer time</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<!-- USE CASES -->
+<section class="cases-section reveal" id="cases">
+  <div class="cases-header">
+    <h2>Work that used to take days.<br>Now takes minutes.</h2>
+  </div>
 
-      <div class="usecase-item" data-delay="100">
-        <div class="usecase-header" onclick="toggleUsecase(this)">
-          <div class="usecase-left">
-            <span class="usecase-num">02</span>
-            <span class="usecase-name">Regulatory Reporting</span>
-          </div>
-          <div class="usecase-toggle">+</div>
-        </div>
-        <div class="usecase-body">
-          <div class="usecase-body-inner">
-            <p class="usecase-desc">A fund CFO preparing Form ADV or K-1 documents pulls data from dozens of disconnected sources. With Medici, forms are pre-populated with validated, traceable data. Days of manual compilation become a review step.</p>
-            <div class="usecase-stats">
-              <div class="usecase-stat">
-                <div class="usecase-stat-value">Days → Hours</div>
-                <div class="usecase-stat-label">Filing preparation</div>
-              </div>
-              <div class="usecase-stat">
-                <div class="usecase-stat-value">100%</div>
-                <div class="usecase-stat-label">Source-cited traceability</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="usecase-item" data-delay="200">
-        <div class="usecase-header" onclick="toggleUsecase(this)">
-          <div class="usecase-left">
-            <span class="usecase-num">03</span>
-            <span class="usecase-name">Investor Relations</span>
-          </div>
-          <div class="usecase-toggle">+</div>
-        </div>
-        <div class="usecase-body">
-          <div class="usecase-body-inner">
-            <p class="usecase-desc">LPs ask about commitment terms, performance history, or distribution schedules. Instead of digging through archives, your IR team asks Medici and gets an accurate, source-cited response they can forward directly.</p>
-            <div class="usecase-stats">
-              <div class="usecase-stat">
-                <div class="usecase-stat-value">800+</div>
-                <div class="usecase-stat-label">Files searchable instantly</div>
-              </div>
-              <div class="usecase-stat">
-                <div class="usecase-stat-value">Zero</div>
-                <div class="usecase-stat-label">Manual lookup required</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="usecase-item" data-delay="300">
-        <div class="usecase-header" onclick="toggleUsecase(this)">
-          <div class="usecase-left">
-            <span class="usecase-num">04</span>
-            <span class="usecase-name">Portfolio Monitoring</span>
-          </div>
-          <div class="usecase-toggle">+</div>
-        </div>
-        <div class="usecase-body">
-          <div class="usecase-body-inner">
-            <p class="usecase-desc">Track allocation drift, covenant compliance, fee calculations, and waterfall distributions across your entire portfolio. Medici flags anomalies and generates reports you can stand behind — every number traceable to its source.</p>
-            <div class="usecase-stats">
-              <div class="usecase-stat">
-                <div class="usecase-stat-value">Real-time</div>
-                <div class="usecase-stat-label">Portfolio visibility</div>
-              </div>
-              <div class="usecase-stat">
-                <div class="usecase-stat-value">Automated</div>
-                <div class="usecase-stat-label">Drift & covenant alerts</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="cases-grid">
+    <div class="case-card">
+      <div class="case-num">01</div>
+      <div class="case-title">Due Diligence</div>
+      <div class="case-desc">A deal team feeds a data room full of CIMs, financial statements, and legal docs into Medici. Key data is automatically extracted, structured, and ready for analysis. The team focuses on judgment, not data entry.</div>
+      <div class="case-stat-val">90%</div>
+      <div class="case-stat-lbl">Reduction in extraction time</div>
+    </div>
+    <div class="case-card">
+      <div class="case-num">02</div>
+      <div class="case-title">Regulatory Reporting</div>
+      <div class="case-desc">A fund CFO preparing Form ADV or K-1 documents pulls data from dozens of disconnected sources. With Medici, forms are pre-populated with validated, traceable data. Days of manual compilation become a review step.</div>
+      <div class="case-stat-val">Days→Hrs</div>
+      <div class="case-stat-lbl">Filing preparation</div>
+    </div>
+    <div class="case-card">
+      <div class="case-num">03</div>
+      <div class="case-title">Investor Relations</div>
+      <div class="case-desc">LPs ask about commitment terms, performance history, or distribution schedules. Instead of digging through archives, your IR team asks Medici and gets a source-cited response they can forward directly.</div>
+      <div class="case-stat-val">800+</div>
+      <div class="case-stat-lbl">Files searchable instantly</div>
+    </div>
+    <div class="case-card">
+      <div class="case-num">04</div>
+      <div class="case-title">Portfolio Monitoring</div>
+      <div class="case-desc">Track allocation drift, covenant compliance, fee calculations, and waterfall distributions across your entire portfolio. Medici flags anomalies and generates reports you can stand behind — every number traceable to its source.</div>
+      <div class="case-stat-val">Real-time</div>
+      <div class="case-stat-lbl">Portfolio visibility</div>
     </div>
   </div>
 </section>
 
-<!-- ===== TRUST STRIP ===== -->
-<section class="trust-section">
-  <div class="trust-grid">
-    <div class="trust-item">
-      <div class="trust-icon">◈</div>
-      <div class="trust-title">Source-Cited</div>
-      <div class="trust-desc">Every answer traces back to the original document, page, and clause. Decisions you can audit.</div>
-    </div>
-    <div class="trust-item">
-      <div class="trust-icon">⬡</div>
-      <div class="trust-title">Your Data Stays Yours</div>
-      <div class="trust-desc">We do not train on your data. Encrypted infrastructure with client-isolated environments.</div>
-    </div>
-    <div class="trust-item">
-      <div class="trust-icon">↻</div>
-      <div class="trust-title">Learns Over Time</div>
-      <div class="trust-desc">Institutional knowledge compounds. The system gets more accurate and efficient the longer you use it.</div>
-    </div>
-    <div class="trust-item">
-      <div class="trust-icon">▣</div>
-      <div class="trust-title">High-Touch Onboarding</div>
-      <div class="trust-desc">Not self-serve SaaS. We work with your team to identify pain points and configure the system for your workflows.</div>
-    </div>
+<!-- CTA -->
+<section class="cta-section reveal" id="contact">
+  <div class="cta-label">Get Started</div>
+  <h2 class="cta-headline">See what Medici does<br>with <em>your</em> data.</h2>
+  <p class="cta-sub">We run a focused pilot with your team — your data, your workflows, your pain points. No generic demo. You'll know within weeks whether this changes how your fund operates.</p>
+  <div class="cta-actions">
+    <a href="mailto:hello@medici.ai" class="btn-main">Request Pilot</a>
+    <a href="mailto:hello@medici.ai" class="btn-line">hello@medici.ai</a>
   </div>
 </section>
 
-<!-- ===== INTEGRATIONS SECTION ===== -->
-<section class="integrations-section">
-  <div class="section-inner" style="text-align:center;">
-    <div class="section-label" style="text-align:center;">Connects To Your Stack</div>
-    <p class="section-desc" style="max-width:600px;margin:0 auto 40px;">Medici plugs into the systems your team already uses. Your data stays where it lives — we read it, understand it, and work with it.</p>
-    <div class="integrations-grid">
-      <div class="integration-item" data-delay="0">Microsoft 365</div>
-      <div class="integration-item" data-delay="50">Google Workspace</div>
-      <div class="integration-item" data-delay="100">Slack</div>
-      <div class="integration-item" data-delay="150">Dropbox</div>
-      <div class="integration-item" data-delay="200">Discord</div>
-      <div class="integration-item" data-delay="250">Box</div>
-      <div class="integration-item" data-delay="300">SharePoint</div>
-      <div class="integration-item" data-delay="350">Outlook</div>
-      <div class="integration-item" data-delay="400">Gmail</div>
-      <div class="integration-item" data-delay="450">OneDrive</div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== PROOF SECTION ===== -->
-<section class="proof-section section" id="proof">
-  <div class="section-inner" style="text-align:center;">
-    <div class="section-label" style="text-align:center;">Who Uses Medici</div>
-    <h2 class="section-title" style="margin-bottom:48px;">Private market funds, fund administrators,<br>professional services.</h2>
-
-    <div class="proof-quote">
-      <p class="proof-text">A workflow that previously took 40 hours per asset now completes in 15 minutes. One team member threatened to quit if they couldn't keep using the system.</p>
-      <p class="proof-attr">— NYC-based PE fund</p>
-    </div>
-
-    <div class="proof-logos">
-      <div class="proof-logo-item">Private Equity</div>
-      <div class="proof-logo-item">Venture</div>
-      <div class="proof-logo-item">Real Estate</div>
-      <div class="proof-logo-item">Fund Administration</div>
-      <div class="proof-logo-item">Professional Services</div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== CTA SECTION ===== -->
-<section class="cta-section" id="contact">
-  <div class="cta-inner">
-    <div class="section-label" style="text-align:center;">Get Started</div>
-    <h2 class="section-title" style="text-align:center;">See what Medici does<br>with your data.</h2>
-    <p class="cta-desc">We run a focused pilot with your team — your data, your workflows, your pain points. No generic demo. You'll know within weeks whether this changes how your fund operates.</p>
-
-    <form class="cta-form" onsubmit="handleSubmit(event)">
-      <input type="email" class="cta-input" placeholder="you@yourfund.com" required>
-      <button type="submit" class="cta-submit">Request Pilot</button>
-    </form>
-    <p class="cta-note">We'll reach out within 24 hours to schedule a conversation.</p>
-  </div>
-</section>
-
-<!-- ===== FOOTER ===== -->
-<footer class="footer">
-  <div class="footer-left">
-    <div class="logo-mark" style="width:20px;height:20px;">
-      <div class="logo-mark-inner" style="width:7px;height:7px;"></div>
-    </div>
-    <span class="footer-text">© 2026 Medici Technologies Inc.</span>
-  </div>
-  <div class="footer-links">
-    <a href="mailto:hello@medici.ai" class="footer-link">hello@medici.ai</a>
-    <a href="#" class="footer-link">Privacy</a>
-    <a href="#" class="footer-link">Terms</a>
+<!-- FOOTER -->
+<footer>
+  <div class="foot-left">© 2026 Medici Technologies Inc.</div>
+  <div class="foot-right">
+    <a href="mailto:hello@medici.ai">hello@medici.ai</a>
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
   </div>
 </footer>
 
@@ -379,5 +190,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="js/main.js"></script>
+
 </body>
 </html>

@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEDICI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0C0C0B;
+    --bg-elevated: #141413;
+    --bg-surface: #1A1A18;
+    --cream: #EDE8DF;
+    --cream-dim: rgba(237, 232, 223, 0.5);
+    --cream-ghost: rgba(237, 232, 223, 0.06);
+    --red: #E63926;
+    --red-dim: rgba(230, 57, 38, 0.12);
+    --red-glow: rgba(230, 57, 38, 0.3);
+    --green: #2ECC71;
+    --green-dim: rgba(46, 204, 113, 0.1);
+    --border: rgba(237, 232, 223, 0.06);
+    --border-strong: rgba(237, 232, 223, 0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    cursor: default;
+  }
+
+  ::selection {
+    background: var(--red);
+    color: var(--cream);
+  }
+
+  /* ========== SCANLINES + NOISE — CRT texture ========== */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 10000;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 10001;
+  }
+
+  /* ========== NAV — minimal, stays out of the way ========== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 0 2.5rem;
+    height: 3.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    mix-blend-mode: difference;
+  }
+
+  .nav-logo {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.5em;
+    color: var(--cream);
+    text-decoration: none;
+  }
+
+  .nav-right {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-right a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-right a:hover { color: var(--cream); }
+
+  /* ========== HERO — full takeover ========== */
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 2.5rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Massive background glyph */
+  .hero-glyph {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+    font-size: min(65vw, 55vh);
+    font-weight: 700;
+    color: var(--cream);
+    opacity: 0.015;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Floating grid of dots */
+  .hero-dots {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(circle, rgba(237,232,223,0.07) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 70%);
+  }
+
+  /* Red accent line — architectural */
+  .hero-accent-line {
+    position: absolute;
+    top: 3.25rem;
+    left: 2.5rem;
+    width: 2px;
+    height: 0;
+    background: var(--red);
+    animation: drawLine 1.5s ease-out 0.5s forwards;
+    box-shadow: 0 0 20px var(--red-glow);
+  }
+
+  @keyframes drawLine {
+    to { height: calc(100% - 3.25rem); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding-bottom: 3rem;
+    padding-left: 2rem;
+  }
+
+  .hero-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    opacity: 0;
+    animation: fadeIn 0.6s ease 0.8s forwards;
+  }
+
+  .status-dot {
+    width: 5px; height: 5px;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--green);
+    animation: statusPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes statusPulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--green); }
+    50% { opacity: 0.4; box-shadow: 0 0 2px var(--green); }
+  }
+
+  .hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    margin-bottom: 0;
+  }
+
+  .hero-headline .h-line {
+    display: block;
+    overflow: hidden;
+  }
+
+  .hero-headline .h-line span {
+    display: block;
+    opacity: 0;
+    transform: translateY(100%);
+    animation: revealLine 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .h-line:nth-child(1) span { animation-delay: 0.4s; }
+  .h-line:nth-child(2) span { animation-delay: 0.55s; }
+  .h-line:nth-child(3) span { animation-delay: 0.7s; }
+
+  @keyframes revealLine {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .h-large {
+    font-size: clamp(4.5rem, 10vw, 9rem);
+    color: var(--cream);
+  }
+
+  .h-italic {
+    font-size: clamp(4.5rem, 10vw, 9rem);
+    font-style: italic;
+    color: var(--red);
+  }
+
+  .h-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: clamp(0.75rem, 1.2vw, 1rem);
+    font-weight: 300;
+    font-style: normal;
+    letter-spacing: 0.1em;
+    color: var(--cream-dim);
+    margin-top: 0.75rem;
+  }
+
+  /* Hero bottom bar */
+  .hero-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 2.5rem 2rem 4.5rem;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeIn 0.6s ease 1.2s forwards;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .btn-main {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 1rem 2.5rem;
+    background: var(--red);
+    color: var(--cream);
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .btn-main:hover {
+    background: #FF4433;
+    box-shadow: 0 4px 24px var(--red-glow);
+    transform: translateY(-1px);
+  }
+
+  .btn-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--cream-dim);
+    text-decoration: none;
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--border-strong);
+    transition: all 0.3s;
+  }
+
+  .btn-line:hover {
+    border-color: var(--cream-dim);
+    color: var(--cream);
+  }
+
+  .hero-scroll-hint {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.5;
+  }
+
+  .scroll-line {
+    width: 24px;
+    height: 1px;
+    background: var(--cream-dim);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: var(--cream);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: 100%; }
+  }
+
+  /* ========== TERMINAL SECTION — the wow moment ========== */
+  .terminal-section {
+    padding: 0 2.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .terminal-intro {
+    padding: 6rem 0 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: 1px solid var(--border);
+  }
+
+  .terminal-intro-left h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .terminal-intro-left h2 em {
+    font-style: italic;
+    color: var(--red);
+  }
+
+  .terminal-intro-right {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    text-align: right;
+    line-height: 2;
+  }
+
+  /* The terminal — MASSIVE, full width, the centerpiece */
+  .terminal-stage {
+    position: relative;
+    margin-bottom: 6rem;
+  }
+
+  .terminal-frame {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-strong);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Glowing red border accent on top */
+  .terminal-frame::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--red), var(--red) 30%, transparent 100%);
+    opacity: 0.6;
+  }
+
+  .term-chrome {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-surface);
+  }
+
+  .term-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .term-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+  }
+  .term-dot:nth-child(1) { background: #FF5F57; }
+  .term-dot:nth-child(2) { background: #FEBC2E; }
+  .term-dot:nth-child(3) { background: #28C840; }
+
+  .term-tabs {
+    display: flex;
+    gap: 0;
+    margin-left: 2rem;
+  }
+
+  .term-tab {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    padding: 0.4rem 1.25rem;
+    color: rgba(237,232,223,0.25);
+    border: 1px solid transparent;
+    border-bottom: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    background: transparent;
+  }
+
+  .term-tab.active {
+    color: var(--cream);
+    background: var(--bg-elevated);
+    border-color: var(--border-strong);
+    border-bottom: 1px solid var(--bg-elevated);
+    margin-bottom: -1px;
+  }
+
+  .term-tab:hover:not(.active) {
+    color: rgba(237,232,223,0.5);
+  }
+
+  .term-version {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    color: rgba(237,232,223,0.15);
+    margin-left: auto;
+    text-transform: uppercase;
+  }
+
+  .term-body {
+    padding: 2rem 2.5rem 3rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 2;
+    min-height: 400px;
+    display: none;
+  }
+
+  .term-body.active { display: block; }
+
+  .p { color: var(--red); }
+  .c { color: var(--cream); }
+  .d { color: rgba(237,232,223,0.25); }
+  .r { color: rgba(237,232,223,0.55); padding-left: 1.5rem; display: block; }
+  .g { color: var(--green); }
+  .s { color: rgba(237,232,223,0.18); font-size: 0.72rem; }
+  .gap { height: 0.5rem; }
+
+  .cursor-blink {
+    display: inline-block;
+    width: 8px; height: 15px;
+    background: var(--red);
+    vertical-align: middle;
+    margin-left: 4px;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ========== ARCHITECTURE SECTION ========== */
+  .arch-section {
+    padding: 8rem 2.5rem;
+    border-top: 1px solid var(--border);
+    position: relative;
+  }
+
+  .arch-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 5rem;
+  }
+
+  .arch-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 4.5vw, 4rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    max-width: 600px;
+  }
+
+  .arch-header-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--cream-ghost);
+    line-height: 1;
+  }
+
+  .arch-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--border-strong);
+  }
+
+  .arch-card {
+    padding: 3rem 2.5rem;
+    border-right: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .arch-card:last-child { border-right: none; }
+
+  .arch-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 0;
+    background: var(--red-dim);
+    transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+  }
+
+  .arch-card:hover::before { height: 100%; }
+
+  .arch-card > * { position: relative; z-index: 1; }
+
+  .arch-card-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    color: var(--red);
+    margin-bottom: 2rem;
+  }
+
+  .arch-card-icon {
+    width: 48px; height: 48px;
+    border: 1px solid var(--border-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    color: var(--cream-dim);
+    transition: border-color 0.3s;
+  }
+
+  .arch-card:hover .arch-card-icon {
+    border-color: var(--red);
+  }
+
+  .arch-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    color: var(--cream);
+  }
+
+  .arch-card-text {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--cream-dim);
+    font-weight: 300;
+  }
+
+  /* ========== QUOTE SECTION — dramatic ========== */
+  .quote-section {
+    padding: 10rem 2.5rem;
+    position: relative;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+
+  .quote-section::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--red-dim) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .quote-big-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 12rem;
+    line-height: 0.5;
+    color: var(--red);
+    opacity: 0.15;
+    margin-bottom: 1rem;
+    user-select: none;
+  }
+
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--cream);
+    max-width: 750px;
+    margin: 0 auto 2.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .quote-attr {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(237,232,223,0.25);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ========== USE CASES — horizontal scroll-style ========== */
+  .cases-section {
+    border-top: 1px solid var(--border);
+    padding: 6rem 2.5rem;
+  }
+
+  .cases-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cases-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+  }
+
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  .case-card {
+    padding: 2.5rem 2rem;
+    border: 1px solid var(--border);
+    margin-right: -1px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s;
+    cursor: default;
+  }
+
+  .case-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px; height: 0;
+    background: var(--red);
+    transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .case-card:hover::after { height: 100%; }
+  .case-card:hover { background: var(--bg-elevated); }
+
+  .case-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 400;
+    color: var(--cream-ghost);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s;
+  }
+
+  .case-card:hover .case-num { color: var(--red-dim); }
+
+  .case-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 0.75rem;
+  }
+
+  .case-desc {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--cream-dim);
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+
+  .case-stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--cream);
+    line-height: 1.2;
+  }
+
+  .case-stat-lbl {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+  }
+
+  /* ========== CTA ========== */
+  .cta-section {
+    padding: 10rem 2.5rem;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    position: relative;
+  }
+
+  .cta-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 2rem;
+  }
+
+  .cta-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-headline em {
+    font-style: italic;
+    color: var(--red);
+  }
+
+  .cta-sub {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--cream-dim);
+    max-width: 450px;
+    margin: 0 auto 3rem;
+    font-weight: 300;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* ========== FOOTER ========== */
+  footer {
+    padding: 1.5rem 2.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .foot-left {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    color: rgba(237,232,223,0.2);
+  }
+
+  .foot-right {
+    display: flex; gap: 2rem;
+  }
+
+  .foot-right a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    color: rgba(237,232,223,0.2);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .foot-right a:hover { color: var(--cream-dim); }
+
+  /* ========== UTILITY ========== */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  .reveal.vis {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 1024px) {
+    .arch-grid { grid-template-columns: 1fr; }
+    .arch-card { border-right: none; border-bottom: 1px solid var(--border); }
+    .arch-card:last-child { border-bottom: none; }
+    .cases-grid { grid-template-columns: 1fr 1fr; }
+    .case-card { margin-bottom: -1px; }
+    .terminal-intro { flex-direction: column; gap: 1rem; align-items: flex-start; }
+    .terminal-intro-right { text-align: left; }
+    .arch-header { flex-direction: column; gap: 1rem; }
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 0 1.25rem; }
+    .nav-right a:not(:last-child) { display: none; }
+    .hero { padding: 0 1.25rem; }
+    .hero-content { padding-left: 0.5rem; }
+    .hero-bottom { padding: 0 1.25rem 2rem 1.75rem; flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+    .hero-accent-line { left: 1.25rem; }
+    .terminal-section, .arch-section, .cases-section, .cta-section { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .cases-grid { grid-template-columns: 1fr; }
+    .term-tabs { display: none; }
+    .term-body { padding: 1.5rem; font-size: 0.72rem; }
+    .quote-section { padding: 5rem 1.25rem; }
+    footer { padding: 1.5rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">MEDICI</a>
+  <div class="nav-right">
+    <a href="#product">Product</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#cases">Cases</a>
+    <a href="#contact">Request Pilot</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glyph">M</div>
+  <div class="hero-dots"></div>
+  <div class="hero-accent-line"></div>
+
+  <div class="hero-content">
+    <div class="hero-status">
+      <span class="status-dot"></span>
+      Active pilot with funds
+    </div>
+    <h1 class="hero-headline">
+      <div class="h-line"><span class="h-large">Your fund's</span></div>
+      <div class="h-line"><span class="h-italic">intelligence.</span></div>
+      <div class="h-line"><span class="h-sub">Structured. Source-cited. Delivered.</span></div>
+    </h1>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-main">Request Pilot</a>
+      <a href="#product" class="btn-line">See the product</a>
+    </div>
+    <div class="hero-scroll-hint">
+      <span class="scroll-line"></span>
+      Scroll
+    </div>
+  </div>
+</section>
+
+<!-- TERMINAL -->
+<section class="terminal-section reveal" id="product">
+  <div class="terminal-intro">
+    <div class="terminal-intro-left">
+      <h2>Ask anything.<br>Get the <em>work</em> delivered.</h2>
+    </div>
+    <div class="terminal-intro-right">
+      COSIMO — Applied Intelligence<br>
+      Live product · Not a mockup
+    </div>
+  </div>
+
+  <div class="terminal-stage">
+    <div class="terminal-frame">
+      <div class="term-chrome">
+        <div class="term-dots">
+          <div class="term-dot"></div>
+          <div class="term-dot"></div>
+          <div class="term-dot"></div>
+        </div>
+        <div class="term-tabs">
+          <button class="term-tab active" onclick="switchTab(0)">Due Diligence</button>
+          <button class="term-tab" onclick="switchTab(1)">LP Reporting</button>
+          <button class="term-tab" onclick="switchTab(2)">Rent Roll</button>
+        </div>
+        <span class="term-version">cosimo v2.4.1</span>
+      </div>
+
+      <!-- Tab 1: Due Diligence -->
+      <div class="term-body active" id="tab-0">
+        <span class="p">medici λ</span> <span class="c">load --fund "Alpine Capital III"</span><br>
+        <span class="d">▸ 847 documents indexed · 2.4GB · ready</span><br>
+        <div class="gap"></div>
+        <span class="p">medici λ</span> <span class="c">"What are our co-invest obligations to LPs?"</span><br>
+        <span class="r">Searching LP agreements, side letters, partnership docs...</span>
+        <span class="r"><span class="g">■ Found 3 relevant provisions</span></span>
+        <span class="r">Co-investment rights offered pro-rata to LPs committing ≥$25M,</span>
+        <span class="r">with 10 business day notice period per Section 4.2(b) of the LPA.</span>
+        <span class="r"><span class="s">↳ LPA_AlpineIII_Final.pdf — p.34, §4.2(b)</span></span>
+        <span class="r"><span class="s">↳ SideLetter_Meridian_2024.pdf — p.7</span></span>
+        <span class="r"><span class="s">↳ IC_Memo_CoInvest_Policy.docx — p.2</span></span>
+        <div class="gap"></div>
+        <span class="p">medici λ</span> <span class="c">"Draft the co-invest notice for Meridian"</span><br>
+        <span class="r"><span class="g">✓ Generated → /output/notices/meridian_coinvest.pdf</span><span class="cursor-blink"></span></span>
+      </div>
+
+      <!-- Tab 2: LP Reporting -->
+      <div class="term-body" id="tab-1">
+        <span class="p">medici λ</span> <span class="c">context --scope "Q3 2025 LP Report"</span><br>
+        <span class="d">▸ Loaded: NAV statements, capital accounts, portfolio data</span><br>
+        <div class="gap"></div>
+        <span class="p">medici λ</span> <span class="c">"Generate quarterly performance summary for all LPs"</span><br>
+        <span class="r">Aggregating across 12 portfolio companies...</span>
+        <span class="r">Cross-referencing capital account statements...</span>
+        <span class="r"><span class="g">■ Report compiled — 47 data points validated</span></span>
+        <span class="r">Net IRR: 18.3% | TVPI: 1.42x | DPI: 0.31x</span>
+        <span class="r"><span class="s">↳ NAV_Q3_2025_Final.xlsx — all tabs</span></span>
+        <span class="r"><span class="s">↳ CapitalAccounts_Master.xlsx — Sheet "Fund III"</span></span>
+        <div class="gap"></div>
+        <span class="p">medici λ</span> <span class="c">"Format as LP letter using our standard template"</span><br>
+        <span class="r"><span class="g">✓ Generated → /output/reports/Q3_LP_Letter.pdf</span><span class="cursor-blink"></span></span>
+      </div>
+
+      <!-- Tab 3: Rent Roll -->
+      <div class="term-body" id="tab-2">
+        <span class="p">medici λ</span> <span class="c">ingest ./uploads/portfolio_rentrolls/*.pdf</span><br>
+        <span class="d">▸ Processing 23 rent roll PDFs across 8 properties...</span><br>
+        <span class="d">▸ OCR complete · Extracting unit-level data...</span><br>
+        <div class="gap"></div>
+        <span class="r"><span class="g">■ Extracted 1,847 unit records</span></span>
+        <span class="r">Standardized: unit #, tenant, lease dates, base rent, recoveries</span>
+        <span class="r">Flagged 12 discrepancies vs. prior quarter data</span>
+        <span class="r"><span class="s">↳ 3 expired leases with active tenants</span></span>
+        <span class="r"><span class="s">↳ 9 rent amounts inconsistent with amendments</span></span>
+        <div class="gap"></div>
+        <span class="p">medici λ</span> <span class="c">"Export to our underwriting model format"</span><br>
+        <span class="r"><span class="g">✓ Exported → /output/rentrolls/portfolio_master.xlsx</span></span>
+        <span class="r"><span class="g">✓ Discrepancy report → /output/rentrolls/flags.pdf</span><span class="cursor-blink"></span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="arch-section reveal" id="architecture">
+  <div class="arch-header">
+    <h2>Three things generic AI<br>will never do for your fund.</h2>
+    <div class="arch-header-num">III</div>
+  </div>
+
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="arch-card-num">001</div>
+      <div class="arch-card-icon">◇</div>
+      <div class="arch-card-title">Data Integrity</div>
+      <div class="arch-card-text">Knowledge graph architecture that understands relationships between entities, documents, time periods, and versions. Every answer traces to source — page and clause. Handles contradictions across hundreds of files.</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-card-num">002</div>
+      <div class="arch-card-icon">⟳</div>
+      <div class="arch-card-title">Compounding Workflows</div>
+      <div class="arch-card-text">Medici learns how your firm works. The first report takes ten minutes. The second is automatic. Institutional knowledge — processes, formats, preferences — compounds across your entire team.</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-card-num">003</div>
+      <div class="arch-card-icon">▣</div>
+      <div class="arch-card-title">Full-Stack Execution</div>
+      <div class="arch-card-text">Other tools analyze. Medici delivers. From question to finished deliverable — the compliance report, the LP letter, the K-1 — with zero manual work between ask and output.</div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-section reveal">
+  <div class="quote-big-mark">"</div>
+  <p class="quote-text">
+    A workflow that previously took 40 hours per building now completes in 15 minutes. One team member threatened to quit if they couldn't keep using the system.
+  </p>
+  <p class="quote-attr">— Pilot client · Tax-adjacent PE / Real Estate Fund</p>
+</section>
+
+<!-- USE CASES -->
+<section class="cases-section reveal" id="cases">
+  <div class="cases-header">
+    <h2>Days of work.<br>Minutes of time.</h2>
+  </div>
+
+  <div class="cases-grid">
+    <div class="case-card">
+      <div class="case-num">01</div>
+      <div class="case-title">Due Diligence</div>
+      <div class="case-desc">Data rooms ingested. Financials and legal data extracted, structured, ready. Your team focuses on judgment.</div>
+      <div class="case-stat-val">90%</div>
+      <div class="case-stat-lbl">Faster extraction</div>
+    </div>
+    <div class="case-card">
+      <div class="case-num">02</div>
+      <div class="case-title">Regulatory Filing</div>
+      <div class="case-desc">Form ADV, K-1s, compliance docs — pre-populated with validated, source-traced data. Days become hours.</div>
+      <div class="case-stat-val">Days→Hrs</div>
+      <div class="case-stat-lbl">Filing preparation</div>
+    </div>
+    <div class="case-card">
+      <div class="case-num">03</div>
+      <div class="case-title">Investor Relations</div>
+      <div class="case-desc">LP asks about terms? Ask Medici. Source-cited answer in seconds, ready to forward.</div>
+      <div class="case-stat-val">800+</div>
+      <div class="case-stat-lbl">Files searchable</div>
+    </div>
+    <div class="case-card">
+      <div class="case-num">04</div>
+      <div class="case-title">Portfolio Monitoring</div>
+      <div class="case-desc">Allocation drift, covenant compliance, waterfalls — flagged automatically, every number auditable.</div>
+      <div class="case-stat-val">Real-time</div>
+      <div class="case-stat-lbl">Portfolio visibility</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section reveal" id="contact">
+  <div class="cta-label">Get Started</div>
+  <h2 class="cta-headline">See what Medici does<br>with <em>your</em> data.</h2>
+  <p class="cta-sub">Your data. Your workflows. Your pain points. No generic demo. You'll know within weeks.</p>
+  <div class="cta-actions">
+    <a href="mailto:hello@medici.ai" class="btn-main">Request Pilot</a>
+    <a href="mailto:hello@medici.ai" class="btn-line">hello@medici.ai</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-left">© 2026 Medici Technologies Inc.</div>
+  <div class="foot-right">
+    <a href="mailto:hello@medici.ai">hello@medici.ai</a>
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+  </div>
+</footer>
+
+<script>
+  // Tab switching
+  function switchTab(idx) {
+    document.querySelectorAll('.term-tab').forEach((t, i) => {
+      t.classList.toggle('active', i === idx);
+    });
+    document.querySelectorAll('.term-body').forEach((b, i) => {
+      b.classList.toggle('active', i === idx);
+    });
+  }
+
+  // Scroll reveals
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('vis');
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
