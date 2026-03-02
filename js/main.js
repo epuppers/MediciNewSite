@@ -3,8 +3,8 @@ const themeToggle = document.getElementById('theme-toggle');
 const savedTheme = localStorage.getItem('medici-theme');
 if (savedTheme) {
   document.documentElement.setAttribute('data-theme', savedTheme);
-  themeToggle.innerHTML = savedTheme === 'light' ? '&#9728;' : '&#9790;';
 }
+themeToggle.innerHTML = document.documentElement.getAttribute('data-theme') === 'light' ? '&#9728;' : '&#9790;';
 
 themeToggle.addEventListener('click', () => {
   const current = document.documentElement.getAttribute('data-theme');

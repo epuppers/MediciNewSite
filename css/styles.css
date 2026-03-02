@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 @font-face {
   font-family: 'Dream Orphanage';
@@ -275,7 +275,7 @@ nav {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: 'Dream Orphanage', serif;
+  font-family: 'EB Garamond', serif;
   font-size: min(65vw, 55vh);
   font-weight: 700;
   color: var(--cream);
@@ -346,17 +346,15 @@ nav {
 }
 
 .hero-headline {
-  font-family: 'Dream Orphanage', serif;
+  font-family: 'EB Garamond', serif;
   font-weight: 400;
   letter-spacing: -0.04em;
-  line-height: 1.1;
+  line-height: 1.2;
   margin-bottom: 0;
 }
 
 .hero-headline .h-line {
   display: block;
-  overflow: hidden;
-  padding-bottom: 0.25em;
 }
 
 .hero-headline .h-line span {
@@ -376,7 +374,6 @@ nav {
 
 .h-italic {
   font-size: clamp(4.5rem, 10vw, 9rem);
-  font-style: italic;
   color: var(--accent);
 }
 
@@ -495,7 +492,7 @@ nav {
 }
 
 .terminal-intro-left h2 {
-  font-family: 'Dream Orphanage', serif;
+  font-family: 'EB Garamond', serif;
   font-size: clamp(2rem, 4vw, 3.5rem);
   font-weight: 400;
   letter-spacing: -0.02em;
@@ -503,7 +500,7 @@ nav {
 }
 
 .terminal-intro-left h2 em {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
 }
 
@@ -669,7 +666,7 @@ nav {
 }
 
 .pain-headline {
-  font-family: 'Dream Orphanage', serif;
+  font-family: 'EB Garamond', serif;
   font-size: clamp(1.8rem, 3.5vw, 2.8rem);
   font-weight: 400;
   line-height: 1.2;
@@ -691,7 +688,7 @@ nav {
 }
 
 .pain-num {
-  font-family: 'Dream Orphanage', serif;
+  font-family: 'EB Garamond', serif;
   font-size: 2.5rem;
   color: var(--cream);
   line-height: 1;
@@ -719,7 +716,7 @@ nav {
 }
 
 .arch-header h2 {
-  font-family: 'Dream Orphanage', serif;
+  font-family: 'EB Garamond', serif;
   font-size: clamp(2.5rem, 4.5vw, 4rem);
   font-weight: 400;
   line-height: 1.25;
@@ -791,7 +788,7 @@ nav {
 }
 
 .arch-card-title {
-  font-family: 'Dream Orphanage', serif;
+  font-family: 'EB Garamond', serif;
   font-size: 1.35rem;
   font-weight: 500;
   margin-bottom: 0.75rem;
@@ -829,7 +826,7 @@ nav {
 }
 
 .quote-mark {
-  font-family: 'Dream Orphanage', serif;
+  font-family: 'EB Garamond', serif;
   font-size: 3rem;
   color: var(--accent);
   line-height: 1;
@@ -869,7 +866,7 @@ nav {
 }
 
 .cases-header h2 {
-  font-family: 'Dream Orphanage', serif;
+  font-family: 'EB Garamond', serif;
   font-size: clamp(2rem, 3.5vw, 3rem);
   font-weight: 400;
   line-height: 1.15;
@@ -904,7 +901,7 @@ nav {
 .case-card:hover { background: var(--bg-elevated); }
 
 .case-num {
-  font-family: 'Dream Orphanage', serif;
+  font-family: 'EB Garamond', serif;
   font-size: 3rem;
   font-weight: 400;
   color: var(--cream-ghost);
@@ -916,7 +913,7 @@ nav {
 .case-card:hover .case-num { color: var(--accent-dim); }
 
 .case-title {
-  font-family: 'Dream Orphanage', serif;
+  font-family: 'EB Garamond', serif;
   font-size: 1.15rem;
   font-weight: 500;
   color: var(--cream);
@@ -932,7 +929,7 @@ nav {
 }
 
 .case-stat-val {
-  font-family: 'Dream Orphanage', serif;
+  font-family: 'EB Garamond', serif;
   font-size: 1.8rem;
   color: var(--cream);
   line-height: 1.2;
@@ -954,7 +951,7 @@ nav {
 }
 
 .inevitability-text {
-  font-family: 'Dream Orphanage', serif;
+  font-family: 'EB Garamond', serif;
   font-size: clamp(1.3rem, 2.5vw, 1.8rem);
   font-weight: 400;
   color: var(--cream);
@@ -983,7 +980,7 @@ nav {
 }
 
 .cta-headline {
-  font-family: 'Dream Orphanage', serif;
+  font-family: 'EB Garamond', serif;
   font-size: clamp(3rem, 6vw, 5rem);
   font-weight: 400;
   letter-spacing: -0.03em;
@@ -992,7 +989,7 @@ nav {
 }
 
 .cta-headline em {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
 }
 
