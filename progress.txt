@@ -53,3 +53,31 @@ Started: 2026-03-20
   - Tab interactivity deferred to US-004 (JS story)
   - chat-try-cta sits outside chat-frame but inside terminal-stage
 ---
+
+## 2026-03-20 - US-004
+- Replaced old terminal demo JS (demos array, demoRunning, runDemo, terminal ScrollTrigger) with new chat demo system
+- New chatDemos array with 3 demos: Due Diligence, LP Reporting, Rent Roll — each with context string and 4 messages (2 user, 2 cosimo with citations and artifacts)
+- New runChatDemo(index) function: clears chat body, shows context, plays messages sequentially (user = immediate fade-in, cosimo = thinking dots 1.2s then fade-in)
+- Tab click handlers via querySelectorAll('.chat-tab')
+- ScrollTrigger auto-starts demo 0 when .chat-frame enters viewport at 70%
+- Uses requestAnimationFrame + .visible class for fade-in (vanilla, not GSAP)
+- chatRunning flag prevents overlapping demos
+- Files changed: js/main.js only
+- **Learnings for future iterations:**
+  - The .terminal-stage GSAP reveal (lines 100-104) still works for the new chat UI since .chat-frame lives inside .terminal-stage
+  - Double requestAnimationFrame needed for CSS transition to trigger after DOM append
+  - createChatMsg() helper builds the full message DOM including avatar, bubble, citations, and artifact card
+---
+
+## 2026-03-20 - US-005
+- Removed old terminal CSS: .terminal-frame, .terminal-frame::before, .term-chrome, .term-tabs, .term-tab, .term-tab.active, .term-tab:hover, .term-version, .term-body, .term-body.active, .term-line, .term-line.visible, .t-cursor, .cursor-blink, @keyframes blink
+- Removed terminal color utility classes: .p, .c, .d, .r, .g, .s, .gap
+- Removed all [data-theme="light"] overrides for terminal classes
+- Removed mobile responsive rules for .term-tabs, .term-tab, .term-body
+- Removed .term-tab from utility cursor selector
+- KEPT: .terminal-section, .terminal-intro, .terminal-stage, .term-dots, .term-dot (still used)
+- Files changed: css/styles.css only
+- **Learnings for future iterations:**
+  - Always grep index.html before removing a CSS class to verify it's unused
+  - The .term-dots/.term-dot classes are shared between old terminal and new chat chrome — important to preserve
+---

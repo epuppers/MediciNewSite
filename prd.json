@@ -83,7 +83,7 @@
         "Messages use requestAnimationFrame + .visible class for smooth fade-in (not GSAP — keep it vanilla for this component)"
       ],
       "priority": 4,
-      "passes": false,
+      "passes": true,
       "notes": "IMPORTANT: Keep ALL other existing JS code intact — the hero animations, scroll reveals for other sections, word-by-word header reveals, parallax, theme toggle, Lenis setup. Only remove/replace the terminal demo code (the 'demos' array, 'demoRunning' var, 'runDemo' function, and the ScrollTrigger.create that triggers on '.terminal-frame'). These are at the END of main.js after the splitWordsAndAnimate calls and arch-header-num parallax. The GSAP reveal for .terminal-stage (around line 100-104) should be LEFT INTACT — it still works because the new .chat-frame lives inside .terminal-stage."
     },
     {
@@ -99,7 +99,7 @@
         "No visual regressions — the chat demo CSS from US-002 handles all new styling"
       ],
       "priority": 5,
-      "passes": false,
+      "passes": true,
       "notes": "Be careful not to remove CSS for elements that are still in use. The .term-dots and .term-dot classes are reused in the new chat chrome. When in doubt, search index.html for the class name before removing its CSS."
     },
     {
