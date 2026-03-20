@@ -293,164 +293,212 @@ gsap.to('.arch-header-num', {
   }
 });
 
-// ========== TERMINAL DEMOS (preserved) ==========
-const demos = [
+// ========== CHAT DEMOS ==========
+const chatDemos = [
   {
-    lines: [
-      { type: 'cmd', text: 'load --fund "Alpine Capital III"' },
-      { type: 'dim', text: '▸ 847 documents indexed · 2.4GB · ready' },
-      { type: 'gap' },
-      { type: 'cmd', text: '"What are our co-invest obligations to LPs?"' },
-      { type: 'r', text: 'Searching LP agreements, side letters, partnership docs...' },
-      { type: 'g', text: '■ Found 3 relevant provisions' },
-      { type: 'r', text: 'Co-investment rights offered pro-rata to LPs committing ≥$25M,' },
-      { type: 'r', text: 'with 10 business day notice period per Section 4.2(b) of the LPA.' },
-      { type: 's', text: '↳ LPA_AlpineIII_Final.pdf — p.34, §4.2(b)' },
-      { type: 's', text: '↳ SideLetter_Meridian_2024.pdf — p.7' },
-      { type: 's', text: '↳ IC_Memo_CoInvest_Policy.docx — p.2' },
-      { type: 'gap' },
-      { type: 'cmd', text: '"Draft the co-invest notice for Meridian"' },
-      { type: 'g', text: '✓ Generated → /output/notices/meridian_coinvest.pdf', final: true },
+    context: 'Alpine Capital III · 847 documents · 2.4GB indexed',
+    messages: [
+      { role: 'user', text: 'What are our co-invest obligations to LPs?' },
+      {
+        role: 'cosimo',
+        text: 'Co-investment rights are offered pro-rata to LPs committing ≥$25M, with a 10 business day notice period per Section 4.2(b) of the LPA. Meridian has an additional first-look provision in their side letter.',
+        citations: [
+          'LPA_AlpineIII_Final.pdf — p.34, §4.2(b)',
+          'SideLetter_Meridian_2024.pdf — p.7',
+          'IC_Memo_CoInvest_Policy.docx — p.2'
+        ]
+      },
+      { role: 'user', text: 'Draft the co-invest notice for Meridian' },
+      {
+        role: 'cosimo',
+        text: 'Done. I\'ve drafted the notice using the terms from their side letter and the LPA requirements. The 10-day notice window and pro-rata allocation are referenced with source citations.',
+        citations: [
+          'SideLetter_Meridian_2024.pdf — p.7',
+          'LPA_AlpineIII_Final.pdf — p.34'
+        ],
+        artifact: { name: 'meridian_coinvest_notice.pdf', meta: 'Co-invest notice · 2 pages · source-cited' }
+      }
     ]
   },
   {
-    lines: [
-      { type: 'cmd', text: 'context --scope "Q3 2025 LP Report"' },
-      { type: 'dim', text: '▸ Loaded: NAV statements, capital accounts, portfolio data' },
-      { type: 'gap' },
-      { type: 'cmd', text: '"Generate quarterly performance summary for all LPs"' },
-      { type: 'r', text: 'Aggregating across 12 portfolio companies...' },
-      { type: 'r', text: 'Cross-referencing capital account statements...' },
-      { type: 'g', text: '■ Report compiled — 47 data points validated' },
-      { type: 'r', text: 'Net IRR: 18.3% | TVPI: 1.42x | DPI: 0.31x' },
-      { type: 's', text: '↳ NAV_Q3_2025_Final.xlsx — all tabs' },
-      { type: 's', text: '↳ CapitalAccounts_Master.xlsx — Sheet "Fund III"' },
-      { type: 'gap' },
-      { type: 'cmd', text: '"Format as LP letter using our standard template"' },
-      { type: 'g', text: '✓ Generated → /output/reports/Q3_LP_Letter.pdf', final: true },
+    context: 'Alpine Capital III · Q3 2025 reporting cycle',
+    messages: [
+      { role: 'user', text: 'Generate the quarterly performance summary for all LPs' },
+      {
+        role: 'cosimo',
+        text: 'Aggregated across 12 portfolio companies. Net IRR: 18.3% | TVPI: 1.42x | DPI: 0.31x. All figures cross-referenced against capital account statements and NAV reports.',
+        citations: [
+          'NAV_Q3_2025_Final.xlsx — all tabs',
+          'CapitalAccounts_Master.xlsx — Sheet "Fund III"',
+          'PortCo_Valuations_Q3.pdf — p.1-12'
+        ]
+      },
+      { role: 'user', text: 'Format as LP letter using our standard template' },
+      {
+        role: 'cosimo',
+        text: 'Formatted using your Q2 letter as a template. Performance metrics, portfolio company updates, and capital account summaries are included with full source citations.',
+        citations: [
+          'Q2_LP_Letter_Template.docx — formatting reference',
+          'NAV_Q3_2025_Final.xlsx — performance data'
+        ],
+        artifact: { name: 'Q3_2025_LP_Letter.pdf', meta: 'Quarterly LP letter · 8 pages · 47 data points validated' }
+      }
     ]
   },
   {
-    lines: [
-      { type: 'cmd', text: 'ingest ./uploads/portfolio_rentrolls/*.pdf' },
-      { type: 'dim', text: '▸ Processing 23 rent roll PDFs across 8 properties...' },
-      { type: 'dim', text: '▸ OCR complete · Extracting unit-level data...' },
-      { type: 'gap' },
-      { type: 'g', text: '■ Extracted 1,847 unit records' },
-      { type: 'r', text: 'Standardized: unit #, tenant, lease dates, base rent, recoveries' },
-      { type: 'r', text: 'Flagged 12 discrepancies vs. prior quarter data' },
-      { type: 's', text: '↳ 3 expired leases with active tenants' },
-      { type: 's', text: '↳ 9 rent amounts inconsistent with amendments' },
-      { type: 'gap' },
-      { type: 'cmd', text: '"Export to our underwriting model format"' },
-      { type: 'g', text: '✓ Exported → /output/rentrolls/portfolio_master.xlsx' },
-      { type: 'g', text: '✓ Discrepancy report → /output/rentrolls/flags.pdf', final: true },
+    context: 'Summit RE Holdings · 8 properties · 23 rent roll PDFs uploaded',
+    messages: [
+      { role: 'user', text: 'Extract and standardize all rent rolls into one view' },
+      {
+        role: 'cosimo',
+        text: 'Extracted 1,847 unit records across 8 properties. Standardized fields: unit #, tenant, lease dates, base rent, recoveries. Flagged 12 discrepancies vs. prior quarter — 3 expired leases with active tenants, 9 rent amounts inconsistent with amendments.',
+        citations: [
+          'RentRoll_Parkview_Q3.pdf — 312 units',
+          'RentRoll_Summit_Tower.pdf — 204 units',
+          'LeaseAmendments_2024/ — 9 files'
+        ]
+      },
+      { role: 'user', text: 'Export to our underwriting model format' },
+      {
+        role: 'cosimo',
+        text: 'Exported to your underwriting template. Discrepancy flags are included as a separate tab with source references for each issue.',
+        citations: [
+          'UW_Template_v3.xlsx — format reference',
+          'Prior_Quarter_RentRolls/ — comparison baseline'
+        ],
+        artifact: { name: 'portfolio_master_rentrolls.xlsx', meta: 'Rent roll extract · 1,847 units · 12 flags' }
+      }
     ]
   }
 ];
 
-let demoRunning = false;
+let chatRunning = false;
 
-function runDemo(index) {
-  if (demoRunning) return;
-  demoRunning = true;
+function runChatDemo(index) {
+  if (chatRunning) return;
+  chatRunning = true;
 
-  document.querySelectorAll('.term-tab').forEach((btn, i) => {
+  document.querySelectorAll('.chat-tab').forEach((btn, i) => {
     btn.classList.toggle('active', i === index);
   });
 
-  const body = document.getElementById('terminal-body');
+  const body = document.getElementById('chat-body');
   body.innerHTML = '';
 
-  const demo = demos[index];
-  let i = 0;
+  const demo = chatDemos[index];
 
-  function addLine() {
-    if (i >= demo.lines.length) {
-      demoRunning = false;
+  // Show context indicator
+  const ctxEl = document.createElement('div');
+  ctxEl.className = 'chat-context';
+  ctxEl.textContent = demo.context;
+  body.appendChild(ctxEl);
+  requestAnimationFrame(() => ctxEl.classList.add('visible'));
+
+  let msgIndex = 0;
+  let delay = 600;
+
+  function playNext() {
+    if (msgIndex >= demo.messages.length) {
+      chatRunning = false;
       return;
     }
 
-    const line = demo.lines[i];
-    i++;
+    const msg = demo.messages[msgIndex];
+    msgIndex++;
 
-    if (line.type === 'gap') {
-      const gap = document.createElement('div');
-      gap.className = 'gap';
-      body.appendChild(gap);
-      setTimeout(addLine, 100);
-      return;
-    }
-
-    if (line.type === 'cmd') {
-      const el = document.createElement('div');
-      el.className = 'term-line visible';
-      const prompt = document.createElement('span');
-      prompt.className = 'p';
-      prompt.textContent = 'medici λ ';
-      el.appendChild(prompt);
-
-      const cmdSpan = document.createElement('span');
-      cmdSpan.className = 'c';
-      el.appendChild(cmdSpan);
-
-      const cursor = document.createElement('span');
-      cursor.className = 't-cursor';
-      el.appendChild(cursor);
-
-      body.appendChild(el);
+    if (msg.role === 'user') {
+      const msgEl = createChatMsg(msg);
+      body.appendChild(msgEl);
+      body.scrollTop = body.scrollHeight;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          msgEl.classList.add('visible');
+        });
+      });
+      setTimeout(playNext, 800);
+    } else {
+      // Show thinking dots first
+      const thinkEl = document.createElement('div');
+      thinkEl.className = 'chat-thinking';
+      thinkEl.innerHTML = '<div class="chat-thinking-dot"></div><div class="chat-thinking-dot"></div><div class="chat-thinking-dot"></div>';
+      body.appendChild(thinkEl);
       body.scrollTop = body.scrollHeight;
 
-      let ci = 0;
-      function typeChar() {
-        if (ci < line.text.length) {
-          cmdSpan.textContent += line.text[ci];
-          ci++;
-          setTimeout(typeChar, 22 + Math.random() * 18);
-        } else {
-          cursor.remove();
-          setTimeout(addLine, 400);
-        }
-      }
-      typeChar();
-      return;
+      setTimeout(() => {
+        thinkEl.remove();
+        const msgEl = createChatMsg(msg);
+        body.appendChild(msgEl);
+        body.scrollTop = body.scrollHeight;
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            msgEl.classList.add('visible');
+          });
+        });
+        setTimeout(playNext, 1000);
+      }, 1200);
     }
-
-    const el = document.createElement('div');
-    el.className = 'term-line';
-
-    if (line.type === 'dim') {
-      el.innerHTML = '<span class="d">' + line.text + '</span>';
-    } else if (line.type === 'g') {
-      const inner = '<span class="g">' + line.text + '</span>';
-      if (line.final) {
-        el.innerHTML = '<span class="r">' + inner + '<span class="cursor-blink"></span></span>';
-      } else {
-        el.innerHTML = '<span class="r">' + inner + '</span>';
-      }
-    } else if (line.type === 's') {
-      el.innerHTML = '<span class="r"><span class="s">' + line.text + '</span></span>';
-    } else {
-      el.innerHTML = '<span class="r">' + line.text + '</span>';
-    }
-
-    body.appendChild(el);
-    body.scrollTop = body.scrollHeight;
-
-    setTimeout(() => {
-      el.classList.add('visible');
-      const delay = line.type === 'dim' ? 500 : 300;
-      setTimeout(addLine, delay);
-    }, 50);
   }
 
-  addLine();
+  setTimeout(playNext, delay);
 }
 
-// Auto-start first demo when terminal scrolls into view (ScrollTrigger)
+function createChatMsg(msg) {
+  const msgEl = document.createElement('div');
+  msgEl.className = 'chat-msg ' + msg.role;
+
+  // Avatar
+  const avatar = document.createElement('div');
+  avatar.className = 'chat-avatar ' + msg.role;
+  avatar.textContent = msg.role === 'cosimo' ? 'C' : 'U';
+  msgEl.appendChild(avatar);
+
+  // Bubble
+  const bubble = document.createElement('div');
+  bubble.className = 'chat-bubble';
+  bubble.textContent = msg.text;
+  msgEl.appendChild(bubble);
+
+  // Citations (cosimo only)
+  if (msg.citations && msg.citations.length) {
+    const citeWrap = document.createElement('div');
+    citeWrap.className = 'chat-citations';
+    msg.citations.forEach(c => {
+      const cite = document.createElement('div');
+      cite.className = 'chat-cite';
+      cite.textContent = '↳ ' + c;
+      citeWrap.appendChild(cite);
+    });
+    msgEl.appendChild(citeWrap);
+  }
+
+  // Artifact (cosimo only)
+  if (msg.artifact) {
+    const art = document.createElement('div');
+    art.className = 'chat-artifact';
+    art.innerHTML =
+      '<div class="chat-artifact-icon">✓</div>' +
+      '<div class="chat-artifact-info">' +
+        '<div class="chat-artifact-name">' + msg.artifact.name + '</div>' +
+        '<div class="chat-artifact-meta">' + msg.artifact.meta + '</div>' +
+      '</div>';
+    msgEl.appendChild(art);
+  }
+
+  return msgEl;
+}
+
+// Tab click handlers
+document.querySelectorAll('.chat-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const index = parseInt(btn.getAttribute('data-demo'), 10);
+    runChatDemo(index);
+  });
+});
+
+// Auto-start first demo when chat frame scrolls into view
 ScrollTrigger.create({
-  trigger: '.terminal-frame',
+  trigger: '.chat-frame',
   start: 'top 70%',
   once: true,
-  onEnter: () => setTimeout(() => runDemo(0), 500)
+  onEnter: () => setTimeout(() => runChatDemo(0), 500)
 });
