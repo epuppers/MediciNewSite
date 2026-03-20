@@ -108,15 +108,15 @@ gsap.from('.pain-label', {
   opacity: 0, y: 20, duration: 0.6,
   scrollTrigger: { trigger: '.pain-section', start: 'top 80%', once: true }
 });
-gsap.set('.pain-item', { opacity: 0, y: 30 });
+gsap.set('.pain-col', { opacity: 0, y: 40 });
 ScrollTrigger.create({
-  trigger: '.pain-grid',
+  trigger: '.pain-comparison',
   start: 'top 85%',
   once: true,
   onEnter: () => {
-    gsap.to('.pain-item', {
+    gsap.to('.pain-col', {
       opacity: 1, y: 0,
-      stagger: 0.15,
+      stagger: 0.3,
       duration: 0.8,
       ease: 'power3.out'
     });

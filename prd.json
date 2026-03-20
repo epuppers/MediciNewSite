@@ -123,7 +123,7 @@
         "GSAP animation in main.js updated: remove .pain-item animation, add staggered reveal for .pain-col elements"
       ],
       "priority": 6,
-      "passes": false,
+      "passes": true,
       "notes": "The 'Today' column should feel DENSE and slightly oppressive (more text, tighter). The 'With Cosimo' column should feel CLEAN and spacious (less text, more breathing room). The visual contrast IS the message.\n\nGSAP FIX: In main.js, find the pain section animations (lines ~106-124). Remove the gsap.set('.pain-item'...) and ScrollTrigger.create that targets '.pain-grid' with '.pain-item'. Replace with: gsap.set('.pain-col', { opacity: 0, y: 40 }); ScrollTrigger.create({ trigger: '.pain-comparison', start: 'top 85%', once: true, onEnter: () => { gsap.to('.pain-col', { opacity: 1, y: 0, stagger: 0.3, duration: 0.8, ease: 'power3.out' }); } });\n\nALSO: The splitWordsAndAnimate('.pain-headline') call further down in main.js should still work — it processes whatever text it finds in .pain-headline. Do NOT remove it."
     },
     {

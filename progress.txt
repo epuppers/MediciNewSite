@@ -81,3 +81,18 @@ Started: 2026-03-20
   - Always grep index.html before removing a CSS class to verify it's unused
   - The .term-dots/.term-dot classes are shared between old terminal and new chat chrome — important to preserve
 ---
+
+## 2026-03-20 - US-006
+- Replaced pain section stats grid with two-column before/after comparison layout
+- Left column ("Today") has 6 dense steps describing manual LP reporting + summary "3 people. 3 weeks. Every quarter."
+- Right column ("With Cosimo") has 3 clean steps + summary "1 person. 15 minutes. Same report."
+- Purple divider between columns, accent-tinted left borders on "With Cosimo" steps
+- Responsive: columns stack at 768px with horizontal divider, at 1024px divider hidden and 2-col grid
+- Removed old CSS: .pain-grid, .pain-item, .pain-num, .pain-desc and their responsive rules
+- GSAP animation updated: .pain-item → .pain-col with stagger 0.3
+- Files changed: index.html, css/styles.css, js/main.js
+- **Learnings for future iterations:**
+  - The pain-comparison uses a 3-column grid (col / divider / col) — divider is hidden on mobile via display:none
+  - .pain-step-summary uses border-top as separator, not border-left like regular steps
+  - The "Today" column intentionally has more steps (6) than "With Cosimo" (3) for visual weight contrast
+---
