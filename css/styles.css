@@ -122,6 +122,77 @@
   background: #74418F;
 }
 
+/* Light mode: force chat frame to stay dark */
+[data-theme="light"] .chat-frame {
+  background: #141413;
+  border-color: rgba(237, 232, 223, 0.1);
+}
+[data-theme="light"] .chat-frame::before {
+  background: linear-gradient(90deg, #74418F, #74418F 30%, transparent 100%);
+}
+[data-theme="light"] .chat-chrome {
+  background: #1A1A18;
+  border-bottom-color: rgba(237, 232, 223, 0.06);
+}
+[data-theme="light"] .chat-tab {
+  color: rgba(237, 232, 223, 0.25);
+}
+[data-theme="light"] .chat-tab.active {
+  color: #EDE8DF;
+  background: #141413;
+  border-color: rgba(237, 232, 223, 0.1);
+  border-bottom-color: #141413;
+}
+[data-theme="light"] .chat-tab:hover:not(.active) {
+  color: rgba(237, 232, 223, 0.5);
+}
+[data-theme="light"] .chat-version {
+  color: rgba(237, 232, 223, 0.15);
+}
+[data-theme="light"] .chat-body {
+  color: #EDE8DF;
+}
+[data-theme="light"] .chat-input-bar {
+  background: #1A1A18;
+  border-top-color: rgba(237, 232, 223, 0.06);
+}
+[data-theme="light"] .chat-input-placeholder {
+  color: rgba(237, 232, 223, 0.2);
+}
+[data-theme="light"] .chat-bubble {
+  color: #EDE8DF;
+}
+[data-theme="light"] .chat-msg.user .chat-bubble {
+  background: rgba(116, 65, 143, 0.15);
+  border-color: rgba(116, 65, 143, 0.3);
+}
+[data-theme="light"] .chat-context {
+  color: rgba(237, 232, 223, 0.25);
+  border-bottom-color: rgba(237, 232, 223, 0.06);
+}
+[data-theme="light"] .chat-cite {
+  color: rgba(237, 232, 223, 0.3);
+}
+[data-theme="light"] .chat-artifact {
+  background: rgba(46, 204, 113, 0.06);
+  border-left-color: #2ECC71;
+}
+[data-theme="light"] .chat-artifact-icon {
+  color: #2ECC71;
+}
+[data-theme="light"] .chat-artifact-name {
+  color: #EDE8DF;
+}
+[data-theme="light"] .chat-artifact-meta {
+  color: rgba(237, 232, 223, 0.35);
+}
+[data-theme="light"] .chat-try-cta a {
+  color: rgba(237, 232, 223, 0.4);
+}
+[data-theme="light"] .chat-try-cta a:hover {
+  color: #74418F;
+}
+
 /* Light mode: button hover */
 [data-theme="light"] .btn-main {
   color: #FFFFFF;
@@ -644,6 +715,286 @@ nav {
   vertical-align: middle;
   margin-left: 2px;
   animation: blink 1s step-end infinite;
+}
+
+/* ========== CHAT DEMO ========== */
+.chat-frame {
+  background: #141413;
+  border: 1px solid rgba(237, 232, 223, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glowing accent border on top (same as old terminal) */
+.chat-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #74418F, #74418F 30%, transparent 100%);
+  opacity: 0.6;
+}
+
+.chat-chrome {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(237, 232, 223, 0.06);
+  background: #1A1A18;
+}
+
+.chat-tabs {
+  display: flex;
+  gap: 0;
+  margin-left: 2rem;
+}
+
+.chat-tab {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 1.25rem;
+  color: rgba(237, 232, 223, 0.25);
+  border: 1px solid transparent;
+  border-bottom: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  background: transparent;
+}
+
+.chat-tab.active {
+  color: #EDE8DF;
+  background: #141413;
+  border-color: rgba(237, 232, 223, 0.1);
+  border-bottom: 1px solid #141413;
+  margin-bottom: -1px;
+}
+
+.chat-tab:hover:not(.active) {
+  color: rgba(237, 232, 223, 0.5);
+}
+
+.chat-version {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  color: rgba(237, 232, 223, 0.15);
+  margin-left: auto;
+  text-transform: uppercase;
+}
+
+.chat-body {
+  padding: 2rem 2.5rem 1.5rem;
+  min-height: 420px;
+  max-height: 500px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(237, 232, 223, 0.1) transparent;
+}
+
+.chat-body::-webkit-scrollbar {
+  width: 4px;
+}
+.chat-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-body::-webkit-scrollbar-thumb {
+  background: rgba(237, 232, 223, 0.1);
+  border-radius: 2px;
+}
+
+.chat-msg {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.chat-msg.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chat-msg.user {
+  flex-direction: row-reverse;
+}
+
+.chat-avatar {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem;
+  font-weight: 500;
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+
+.chat-avatar.cosimo {
+  background: rgba(116, 65, 143, 0.15);
+  color: #74418F;
+  border: 1px solid rgba(116, 65, 143, 0.3);
+}
+
+.chat-avatar.user {
+  background: rgba(237, 232, 223, 0.06);
+  color: rgba(237, 232, 223, 0.5);
+}
+
+.chat-bubble {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: #EDE8DF;
+  max-width: 75%;
+  font-weight: 300;
+}
+
+.chat-msg.user .chat-bubble {
+  background: rgba(116, 65, 143, 0.15);
+  border: 1px solid rgba(116, 65, 143, 0.3);
+  padding: 0.75rem 1rem;
+  border-radius: 2px;
+}
+
+.chat-msg.cosimo .chat-bubble {
+  background: transparent;
+}
+
+.chat-context {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(237, 232, 223, 0.25);
+  padding: 0.5rem 0;
+  text-align: center;
+  border-bottom: 1px solid rgba(237, 232, 223, 0.06);
+  margin-bottom: 0.5rem;
+}
+
+.chat-citations {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.chat-cite {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.05em;
+  color: rgba(237, 232, 223, 0.3);
+}
+
+.chat-cite::before {
+  content: '↳ ';
+}
+
+.chat-artifact {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(46, 204, 113, 0.06);
+  border-left: 3px solid #2ECC71;
+  border-radius: 2px;
+}
+
+.chat-artifact-icon {
+  font-size: 1rem;
+  color: #2ECC71;
+  flex-shrink: 0;
+}
+
+.chat-artifact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.chat-artifact-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: #EDE8DF;
+  letter-spacing: 0.03em;
+}
+
+.chat-artifact-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.5rem;
+  color: rgba(237, 232, 223, 0.35);
+  letter-spacing: 0.05em;
+}
+
+.chat-thinking {
+  display: flex;
+  gap: 4px;
+  padding: 0.5rem 0;
+}
+
+.chat-thinking-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(237, 232, 223, 0.25);
+  animation: thinkPulse 1.4s ease-in-out infinite;
+}
+
+.chat-thinking-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.chat-thinking-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes thinkPulse {
+  0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1); }
+}
+
+.chat-input-bar {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(237, 232, 223, 0.06);
+  background: #1A1A18;
+}
+
+.chat-input-placeholder {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  color: rgba(237, 232, 223, 0.2);
+}
+
+.chat-try-cta {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.chat-try-cta a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: rgba(237, 232, 223, 0.4);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.chat-try-cta a:hover {
+  color: #74418F;
 }
 
 /* ========== PAIN SECTION ========== */
@@ -1200,6 +1551,30 @@ a, button, .term-tab, .btn-main, .btn-line {
     padding: 1.5rem;
     font-size: 0.72rem;
     min-height: 350px;
+  }
+
+  /* Chat demo mobile */
+  .chat-tabs {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .chat-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .chat-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: 0.55rem;
+    padding: 0.4rem 0.8rem;
+  }
+  .chat-body {
+    padding: 1.5rem;
+    min-height: 350px;
+  }
+  .chat-bubble {
+    max-width: 85%;
   }
 
   .quote-card {

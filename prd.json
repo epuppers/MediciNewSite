@@ -42,7 +42,7 @@
         "Purple accent border gradient on top of frame (same as old terminal)"
       ],
       "priority": 2,
-      "passes": false,
+      "passes": true,
       "notes": "Reference these design specs:\n- Frame bg: #141413 (always dark)\n- Chrome bg: #1A1A18\n- Text color: #EDE8DF (cream) at various opacities\n- Accent: #74418F\n- Green for artifacts: #2ECC71\n- Font: IBM Plex Mono for chrome/labels, Space Grotesk for message body\n- chat-body: min-height 420px, max-height 500px, overflow-y auto with thin scrollbar\n- chat-msg has 1.25rem gap between messages\n- Bubble max-width: 75% desktop, 85% mobile"
     },
     {

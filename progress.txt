@@ -28,3 +28,15 @@ Started: 2026-03-20
   - No CSS or JS changes needed for text-only copy rewrites
   - The word "AI" was in the meta description too (not hero) — will need updating in US-012
 ---
+
+## 2026-03-20 - US-002
+- Added all chat demo CSS classes to css/styles.css: .chat-frame, .chat-chrome, .chat-tabs, .chat-tab, .chat-version, .chat-body, .chat-msg, .chat-avatar, .chat-bubble, .chat-context, .chat-citations, .chat-cite, .chat-artifact, .chat-thinking, .chat-input-bar, .chat-try-cta, @keyframes thinkPulse
+- Light-mode overrides added to keep chat frame always dark (hardcoded dark colors, not using CSS vars)
+- Mobile responsive rules at 640px: scrollable tabs, reduced padding, increased bubble max-width to 85%
+- Files changed: css/styles.css only (CSS-only story, no HTML or JS changes)
+- **Learnings for future iterations:**
+  - Chat frame uses hardcoded dark colors (#141413, #1A1A18, #EDE8DF) instead of CSS custom properties since it must stay dark in both themes
+  - Light-mode overrides for chat elements follow same pattern as old terminal overrides — force dark colors explicitly
+  - The chat-try-cta hover uses #74418F directly since it's always on dark background
+  - Mobile chat responsive rules mirror the existing term-tabs mobile pattern (overflow-x: auto, scrollbar-width: none)
+---
