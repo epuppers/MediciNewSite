@@ -40,3 +40,16 @@ Started: 2026-03-20
   - The chat-try-cta hover uses #74418F directly since it's always on dark background
   - Mobile chat responsive rules mirror the existing term-tabs mobile pattern (overflow-x: auto, scrollbar-width: none)
 ---
+
+## 2026-03-20 - US-003
+- Replaced old terminal-frame HTML with new chat UI markup inside the terminal-stage wrapper
+- New structure: chat-frame > chat-chrome (term-dots + chat-tabs + chat-version) + chat-body + chat-input-bar, plus chat-try-cta below
+- Three tab buttons with data-demo attributes (no inline onclick handlers)
+- Added data-lenis-prevent to chat-body for scroll isolation
+- Files changed: index.html (lines 64-91)
+- **Learnings for future iterations:**
+  - The .terminal-stage wrapper was preserved — chat-frame lives inside it, so existing GSAP reveal for .terminal-stage still works
+  - term-dots and term-dot classes are reused from old terminal chrome (shared CSS)
+  - Tab interactivity deferred to US-004 (JS story)
+  - chat-try-cta sits outside chat-frame but inside terminal-stage
+---

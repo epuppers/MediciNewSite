@@ -62,22 +62,30 @@
   </div>
 
   <div class="terminal-stage">
-    <div class="terminal-frame">
-      <div class="term-chrome">
+    <div class="chat-frame">
+      <div class="chat-chrome">
         <div class="term-dots">
           <div class="term-dot"></div>
           <div class="term-dot"></div>
           <div class="term-dot"></div>
         </div>
-        <div class="term-tabs">
-          <button class="term-tab active" onclick="runDemo(0)">Due Diligence</button>
-          <button class="term-tab" onclick="runDemo(1)">LP Reporting</button>
-          <button class="term-tab" onclick="runDemo(2)">Rent Roll</button>
+        <div class="chat-tabs">
+          <button class="chat-tab active" data-demo="0">Due Diligence</button>
+          <button class="chat-tab" data-demo="1">LP Reporting</button>
+          <button class="chat-tab" data-demo="2">Rent Roll</button>
         </div>
-        <span class="term-version">cosimo v2.4.1</span>
+        <span class="chat-version">cosimo v2.4.1</span>
       </div>
 
-      <div class="term-body active" id="terminal-body"></div>
+      <div class="chat-body" id="chat-body" data-lenis-prevent></div>
+
+      <div class="chat-input-bar">
+        <span class="chat-input-placeholder">Ask Cosimo anything about your fund…</span>
+      </div>
+    </div>
+
+    <div class="chat-try-cta">
+      <a href="#">Try Cosimo with sample fund data →</a>
     </div>
   </div>
 </section>

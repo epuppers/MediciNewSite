@@ -60,7 +60,7 @@
         "No inline onclick handlers — tab interactivity will be handled by JS in a later story"
       ],
       "priority": 3,
-      "passes": false,
+      "passes": true,
       "notes": "ONLY change the content inside <section class='terminal-section' id='product'>. Do NOT change any other section. The .chat-frame replaces .terminal-frame INSIDE the existing .terminal-stage wrapper div — keep that wrapper. Add data-lenis-prevent attribute to the .chat-body div so Lenis smooth scroll doesn't interfere with scrolling inside the chat area."
     },
     {
