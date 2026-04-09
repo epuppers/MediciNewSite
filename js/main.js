@@ -461,16 +461,6 @@ ScrollTrigger.create({
   }
 });
 
-// Founder's note
-gsap.set('.founder-card', { opacity: 0, y: 20 });
-ScrollTrigger.create({
-  trigger: '.founder-section',
-  start: 'top 80%',
-  once: true,
-  onEnter: () => {
-    gsap.to('.founder-card', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
-  }
-});
 
 // Inevitability section — staggered two-line reveal
 gsap.set('.inevitability-line-1, .inevitability-line-2', { opacity: 0, y: 30 });

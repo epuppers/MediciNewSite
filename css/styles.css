@@ -908,7 +908,7 @@ nav {
 }
 
 .pain-headline-after {
-  color: var(--accent);
+  color: var(--cream);
   position: absolute;
   top: 0;
   left: 0;
@@ -1190,70 +1190,14 @@ nav {
 }
 
 .quotes-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 780px;
+  margin: 0 auto;
 }
 
 .quote-card {
-  padding: 2.5rem 2rem;
-  border-right: 1px solid var(--border);
-  position: relative;
-}
-
-.quote-card:last-child {
-  border-right: none;
-}
-
-.quote-mark {
-  font-family: 'EB Garamond', serif;
-  font-size: 3rem;
-  color: var(--accent);
-  line-height: 1;
-  margin-bottom: 1rem;
-  opacity: 0.6;
-}
-
-.quote-text {
-  font-size: 0.95rem;
-  line-height: 1.75;
-  color: var(--cream);
-  font-weight: 300;
-  margin-bottom: 1.5rem;
-}
-
-.quote-attr {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  color: var(--cream-dim);
-  text-transform: uppercase;
-}
-
-/* ========== FOUNDER'S NOTE ========== */
-.founder-section {
-  padding: 6rem 2.5rem;
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: center;
-}
-
-.founder-content {
-  max-width: 680px;
-  width: 100%;
-}
-
-.founder-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.founder-card {
   background: var(--bg-elevated);
   border: 1px solid var(--border-strong);
   border-left: 3px solid var(--accent);
@@ -1261,7 +1205,7 @@ nav {
   position: relative;
 }
 
-.founder-mark {
+.quote-mark {
   font-family: 'EB Garamond', serif;
   font-size: 5rem;
   color: var(--accent);
@@ -1270,22 +1214,22 @@ nav {
   opacity: 0.4;
 }
 
-.founder-text {
+.quote-text {
   font-family: 'EB Garamond', serif;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-style: italic;
   line-height: 1.9;
   color: var(--cream);
   margin-bottom: 2.5rem;
 }
 
-.founder-sign-block {
+.quote-sign {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.founder-rule {
+.quote-rule {
   width: 2.5rem;
   height: 1px;
   background: var(--accent);
@@ -1293,14 +1237,14 @@ nav {
   margin-bottom: 0.25rem;
 }
 
-.founder-sign {
+.quote-role {
   font-family: 'EB Garamond', serif;
   font-size: 1.1rem;
   color: var(--cream);
   letter-spacing: 0.01em;
 }
 
-.founder-sign-title {
+.quote-detail {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.7rem;
   letter-spacing: 0.15em;
@@ -1646,15 +1590,8 @@ a, button, .btn-main, .btn-line {
     gap: 1rem;
   }
 
-  .quotes-grid {
-    grid-template-columns: 1fr;
-  }
   .quote-card {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-  .quote-card:last-child {
-    border-bottom: none;
+    padding: 2.5rem 2rem 2rem;
   }
 
 }
@@ -1749,8 +1686,7 @@ a, button, .btn-main, .btn-line {
   .cta-section,
   .pain-section,
   .quotes-section,
-  .inevitability-section,
-  .founder-section {
+  .inevitability-section {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
   }
@@ -1794,25 +1730,17 @@ a, button, .btn-main, .btn-line {
   }
 
   .quote-card {
-    padding: 2rem 1.25rem;
-  }
-
-  .quote-section,
-  .quotes-section {
-    padding: 4rem 1.25rem;
-  }
-
-  .founder-section {
-    padding: 3rem 1.25rem;
-  }
-  .founder-card {
     padding: 2rem 1.5rem 1.5rem;
   }
-  .founder-mark {
+  .quote-mark {
     font-size: 3.5rem;
   }
-  .founder-text {
-    font-size: 1.1rem;
+  .quote-text {
+    font-size: 1.05rem;
+  }
+
+  .quotes-section {
+    padding: 4rem 1.25rem;
   }
 
   footer {
