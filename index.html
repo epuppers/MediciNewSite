@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Medici — fund operations infrastructure for private markets. LP reports, K-1 packages, due diligence memos, and rent roll extractions delivered in minutes.">
-<title>MEDICI</title>
+<meta name="description" content="Cosimo — fund operations infrastructure for private markets. LP reports, K-1 packages, due diligence memos, and rent roll extractions delivered in minutes.">
+<title>COSIMO</title>
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">MEDICI</a>
+  <a href="#" class="nav-logo">COSIMO</a>
   <div class="nav-right">
     <a href="#product">Product</a>
     <a href="#architecture">Architecture</a>
@@ -22,17 +22,17 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-glyph">M</div>
+  <div class="hero-glyph">C</div>
   <div class="hero-dots"></div>
   <div class="hero-accent-line"></div>
   <div class="hero-content">
     <div class="hero-status">
       <span class="status-dot"></span>
-      Live across 14 funds · 50,000+ documents indexed
+      Live funds · 1000s of documents indexed
     </div>
     <h1 class="hero-headline">
-      <div class="h-line"><span class="h-large">Quarterly close.</span></div>
-      <div class="h-line"><span class="h-italic" style="font-style: normal;">Done before lunch.</span></div>
+      <div class="h-line"><span class="h-large" id="hero-top">Quarterly close.</span></div>
+      <div class="h-line"><span class="h-italic" id="hero-bottom" style="font-style: normal;">Before lunch.</span></div>
       <div class="h-line"><span class="h-sub">LP reports, K-1 packages, rent roll extractions, due diligence memos — delivered, source-cited, and audit-ready.</span></div>
     </h1>
   </div>
@@ -56,8 +56,6 @@
       <h2>Ask anything.<br>Get the <em>work</em> delivered.</h2>
     </div>
     <div class="terminal-intro-right">
-      COSIMO — Applied Intelligence<br>
-      Live product · Not a mockup
     </div>
   </div>
 
@@ -93,33 +91,46 @@
 <!-- PAIN -->
 <section class="pain-section">
   <div class="pain-content">
-    <div class="pain-label">The Status Quo</div>
-    <h2 class="pain-headline">One quarterly LP report.<br>Here's what it actually takes.</h2>
-    <div class="pain-comparison">
-      <div class="pain-col pain-before">
-        <div class="pain-col-header">
-          <div class="pain-col-label">Today</div>
+    <div class="pain-stack-wrapper">
+      <div class="pain-headline-wrap">
+        <h2 class="pain-headline">You already know how this goes.</h2>
+        <h2 class="pain-headline-after">But with Cosimo…</h2>
+      </div>
+      <!-- Running Toll (directly under headline) -->
+      <div class="pain-toll">
+        <div class="pain-toll-metric">
+          <div class="pain-toll-label">People</div>
+          <div class="pain-toll-value">
+            <span class="pain-toll-before" id="toll-people">—</span>
+            <span class="pain-toll-after">1</span>
+          </div>
         </div>
-        <div class="pain-col-body">
-          <div class="pain-step">Pull NAV data from the fund admin portal, reconcile against internal tracking spreadsheets.</div>
-          <div class="pain-step">Cross-reference capital account statements with waterfall calculations in Excel.</div>
-          <div class="pain-step">Extract performance metrics from portfolio company PDFs — one by one.</div>
-          <div class="pain-step">Draft the LP letter in Word, manually inserting figures and formatting tables.</div>
-          <div class="pain-step">Route through partner review. Incorporate edits. Re-check every number.</div>
-          <div class="pain-step">Generate individual LP statements based on each investor's commitment and share class.</div>
-          <div class="pain-step pain-step-summary">3 people. 3 weeks. Every quarter.</div>
+        <div class="pain-toll-divider"></div>
+        <div class="pain-toll-metric">
+          <div class="pain-toll-label">Time</div>
+          <div class="pain-toll-value">
+            <span class="pain-toll-before" id="toll-time">—</span>
+            <span class="pain-toll-after">15 min</span>
+          </div>
+        </div>
+        <div class="pain-toll-divider"></div>
+        <div class="pain-toll-metric">
+          <div class="pain-toll-label">Deliverable</div>
+          <div class="pain-toll-value">
+            <span class="pain-toll-before" id="toll-cycle">—</span>
+            <span class="pain-toll-after">One report</span>
+          </div>
         </div>
       </div>
-      <div class="pain-divider"></div>
-      <div class="pain-col pain-after">
-        <div class="pain-col-header">
-          <div class="pain-col-label">With Cosimo</div>
-        </div>
-        <div class="pain-col-body">
-          <div class="pain-step">Ask Cosimo to generate the quarterly LP report.</div>
-          <div class="pain-step">It pulls NAV data, reconciles capital accounts, extracts portfolio metrics, and formats everything — source-cited.</div>
-          <div class="pain-step">You review the draft with full citations. Edit what you want. Approve.</div>
-          <div class="pain-step pain-step-summary">1 person. 15 minutes. Same report.</div>
+      <div class="pain-result-sub">Source-cited. Audit-ready. Delivered.</div>
+      <div class="pain-stack-viewport">
+        <div class="pain-stack-cards">
+          <div class="pain-card" data-card-index="0"><span class="pain-card-num">01</span> Pull NAV data from the fund admin portal. Reconcile against internal tracking.</div>
+          <div class="pain-card" data-card-index="1"><span class="pain-card-num">02</span> Cross-reference capital account statements with waterfall calculations.</div>
+          <div class="pain-card" data-card-index="2"><span class="pain-card-num">03</span> Extract performance metrics from portfolio company PDFs — one by one.</div>
+          <div class="pain-card" data-card-index="3"><span class="pain-card-num">04</span> Draft the LP letter in Word. Manually insert figures. Format tables.</div>
+          <div class="pain-card" data-card-index="4"><span class="pain-card-num">05</span> Route through partner review. Incorporate edits. Re-check every number.</div>
+          <div class="pain-card" data-card-index="5"><span class="pain-card-num">06</span> Generate individual LP statements by commitment and share class.</div>
         </div>
       </div>
     </div>
@@ -137,20 +148,20 @@
     <div class="arch-card">
       <div class="arch-card-num">001</div>
       <div class="arch-card-icon">◇</div>
-      <div class="arch-card-title">Your Data Stays Yours</div>
-      <div class="arch-card-text">Every client gets a fully segregated instance. Your proprietary processes, your LP terms, your fund structures — they never touch another client's environment. This isn't a policy, it's architecture. Your competitive advantage stays yours.</div>
+      <div class="arch-card-title">Your LPA terms don't train someone else's model.</div>
+      <div class="arch-card-text">Every client runs on a fully segregated instance. Your data, your processes, your fund structures never leave your environment.</div>
     </div>
     <div class="arch-card">
       <div class="arch-card-num">002</div>
       <div class="arch-card-icon">⟳</div>
-      <div class="arch-card-title">It Gets Smarter at Your Work</div>
-      <div class="arch-card-text">Month one, Cosimo processes your documents. Month six, it knows your reporting preferences, your LP naming conventions, your waterfall structures. Month twelve, a new analyst produces work indistinguishable from your best partner's. The longer you use it, the wider the moat.</div>
+      <div class="arch-card-title">Month twelve, your new analyst works like your best partner.</div>
+      <div class="arch-card-text">Cosimo learns your reporting preferences, naming conventions, and waterfall structures over time. Institutional knowledge stops living in one person's head.</div>
     </div>
     <div class="arch-card">
       <div class="arch-card-num">003</div>
       <div class="arch-card-icon">▣</div>
-      <div class="arch-card-title">The Work, Done</div>
-      <div class="arch-card-text">The LP letter. The K-1 package. The rent roll extraction. The compliance report. Source-cited, audit-ready, formatted to your specs. Not analysis, not insights — the actual deliverable your team would have spent days producing.</div>
+      <div class="arch-card-title">Not a summary. The actual K-1 package.</div>
+      <div class="arch-card-text">Source-cited, audit-ready, formatted to your specs. What used to take your team days, reviewed and out the door in an afternoon.</div>
     </div>
   </div>
 </section>
@@ -181,8 +192,8 @@
 <section class="founder-section">
   <div class="founder-content">
     <div class="founder-label">From the founders</div>
-    <p class="founder-text">We built Medici because we sat in the seats our clients sit in. We know what it's like to reconcile a waterfall at 2am because an LP noticed a discrepancy. We know what gets lost when your best analyst leaves. This isn't a technology company that decided to serve finance. It's a finance team that decided to build the infrastructure we wished existed.</p>
-    <p class="founder-sign">— Eliot & the Medici team</p>
+    <p class="founder-text">We built Cosimo because we sat in the seats our clients sit in. We know what it's like to reconcile a waterfall at 2am because an LP noticed a discrepancy. We know what gets lost when your best analyst leaves. This isn't a technology company that decided to serve finance. It's a finance team that decided to build the infrastructure we wished existed.</p>
+    <p class="founder-sign">— Eliot & the Cosimo team</p>
   </div>
 </section>
 
@@ -269,7 +280,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="foot-left">© 2026 Medici Technologies Inc.</div>
+  <div class="foot-left">© 2026 MEDICI & COMPANY</div>
   <div class="foot-right">
     <a href="mailto:hello@medici.ai">hello@medici.ai</a>
     <a href="#">Privacy</a>

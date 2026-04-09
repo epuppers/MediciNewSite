@@ -76,10 +76,6 @@
   background-image: radial-gradient(circle, rgba(26,26,24,0.06) 1px, transparent 1px);
 }
 
-/* Light mode: nav blend mode off (difference inverts on light bg) */
-[data-theme="light"] nav {
-  mix-blend-mode: normal;
-}
 
 /* Light mode: force chat frame to stay dark */
 [data-theme="light"] .chat-frame {
@@ -261,7 +257,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  mix-blend-mode: difference;
+  background: var(--bg);
 }
 
 .nav-logo {
@@ -398,6 +394,23 @@ nav {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Typewriter cursor — block caret after text */
+.typewriter-cursor::after {
+  content: '';
+  display: inline-block;
+  width: 0.5ch;
+  height: 1.1em;
+  background: currentColor;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: cursorBlink 0.6s steps(1) infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .h-large {
   font-size: clamp(4.5rem, 10vw, 9rem);
   color: var(--cream);
@@ -407,6 +420,7 @@ nav {
   font-size: clamp(4.5rem, 10vw, 9rem);
   color: var(--accent);
   font-style: italic;
+  min-height: 1.3em;
 }
 
 .h-sub {
@@ -852,107 +866,194 @@ nav {
 
 /* ========== PAIN SECTION ========== */
 .pain-section {
-  padding: 8rem 2.5rem;
+  padding: 2rem 2.5rem 0;
   border-top: 1px solid var(--border);
 }
 
 .pain-content {
   max-width: 900px;
+  margin: 0 auto;
 }
 
-.pain-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--accent);
+.pain-headline-wrap {
+  position: relative;
+  text-align: center;
   margin-bottom: 2rem;
 }
 
-.pain-headline {
+.pain-headline,
+.pain-headline-after {
   font-family: 'EB Garamond', serif;
   font-size: clamp(1.8rem, 3.5vw, 2.8rem);
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.pain-headline {
   color: var(--cream);
-  margin-bottom: 3.5rem;
 }
 
-.pain-comparison {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+.pain-headline-after {
+  color: var(--accent);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.pain-stack-wrapper {
+  position: relative;
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pain-stack-viewport {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 40vh;
+}
+
+.pain-stack-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pain-card {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  line-height: 1.65;
+  padding: 1.2rem 2rem 1.2rem 2.25rem;
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--border);
+  position: relative;
+}
+
+.pain-card-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--cream-dim);
+  margin-right: 0.75rem;
+  display: inline-block;
+  min-width: 2rem;
+}
+
+/* Progressive darkening + left border heat map */
+.pain-card[data-card-index="0"] {
+  background: var(--bg);
+  color: var(--cream);
+  border-left-color: var(--border);
+}
+.pain-card[data-card-index="1"] {
+  background: var(--bg-elevated);
+  color: var(--cream);
+  border-left-color: var(--border-strong);
+}
+.pain-card[data-card-index="2"] {
+  background: var(--bg-surface);
+  color: var(--cream);
+  border-left-color: var(--accent-dim);
+}
+.pain-card[data-card-index="3"] {
+  background: var(--bg-surface);
+  color: var(--cream-dim);
+  border-left-color: var(--accent-dim);
+  box-shadow: inset 0 0 0 999px rgba(0,0,0,0.08);
+}
+.pain-card[data-card-index="4"] {
+  background: var(--bg-surface);
+  color: var(--cream-dim);
+  border-left-color: var(--accent);
+  box-shadow: inset 0 0 0 999px rgba(0,0,0,0.15);
+}
+.pain-card[data-card-index="5"] {
+  background: var(--bg-surface);
+  color: var(--cream-dim);
+  border-color: var(--accent-dim);
+  border-left-color: var(--accent);
+  box-shadow: inset 0 0 0 999px rgba(0,0,0,0.22);
+}
+
+/* ---- Running Toll ---- */
+.pain-toll {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   gap: 0;
+  margin-top: 1.5rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--border);
 }
 
-.pain-col {
-  padding: 2rem;
+.pain-toll-metric {
+  flex: 1;
+  text-align: center;
+  padding: 0 1.5rem;
 }
 
-.pain-before {
-  background: var(--cream-ghost);
+.pain-toll-divider {
+  width: 1px;
+  height: 4rem;
+  background: var(--border-strong);
+  align-self: center;
+  flex-shrink: 0;
 }
 
-.pain-before .pain-step {
-  line-height: 1.55;
-}
-
-.pain-after {
-  padding: 2.5rem;
-}
-
-.pain-col-label {
+.pain-toll-label {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.6rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  margin-bottom: 1.5rem;
-}
-
-.pain-before .pain-col-label {
-  color: var(--cream-dim);
-}
-
-.pain-after .pain-col-label {
   color: var(--accent);
+  margin-bottom: 0.75rem;
 }
 
-.pain-step {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.82rem;
-  line-height: 1.7;
-  color: var(--cream-dim);
-  padding: 0.75rem 0 0.75rem 1rem;
-  border-left: 2px solid var(--border);
-  margin-bottom: 0.5rem;
+.pain-toll-value {
+  position: relative;
+  height: clamp(3rem, 6vw, 5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-.pain-after .pain-step {
-  border-left-color: var(--accent-dim);
+.pain-toll-before,
+.pain-toll-after {
+  font-family: 'EB Garamond', serif;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  position: absolute;
+  white-space: nowrap;
+}
+
+.pain-toll-before {
   color: var(--cream);
-  line-height: 1.85;
 }
 
-.pain-step-summary {
+.pain-toll-after {
+  color: var(--accent);
+  text-shadow: 0 0 60px var(--accent-glow), 0 0 120px var(--accent-dim);
+}
+
+/* ---- Result Sub ---- */
+.pain-result-sub {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
   color: var(--cream);
-  border-left: none;
-  border-top: 1px solid var(--border);
-  padding: 1.25rem 0 0 0;
-  margin-top: 1rem;
-}
-
-.pain-after .pain-step-summary {
-  color: var(--accent);
-  border-top-color: var(--accent-dim);
-}
-
-.pain-divider {
-  width: 2px;
-  background: linear-gradient(to bottom, transparent, var(--accent) 20%, var(--accent) 80%, transparent);
-  opacity: 0.3;
+  opacity: 0.7;
+  text-align: center;
+  margin-top: 1.5rem;
 }
 
 /* ========== ARCHITECTURE SECTION ========== */
@@ -1463,28 +1564,12 @@ a, button, .btn-main, .btn-line {
     border-bottom: none;
   }
 
-  .pain-comparison {
-    grid-template-columns: 1fr 1fr;
-  }
-  .pain-divider {
-    display: none;
-  }
 }
 
 /* ========== RESPONSIVE: LARGE MOBILE (max-width: 768px) ========== */
 @media (max-width: 768px) {
   .cases-grid {
     grid-template-columns: 1fr;
-  }
-
-  .pain-comparison {
-    grid-template-columns: 1fr;
-  }
-  .pain-divider {
-    display: none;
-  }
-  .pain-after {
-    border-top: 1px solid var(--border);
   }
 
   .pilot-timeline {
@@ -1499,7 +1584,24 @@ a, button, .btn-main, .btn-line {
   }
 
   .pain-section {
-    padding: 5rem 1.25rem;
+    padding: 5rem 1.25rem 0;
+  }
+  .pain-stack-viewport {
+    min-height: 45vh;
+  }
+  .pain-card {
+    font-size: 0.9rem;
+    padding: 1.25rem 1.5rem;
+  }
+  .pain-toll-metric {
+    padding: 0 0.75rem;
+  }
+  .pain-toll-before,
+  .pain-toll-after {
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+  }
+  .pain-toll-value {
+    height: clamp(2.5rem, 5vw, 3.5rem);
   }
 
   .hero-headline .h-large {
@@ -1607,8 +1709,17 @@ a, button, .btn-main, .btn-line {
     display: none;
   }
 
-  .pain-headline br {
-    display: none;
+  .pain-toll {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .pain-toll-divider {
+    width: 40px;
+    height: 1px;
+  }
+  .pain-toll-metric {
+    padding: 0.5rem 0;
   }
 }
 
@@ -1630,5 +1741,9 @@ a, button, .btn-main, .btn-line {
 
   .cta-headline {
     font-size: 2rem;
+  }
+  .pain-toll-before,
+  .pain-toll-after {
+    font-size: 1.5rem;
   }
 }

@@ -41,6 +41,132 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   });
 });
 
+// ========== TYPEWRITER ENGINE ==========
+const topLines = [
+  'Quarterly close.', 'K-1 packages.', 'Due diligence.',
+  'LP reports.', 'Audit prep.', 'Rent roll extraction.',
+  'Board prep.', 'Portfolio review.', 'Capital call notices.',
+  'Waterfall calculations.', 'Compliance filings.', 'Investor onboarding.'
+];
+
+const bottomLines = [
+  'Before lunch.', 'Before your coffee cools.',
+  'Before the meeting.', 'Before anyone asks.',
+  'Before you get home.', 'Before Monday.',
+  'Before the partners ask.', 'Before your first call.'
+];
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function randBetween(min, max) {
+  return min + Math.random() * (max - min);
+}
+
+// Shared coordinator — enforces a 3s quiet window where both lines are static
+const typewriterCoord = {
+  lastAnimEnd: 0,
+  quietWindow: 3000,
+
+  requestStart(callback) {
+    const now = Date.now();
+    const elapsed = now - this.lastAnimEnd;
+    if (elapsed >= this.quietWindow) {
+      callback();
+    } else {
+      setTimeout(callback, this.quietWindow - elapsed);
+    }
+  },
+
+  reportLanded() {
+    this.lastAnimEnd = Date.now();
+  }
+};
+
+function createTypewriter(element, lines, cycleDuration, coord) {
+  const shuffled = shuffleArray([...lines]);
+  let index = 0;
+
+  // If first shuffled item matches current text, swap with next
+  if (shuffled[0] === element.textContent && shuffled.length > 1) {
+    [shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]];
+  }
+
+  function getNext() {
+    const text = shuffled[index];
+    index = (index + 1) % shuffled.length;
+    if (index === 0) {
+      const last = shuffled[shuffled.length - 1];
+      shuffleArray(shuffled);
+      if (shuffled[0] === last && shuffled.length > 1) {
+        [shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]];
+      }
+    }
+    return text;
+  }
+
+  function deleteText(callback) {
+    element.classList.add('typewriter-cursor');
+    const current = element.textContent;
+    let i = current.length;
+
+    function removeChar() {
+      if (i <= 0) {
+        element.textContent = '';
+        setTimeout(callback, 200);
+        return;
+      }
+      i--;
+      element.textContent = current.slice(0, i);
+      setTimeout(removeChar, randBetween(20, 40));
+    }
+    removeChar();
+  }
+
+  function typeText(text, callback) {
+    let i = 0;
+
+    function addChar() {
+      if (i >= text.length) {
+        element.classList.remove('typewriter-cursor');
+        callback();
+        return;
+      }
+      i++;
+      element.textContent = text.slice(0, i);
+      setTimeout(addChar, randBetween(40, 80));
+    }
+    addChar();
+  }
+
+  function cycle() {
+    const next = getNext();
+    const animStart = Date.now();
+
+    deleteText(() => {
+      typeText(next, () => {
+        coord.reportLanded();
+        const animTime = Date.now() - animStart;
+        const holdTime = Math.max(1500, cycleDuration - animTime);
+        setTimeout(() => {
+          coord.requestStart(cycle);
+        }, holdTime);
+      });
+    });
+  }
+
+  function start(initialDelay) {
+    setTimeout(cycle, initialDelay);
+  }
+
+  return { start };
+}
+
 // ========== HERO TEXT ANIMATION (GSAP) ==========
 const heroTl = gsap.timeline({ delay: 0.3 });
 
@@ -65,6 +191,18 @@ heroTl.to('.h-line:nth-child(3) span', {
 
 // Hero bottom CTAs and scroll hint
 heroTl.to('.hero-bottom', { opacity: 1, duration: 0.6, ease: 'power2.out' }, '-=0.3');
+
+// Start typewriter after GSAP reveal completes
+heroTl.call(() => {
+  const topEl = document.getElementById('hero-top');
+  const bottomEl = document.getElementById('hero-bottom');
+  const topTw = createTypewriter(topEl, topLines, 8000, typewriterCoord);
+  const bottomTw = createTypewriter(bottomEl, bottomLines, 11000, typewriterCoord);
+
+  // Top starts after a 2s hold; bottom waits for top type-in (~1.5s) + 2s rest
+  topTw.start(2000);
+  bottomTw.start(5500);
+});
 
 // ========== HERO PARALLAX ==========
 gsap.to('.hero-content', {
@@ -103,26 +241,157 @@ gsap.from('.terminal-stage', {
   scrollTrigger: { trigger: '.terminal-stage', start: 'top 85%', once: true }
 });
 
-// Pain section
-gsap.from('.pain-label', {
-  opacity: 0, y: 20, duration: 0.6,
-  ease: 'power3.out',
-  scrollTrigger: { trigger: '.pain-section', start: 'top 80%', once: true }
-});
-gsap.set('.pain-col', { opacity: 0, y: 40 });
-ScrollTrigger.create({
-  trigger: '.pain-comparison',
-  start: 'top 85%',
-  once: true,
-  onEnter: () => {
-    gsap.to('.pain-col', {
-      opacity: 1, y: 0,
-      stagger: 0.3,
-      duration: 0.8,
-      ease: 'power3.out'
-    });
+// Pain section: scroll-pinned stack with running toll
+(function initPainStack() {
+  var cards = gsap.utils.toArray('.pain-card');
+  var toll = document.querySelector('.pain-toll');
+  var tollPeople = document.getElementById('toll-people');
+  var tollTime = document.getElementById('toll-time');
+  var tollCycle = document.getElementById('toll-cycle');
+  var tollBefores = gsap.utils.toArray('.pain-toll-before');
+  var tollAfters = gsap.utils.toArray('.pain-toll-after');
+  var headlineBefore = document.querySelector('.pain-headline');
+  var headlineAfter = document.querySelector('.pain-headline-after');
+  var resultSub = document.querySelector('.pain-result-sub');
+  var cardsContainer = document.querySelector('.pain-stack-cards');
+  var cardCount = cards.length;
+
+  // Toll progression: values at each card threshold
+  var tollData = [
+    { people: '—',  time: '—',        cycle: '—' },
+    { people: '1',  time: '2 days',    cycle: '—' },
+    { people: '1',  time: '4 days',    cycle: '—' },
+    { people: '2',  time: '1 week',    cycle: 'Quarterly' },
+    { people: '2',  time: '2 weeks',   cycle: 'Quarterly' },
+    { people: '3',  time: '2.5 wks',   cycle: 'Quarterly' },
+    { people: '3',  time: '3 weeks',   cycle: 'Quarterly' },
+  ];
+
+  var currentTollIndex = -1;
+  function updateToll(index) {
+    if (index === currentTollIndex) return;
+    currentTollIndex = index;
+    var d = tollData[index];
+    tollPeople.textContent = d.people;
+    tollTime.textContent = d.time;
+    tollCycle.textContent = d.cycle;
   }
-});
+
+  // Initial state
+  gsap.set(cards, { opacity: 0, y: 100 });
+  gsap.set(toll, { opacity: 0, y: 20 });
+  gsap.set(tollAfters, { opacity: 0, y: 20 });
+  gsap.set(headlineAfter, { opacity: 0, y: 10 });
+  gsap.set(resultSub, { opacity: 0, y: 10 });
+
+  // Scroll budget — generous for longer holds
+  var scrollPerCard = 150;
+  var totalScroll = 100 + (cardCount * scrollPerCard) + 500 + 400 + 500 + 600;
+
+  // Timeline positions (in timeline units)
+  var cardStagger = 1.2;
+  var cardPhaseStart = 0.5;
+  var cardPhaseEnd = cardPhaseStart + (cardCount - 1) * cardStagger + 1.0;
+  var holdBeforeStart = cardPhaseEnd + 0.4;
+  var collapseStart = holdBeforeStart + 2.5;   // long hold on "before" state
+  var transformStart = collapseStart + 1.2;
+  var holdAfterStart = transformStart + 1.5;
+
+  var tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '.pain-section',
+      start: 'top 5%',
+      end: '+=' + totalScroll,
+      pin: '.pain-stack-wrapper',
+      scrub: true,
+    }
+  });
+
+  // Beat of stillness
+  tl.to({}, { duration: 0.5 });
+
+  // Toll meter fades in with first card
+  tl.to(toll, {
+    opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
+  }, cardPhaseStart);
+
+  // Stack cards
+  cards.forEach(function(card, i) {
+    tl.to(card, {
+      opacity: 1, y: 0, duration: 1.0, ease: 'power3.out',
+    }, cardPhaseStart + i * cardStagger);
+  });
+
+  // Drive toll values from timeline progress
+  tl.eventCallback('onUpdate', function() {
+    var progress = tl.progress();
+    var totalDur = tl.totalDuration();
+    var cardStartNorm = cardPhaseStart / totalDur;
+    var cardEndNorm = cardPhaseEnd / totalDur;
+    if (progress < cardStartNorm) {
+      updateToll(0);
+    } else if (progress >= cardEndNorm) {
+      updateToll(cardCount);
+    } else {
+      var cardProgress = (progress - cardStartNorm) / (cardEndNorm - cardStartNorm);
+      updateToll(Math.min(Math.round(cardProgress * cardCount), cardCount));
+    }
+  });
+
+  // ---- LONG HOLD on "before" state ----
+  tl.to({}, { duration: 2.5 }, holdBeforeStart);
+
+  // Cards collapse + container shrinks
+  tl.to(cards, {
+    opacity: 0, y: 80,
+    duration: 1.0, stagger: 0.06,
+    ease: 'power2.in',
+  }, collapseStart);
+  tl.to(cardsContainer, {
+    height: 0, overflow: 'hidden',
+    duration: 0.8,
+    ease: 'power2.in',
+  }, collapseStart);
+
+  // Headline swap: "You already know..." fades out, "But with Cosimo." fades in
+  tl.to(headlineBefore, {
+    opacity: 0, y: -15,
+    duration: 0.5,
+    ease: 'power2.in',
+  }, transformStart);
+  tl.to(headlineAfter, {
+    opacity: 1, y: 0,
+    duration: 0.6,
+    ease: 'power3.out',
+  }, transformStart + 0.3);
+
+  // Toll numbers transform: before slides out, after slides in
+  tl.to(tollBefores, {
+    opacity: 0, y: -30,
+    duration: 0.6, stagger: 0.1,
+    ease: 'power2.in',
+  }, transformStart + 0.2);
+  tl.to(tollAfters, {
+    opacity: 1, y: 0,
+    duration: 0.8, stagger: 0.1,
+    ease: 'power3.out',
+  }, transformStart + 0.5);
+
+  // Border shifts to accent
+  tl.to(toll, {
+    borderTopColor: 'rgba(116, 65, 143, 0.12)',
+    duration: 0.3,
+    ease: 'power2.out',
+  }, transformStart + 0.5);
+
+  // Result sub-line fades in
+  tl.to(resultSub, {
+    opacity: 1, y: 0, duration: 0.4, ease: 'power3.out',
+  }, transformStart + 0.7);
+
+  // ---- LONG HOLD on "after" state ----
+  tl.to({}, { duration: 3.0 }, holdAfterStart);
+})();
 
 // Architecture cards stagger
 gsap.set('.arch-card', { opacity: 0, y: 40 });
