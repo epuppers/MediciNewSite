@@ -276,7 +276,7 @@ nav {
 
 .nav-right a {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--cream-dim);
@@ -348,7 +348,7 @@ nav {
 
 .hero-status {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--green);
@@ -452,7 +452,7 @@ nav {
 
 .btn-main {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   padding: 1rem 2.5rem;
@@ -473,12 +473,13 @@ nav {
 
 .btn-line {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   letter-spacing: 0.1em;
   color: var(--cream-dim);
   text-decoration: none;
   padding: 1rem 1.5rem;
   border: 1px solid var(--border-strong);
+  background: var(--bg);
   transition: all 0.3s;
 }
 
@@ -489,7 +490,7 @@ nav {
 
 .hero-scroll-hint {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.55rem;
+  font-size: 0.7rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--cream-dim);
@@ -552,7 +553,7 @@ nav {
 
 .terminal-intro-right {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--cream-dim);
@@ -617,7 +618,7 @@ nav {
 
 .chat-tab {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.08em;
   padding: 0.4rem 1.25rem;
   color: rgba(237, 232, 223, 0.25);
@@ -643,7 +644,7 @@ nav {
 
 .chat-version {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.5rem;
+  font-size: 0.7rem;
   letter-spacing: 0.1em;
   color: rgba(237, 232, 223, 0.15);
   margin-left: auto;
@@ -698,7 +699,7 @@ nav {
   align-items: center;
   justify-content: center;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.55rem;
+  font-size: 0.7rem;
   font-weight: 500;
   flex-shrink: 0;
   border-radius: 2px;
@@ -737,7 +738,7 @@ nav {
 
 .chat-context {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.55rem;
+  font-size: 0.7rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(237, 232, 223, 0.25);
@@ -756,7 +757,7 @@ nav {
 
 .chat-cite {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.55rem;
+  font-size: 0.7rem;
   letter-spacing: 0.05em;
   color: rgba(237, 232, 223, 0.3);
 }
@@ -790,7 +791,7 @@ nav {
 
 .chat-artifact-name {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 500;
   color: #EDE8DF;
   letter-spacing: 0.03em;
@@ -798,7 +799,7 @@ nav {
 
 .chat-artifact-meta {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.5rem;
+  font-size: 0.7rem;
   color: rgba(237, 232, 223, 0.35);
   letter-spacing: 0.05em;
 }
@@ -841,7 +842,7 @@ nav {
 
 .chat-input-placeholder {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   letter-spacing: 0.05em;
   color: rgba(237, 232, 223, 0.2);
 }
@@ -853,7 +854,7 @@ nav {
 
 .chat-try-cta a {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   letter-spacing: 0.1em;
   color: rgba(237, 232, 223, 0.4);
   text-decoration: none;
@@ -1008,7 +1009,7 @@ nav {
 
 .pain-toll-label {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--accent);
@@ -1120,7 +1121,7 @@ nav {
 
 .arch-card-num {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.55rem;
+  font-size: 0.7rem;
   letter-spacing: 0.25em;
   color: var(--accent);
   margin-bottom: 2rem;
@@ -1166,7 +1167,7 @@ nav {
 
 .quotes-framing {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--accent);
@@ -1210,7 +1211,7 @@ nav {
 
 .quote-attr {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.1em;
   color: var(--cream-dim);
   text-transform: uppercase;
@@ -1228,7 +1229,7 @@ nav {
 
 .founder-label {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--accent);
@@ -1279,7 +1280,7 @@ nav {
 
 .case-persona {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.5rem;
+  font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
@@ -1346,7 +1347,7 @@ nav {
 
 .case-stat-lbl {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.5rem;
+  font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--cream-dim);
@@ -1381,7 +1382,7 @@ nav {
 
 .cta-label {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--accent);
@@ -1422,7 +1423,7 @@ nav {
 
 .pilot-step-num {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.55rem;
+  font-size: 0.7rem;
   letter-spacing: 0.2em;
   color: var(--cream-dim);
   margin-bottom: 0.75rem;
@@ -1430,7 +1431,7 @@ nav {
 
 .pilot-step-duration {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--accent);
@@ -1481,7 +1482,7 @@ footer {
 
 .foot-left {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.55rem;
+  font-size: 0.7rem;
   letter-spacing: 0.1em;
   color: rgba(237,232,223,0.2);
 }
@@ -1492,7 +1493,7 @@ footer {
 
 .foot-right a {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.55rem;
+  font-size: 0.7rem;
   letter-spacing: 0.1em;
   color: rgba(237,232,223,0.2);
   text-decoration: none;
@@ -1664,7 +1665,7 @@ a, button, .btn-main, .btn-line {
   .chat-tab {
     white-space: nowrap;
     flex-shrink: 0;
-    font-size: 0.55rem;
+    font-size: 0.7rem;
     padding: 0.4rem 0.8rem;
   }
   .chat-body {
