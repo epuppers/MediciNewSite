@@ -262,7 +262,6 @@ ScrollTrigger.create({
   var headlineAfter = document.querySelector('.pain-headline-after');
   var resultSub = document.querySelector('.pain-result-sub');
   var cardsContainer = document.querySelector('.pain-stack-cards');
-  var dividerLine = document.querySelector('.pain-divider-line');
   var cardCount = cards.length;
 
   // Toll progression: values at each card threshold
@@ -289,22 +288,21 @@ ScrollTrigger.create({
   // Initial state
   gsap.set(cards, { opacity: 0, y: 100 });
   gsap.set(toll, { opacity: 0, y: 20 });
-  gsap.set(tollAfters, { opacity: 0, y: 20 });
+  gsap.set(tollAfters, { opacity: 0, y: 30 });
   gsap.set(headlineAfter, { opacity: 0, y: 10 });
   gsap.set(resultSub, { opacity: 0, y: 10 });
 
   // Scroll budget — generous for longer holds
   var scrollPerCard = 150;
-  var totalScroll = (cardCount * scrollPerCard) + 500 + 500 + 600 + 800;
+  var totalScroll = (cardCount * scrollPerCard) + 500 + 400 + 500 + 800;
 
   // Timeline positions (in timeline units)
   var cardStagger = 1.2;
   var cardPhaseStart = 0;
   var cardPhaseEnd = cardPhaseStart + (cardCount - 1) * cardStagger + 1.0;
   var holdBeforeStart = cardPhaseEnd + 0.4;
-  var compressStart = holdBeforeStart + 2.5;     // long hold on "before" state
-  var lineDrawStart = compressStart + 0.35;
-  var transformStart = lineDrawStart + 0.25;
+  var collapseStart = holdBeforeStart + 2.5;   // long hold on "before" state
+  var transformStart = collapseStart + 0.8;    // tighter gap — get to the punchline faster
   var holdAfterStart = transformStart + 1.8;
 
   var tl = gsap.timeline({
@@ -316,7 +314,6 @@ ScrollTrigger.create({
       scrub: true,
       pinSpacing: true,
       invalidateOnRefresh: true,
-      pinType: 'transform',
     }
   });
 
@@ -351,119 +348,47 @@ ScrollTrigger.create({
   // ---- LONG HOLD on "before" state ----
   tl.to({}, { duration: 2.5 }, holdBeforeStart);
 
-  // ==== PHASE 1: CARD COMPRESSION (fast, aggressive) ====
-  // Cards compress vertically — bottom-to-top stagger, sucked into a singularity
-  cards.slice().reverse().forEach(function(card, i) {
-    tl.to(card, {
-      scaleY: 0,
-      opacity: 0,
-      transformOrigin: 'center bottom',
-      duration: 0.4,
-      ease: 'power3.in',
-    }, compressStart + i * 0.04);
-  });
-
-  // Headline "before" compresses out simultaneously
+  // Cards collapse — fast exit, clear the stage for the punchline
+  tl.to(cards, {
+    opacity: 0, y: 60,
+    duration: 0.6, stagger: 0.04,
+    ease: 'power2.in',
+  }, collapseStart);
+  // Headline swap: "You already know..." fades out, "But with Cosimo." fades in
   tl.to(headlineBefore, {
-    opacity: 0,
-    scaleY: 0.7,
-    y: 10,
-    transformOrigin: 'center bottom',
-    duration: 0.35,
+    opacity: 0, y: -15,
+    duration: 0.5,
     ease: 'power2.in',
-  }, compressStart + 0.1);
-
-  // Toll "before" values compress out
-  tl.to(tollBefores, {
-    opacity: 0,
-    y: -20,
-    duration: 0.3,
-    stagger: 0.04,
-    ease: 'power2.in',
-  }, compressStart + 0.15);
-
-  // ==== PHASE 2: THE ACCENT LINE (the kaboom) ====
-  // Line appears and draws from center outward
-  tl.to(dividerLine, {
-    opacity: 1,
-    duration: 0.1,
-    ease: 'none',
-  }, lineDrawStart);
-
-  tl.to(dividerLine, {
-    scaleX: 1,
-    duration: 0.25,
-    ease: 'power4.out',
-    transformOrigin: 'center center',
-  }, lineDrawStart);
-
-  // Accent glow pulse (the visual impact)
-  tl.to(dividerLine, {
-    boxShadow: '0 0 30px rgba(116, 65, 143, 0.4), 0 0 60px rgba(116, 65, 143, 0.15)',
-    height: 3,
-    duration: 0.15,
-    ease: 'power2.out',
-  }, lineDrawStart + 0.1);
-
-  // Line settles to subtle
-  tl.to(dividerLine, {
-    boxShadow: '0 0 8px rgba(116, 65, 143, 0.1)',
-    height: 1,
-    duration: 0.3,
-    ease: 'power2.inOut',
-  }, lineDrawStart + 0.3);
-
-  // ==== PHASE 3: THE REVEAL (calm, measured) ====
-  // Headline "after" emerges upward
-  tl.fromTo(headlineAfter, {
-    opacity: 0,
-    y: 15,
-    scaleY: 0.95,
-  }, {
-    opacity: 1,
-    y: 0,
-    scaleY: 1,
-    duration: 0.6,
-    ease: 'power2.out',
   }, transformStart);
-
-  // Toll "after" values enter with stagger
-  tl.to(tollAfters, {
-    opacity: 1,
-    y: 0,
+  tl.to(headlineAfter, {
+    opacity: 1, y: 0,
     duration: 0.6,
-    stagger: 0.08,
-    ease: 'power2.out',
-  }, transformStart + 0.15);
+    ease: 'power3.out',
+  }, transformStart + 0.3);
 
-  // Subtle scale pulse on toll values (1.06 → 1.0)
-  tl.fromTo(tollAfters, {
-    scale: 1.06,
-  }, {
-    scale: 1.0,
-    duration: 0.4,
-    stagger: 0.08,
-    ease: 'power2.out',
-  }, transformStart + 0.35);
+  // Toll numbers transform: before slides out, after slides in
+  tl.to(tollBefores, {
+    opacity: 0, y: -30,
+    duration: 0.6, stagger: 0.1,
+    ease: 'power2.in',
+  }, transformStart + 0.2);
+  tl.to(tollAfters, {
+    opacity: 1, y: 0,
+    duration: 1.0, stagger: 0.12,
+    ease: 'power3.out',
+  }, transformStart + 0.4);
 
   // Border shifts to accent
   tl.to(toll, {
     borderTopColor: 'rgba(116, 65, 143, 0.12)',
     duration: 0.3,
     ease: 'power2.out',
-  }, transformStart + 0.1);
+  }, transformStart + 0.5);
 
-  // Result sub-line fades in last
+  // Result sub-line fades in
   tl.to(resultSub, {
-    opacity: 1, y: 0, duration: 0.5, ease: 'power3.out',
-  }, transformStart + 0.6);
-
-  // Line fades to subtle structural mark
-  tl.to(dividerLine, {
-    opacity: 0.3,
-    duration: 0.6,
-    ease: 'power2.out',
-  }, transformStart + 0.4);
+    opacity: 1, y: 0, duration: 0.4, ease: 'power3.out',
+  }, transformStart + 0.7);
 
   // ---- LONG HOLD on "after" state ----
   tl.to({}, { duration: 3.0 }, holdAfterStart);

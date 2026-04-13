@@ -959,7 +959,6 @@ nav {
   border-left: 3px solid var(--border);
   position: relative;
   will-change: transform, opacity;
-  overflow: hidden;
 }
 
 .pain-card-num {
@@ -1083,18 +1082,6 @@ nav {
   opacity: 0.7;
   text-align: center;
   margin-top: 0.75rem;
-}
-
-/* Pain divider line (compression burst transition) */
-.pain-divider-line {
-  width: 100%;
-  height: 2px;
-  margin: 1rem auto;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: center center;
-  opacity: 0;
-  will-change: transform, opacity;
 }
 
 /* ========== ARCHITECTURE SECTION ========== */
