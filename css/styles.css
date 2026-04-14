@@ -949,23 +949,6 @@ nav {
   51%, 100% { opacity: 0; }
 }
 
-.chat-try-cta {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-.chat-try-cta a {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: var(--mono-md);
-  letter-spacing: 0.05em;
-  color: var(--cf-text-40);
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.chat-try-cta a:hover {
-  color: var(--cf-accent);
-}
 
 /* ========== ARTIFACT PANEL ========== */
 
