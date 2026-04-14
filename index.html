@@ -61,24 +61,34 @@
 
   <div class="terminal-stage">
     <div class="chat-frame">
-      <div class="chat-chrome">
-        <div class="term-dots">
-          <div class="term-dot"></div>
-          <div class="term-dot"></div>
-          <div class="term-dot"></div>
+      <div class="chat-content-area">
+        <div class="chat-chrome">
+          <div class="term-dots">
+            <div class="term-dot"></div>
+            <div class="term-dot"></div>
+            <div class="term-dot"></div>
+          </div>
+          <div class="chat-tabs">
+            <button class="chat-tab active" data-demo="0">Due Diligence</button>
+            <button class="chat-tab" data-demo="1">LP Reporting</button>
+            <button class="chat-tab" data-demo="2">Rent Roll</button>
+          </div>
+          <span class="chat-version">cosimo v2.4.1</span>
         </div>
-        <div class="chat-tabs">
-          <button class="chat-tab active" data-demo="0">Due Diligence</button>
-          <button class="chat-tab" data-demo="1">LP Reporting</button>
-          <button class="chat-tab" data-demo="2">Rent Roll</button>
+
+        <div class="chat-body" id="chat-body"></div>
+
         </div>
-        <span class="chat-version">cosimo v2.4.1</span>
-      </div>
 
-      <div class="chat-body" id="chat-body"></div>
-
-      <div class="chat-input-bar">
-        <span class="chat-input-placeholder">Ask Cosimo anything about your fund…</span>
+      <div class="artifact-panel" id="artifact-panel">
+        <div class="artifact-panel-chrome">
+          <div class="artifact-panel-title" id="artifact-panel-title"></div>
+          <div class="artifact-panel-actions">
+            <span class="artifact-panel-page" id="artifact-panel-page"></span>
+            <button class="artifact-panel-close" id="artifact-panel-close" aria-label="Close preview">&times;</button>
+          </div>
+        </div>
+        <div class="artifact-panel-body" id="artifact-panel-body"></div>
       </div>
     </div>
 
