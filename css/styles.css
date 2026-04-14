@@ -386,7 +386,7 @@ nav {
   -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 70%);
 }
 
-/* Red accent line — architectural */
+/* Accent line — architectural */
 .hero-accent-line {
   position: absolute;
   top: 3.25rem;
@@ -471,11 +471,6 @@ nav {
   margin-left: 2px;
   vertical-align: text-bottom;
   animation: cursorBlink 0.6s steps(1) infinite;
-}
-
-@keyframes cursorBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
 }
 
 .h-large {
@@ -935,15 +930,12 @@ nav {
   gap: 1rem;
   max-width: 90%;
   transform: scale(0.97);
+  cursor: pointer;
   transition: transform 0.3s ease 0.15s;
 }
 
 .chat-msg.visible .chat-artifact-card {
   transform: scale(1);
-}
-
-.chat-artifact-card {
-  cursor: pointer;
 }
 
 .chat-artifact-card:hover {
@@ -1975,6 +1967,7 @@ footer {
   align-items: center;
 }
 
+/* Footer text uses rgba(237,232,223,0.2) — intentionally dimmer than --cream-dim */
 .foot-left {
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-sm);
