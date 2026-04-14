@@ -369,7 +369,7 @@ nav {
 .h-italic {
   font-size: clamp(4.5rem, 10vw, 9rem);
   color: var(--accent);
-  font-style: italic;
+  font-style: normal;
   min-height: 1.3em;
 }
 
@@ -1584,7 +1584,7 @@ nav {
   font-weight: 300;
 }
 
-/* ========== USE CASES — horizontal scroll-style ========== */
+/* ========== USE CASES ========== */
 .cases-section {
   border-top: 1px solid var(--border);
   padding: 6rem 2.5rem;
