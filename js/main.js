@@ -12,6 +12,8 @@ themeToggle.addEventListener('click', () => {
   document.documentElement.setAttribute('data-theme', next);
   localStorage.setItem('medici-theme', next);
   themeToggle.innerHTML = next === 'light' ? '&#9728;' : '&#9790;';
+  // Re-read computed colors so scrub timelines pick up new theme values
+  if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
 });
 
 // ========== LENIS SMOOTH SCROLL ==========

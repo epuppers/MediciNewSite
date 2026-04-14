@@ -24,6 +24,11 @@
   --border: rgba(237, 232, 223, 0.06);
   --border-strong: rgba(237, 232, 223, 0.1);
 
+  /* Pain card gradient: lightest → darkest (dark mode) */
+  --pain-step-0: var(--bg-surface);
+  --pain-step-1: var(--bg-elevated);
+  --pain-step-2: var(--bg);
+
   /* Mono size tiers */
   --mono-xs: 0.7rem;
   --mono-sm: 0.75rem;
@@ -47,6 +52,11 @@
   --green-dim: rgba(27, 158, 82, 0.1);
   --border: rgba(26, 26, 24, 0.08);
   --border-strong: rgba(26, 26, 24, 0.15);
+
+  /* Pain card gradient: lightest → darkest (light mode) */
+  --pain-step-0: var(--bg-elevated);
+  --pain-step-1: var(--bg);
+  --pain-step-2: var(--bg-surface);
 }
 
 [data-theme="light"] ::selection {
@@ -75,133 +85,10 @@
 }
 
 
-/* Light mode: force chat frame to stay dark */
+/* Light mode: chat frame container adjustments */
 [data-theme="light"] .chat-frame {
-  background: #141413;
   border-color: rgba(0, 0, 0, 0.1);
   box-shadow: 0 8px 60px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-[data-theme="light"] .chat-frame::before {
-  background: linear-gradient(90deg, #74418F, #74418F 30%, transparent 100%);
-}
-[data-theme="light"] .chat-chrome {
-  background: #1A1A18;
-  border-bottom-color: rgba(237, 232, 223, 0.06);
-}
-[data-theme="light"] .chat-tab {
-  color: rgba(237, 232, 223, 0.25);
-}
-[data-theme="light"] .chat-tab.active {
-  color: #EDE8DF;
-  background: #141413;
-  border-color: rgba(237, 232, 223, 0.1);
-  border-bottom-color: #141413;
-}
-[data-theme="light"] .chat-tab:hover:not(.active) {
-  color: rgba(237, 232, 223, 0.5);
-}
-[data-theme="light"] .chat-version {
-  color: rgba(237, 232, 223, 0.15);
-}
-[data-theme="light"] .chat-body {
-  color: #EDE8DF;
-}
-[data-theme="light"] .chat-bubble {
-  color: #EDE8DF;
-}
-[data-theme="light"] .chat-msg.user .chat-bubble {
-  background: rgba(116, 65, 143, 0.15);
-  border-color: rgba(116, 65, 143, 0.3);
-}
-[data-theme="light"] .chat-sender-icon,
-[data-theme="light"] .chat-sender-name {
-  color: #74418F;
-}
-[data-theme="light"] .chat-context-dot {
-  background: #2ECC71;
-}
-[data-theme="light"] .chat-context-text {
-  color: rgba(237, 232, 223, 0.5);
-}
-[data-theme="light"] .chat-context-stat {
-  color: rgba(237, 232, 223, 0.25);
-}
-[data-theme="light"] .chat-context-sep {
-  color: rgba(237, 232, 223, 0.15);
-}
-[data-theme="light"] .chat-sources {
-  border-color: rgba(237, 232, 223, 0.08);
-}
-[data-theme="light"] .chat-sources-label {
-  background: rgba(237, 232, 223, 0.03);
-  color: rgba(237, 232, 223, 0.5);
-}
-[data-theme="light"] .chat-sources-icon {
-  color: #74418F;
-}
-[data-theme="light"] .chat-source-file {
-  color: rgba(237, 232, 223, 0.7);
-}
-[data-theme="light"] .chat-source-ref {
-  color: rgba(237, 232, 223, 0.35);
-}
-[data-theme="light"] .chat-source-item {
-  border-top-color: rgba(237, 232, 223, 0.04);
-}
-[data-theme="light"] .chat-artifact-card {
-  background: rgba(46, 204, 113, 0.04);
-  border-color: rgba(46, 204, 113, 0.25);
-}
-[data-theme="light"] .chat-artifact-file-icon {
-  border-color: #2ECC71;
-}
-[data-theme="light"] .chat-artifact-file-icon::before {
-  background: #141413;
-  border-color: #2ECC71;
-}
-[data-theme="light"] .chat-artifact-card-name {
-  color: #EDE8DF;
-}
-[data-theme="light"] .chat-artifact-card-meta {
-  color: rgba(237, 232, 223, 0.4);
-}
-[data-theme="light"] .chat-artifact-ready {
-  color: #2ECC71;
-  border-color: rgba(46, 204, 113, 0.3);
-}
-[data-theme="light"] .chat-thinking-icon {
-  color: #74418F;
-}
-[data-theme="light"] .chat-thinking-label {
-  color: rgba(237, 232, 223, 0.3);
-}
-[data-theme="light"] .chat-thinking-cursor {
-  background: #74418F;
-}
-[data-theme="light"] .chat-try-cta a {
-  color: rgba(237, 232, 223, 0.4);
-}
-[data-theme="light"] .chat-try-cta a:hover {
-  color: #74418F;
-}
-[data-theme="light"] .artifact-panel {
-  background: #141413;
-  border-left-color: rgba(237, 232, 223, 0.06);
-}
-[data-theme="light"] .artifact-panel-chrome {
-  background: #1A1A18;
-  border-bottom-color: rgba(237, 232, 223, 0.06);
-}
-[data-theme="light"] .artifact-panel-title {
-  color: rgba(237, 232, 223, 0.7);
-}
-[data-theme="light"] .artifact-panel-close {
-  color: rgba(237, 232, 223, 0.5);
-  border-color: rgba(237, 232, 223, 0.1);
-}
-[data-theme="light"] .artifact-panel-close:hover {
-  color: #EDE8DF;
-  border-color: rgba(237, 232, 223, 0.25);
 }
 
 /* Light mode: button hover */
@@ -637,8 +524,28 @@ nav {
 
 /* ========== CHAT DEMO ========== */
 .chat-frame {
-  background: #141413;
-  border: 1px solid rgba(237, 232, 223, 0.1);
+  /* Scoped dark palette — chat stays dark in both themes */
+  --cf-bg: #141413;
+  --cf-surface: #1A1A18;
+  --cf-text: #EDE8DF;
+  --cf-accent: #74418F;
+  --cf-green: #2ECC71;
+  --cf-text-70: rgba(237, 232, 223, 0.7);
+  --cf-text-50: rgba(237, 232, 223, 0.5);
+  --cf-text-40: rgba(237, 232, 223, 0.4);
+  --cf-text-35: rgba(237, 232, 223, 0.35);
+  --cf-text-30: rgba(237, 232, 223, 0.3);
+  --cf-text-25: rgba(237, 232, 223, 0.25);
+  --cf-text-15: rgba(237, 232, 223, 0.15);
+  --cf-border-10: rgba(237, 232, 223, 0.1);
+  --cf-border-08: rgba(237, 232, 223, 0.08);
+  --cf-border-06: rgba(237, 232, 223, 0.06);
+  --cf-border-04: rgba(237, 232, 223, 0.04);
+  --cf-border-03: rgba(237, 232, 223, 0.03);
+
+  background: var(--cf-bg);
+  color: var(--cf-text);
+  border: 1px solid var(--cf-border-10);
   border-radius: 8px;
   position: relative;
   overflow: hidden;
@@ -662,7 +569,7 @@ nav {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: linear-gradient(90deg, #74418F, #74418F 30%, transparent 100%);
+  background: linear-gradient(90deg, var(--cf-accent), var(--cf-accent) 30%, transparent 100%);
   opacity: 0.6;
   border-radius: 8px 8px 0 0;
 }
@@ -671,8 +578,8 @@ nav {
   display: flex;
   align-items: center;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid rgba(237, 232, 223, 0.06);
-  background: #1A1A18;
+  border-bottom: 1px solid var(--cf-border-06);
+  background: var(--cf-surface);
   border-radius: 8px 8px 0 0;
 }
 
@@ -688,7 +595,7 @@ nav {
   letter-spacing: 0.08em;
   line-height: 1.4;
   padding: 0.4rem 1.25rem;
-  color: rgba(237, 232, 223, 0.25);
+  color: var(--cf-text-25);
   border: 1px solid transparent;
   border-bottom: none;
   cursor: pointer;
@@ -698,22 +605,22 @@ nav {
 }
 
 .chat-tab.active {
-  color: #EDE8DF;
-  background: #141413;
-  border-color: rgba(237, 232, 223, 0.1);
-  border-bottom: 1px solid #141413;
+  color: var(--cf-text);
+  background: var(--cf-bg);
+  border-color: var(--cf-border-10);
+  border-bottom: 1px solid var(--cf-bg);
   margin-bottom: -1px;
 }
 
 .chat-tab:hover:not(.active) {
-  color: rgba(237, 232, 223, 0.5);
+  color: var(--cf-text-50);
 }
 
 .chat-version {
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-xs);
   letter-spacing: 0.1em;
-  color: rgba(237, 232, 223, 0.15);
+  color: var(--cf-text-15);
   margin-left: auto;
   text-transform: uppercase;
 }
@@ -727,7 +634,7 @@ nav {
   flex-direction: column;
   gap: 1.75rem;
   scrollbar-width: thin;
-  scrollbar-color: rgba(237, 232, 223, 0.1) transparent;
+  scrollbar-color: var(--cf-border-10) transparent;
 }
 
 .chat-body::-webkit-scrollbar {
@@ -737,7 +644,7 @@ nav {
   background: transparent;
 }
 .chat-body::-webkit-scrollbar-thumb {
-  background: rgba(237, 232, 223, 0.1);
+  background: var(--cf-border-10);
   border-radius: 2px;
 }
 
@@ -767,6 +674,7 @@ nav {
   max-width: 75%;
 }
 
+
 /* Cosimo messages: sender label + response wrapper */
 .chat-sender {
   display: flex;
@@ -776,7 +684,7 @@ nav {
 }
 
 .chat-sender-icon {
-  color: #74418F;
+  color: var(--cf-accent);
   font-size: 0.9rem;
   line-height: 1;
 }
@@ -784,7 +692,7 @@ nav {
 .chat-sender-name {
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-md);
-  color: #74418F;
+  color: var(--cf-accent);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -797,7 +705,7 @@ nav {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.88rem;
   line-height: 1.7;
-  color: #EDE8DF;
+  color: var(--cf-text);
   font-weight: 300;
 }
 
@@ -811,14 +719,14 @@ nav {
   display: inline-block;
   width: 6px;
   height: 1em;
-  background: rgba(237, 232, 223, 0.5);
+  background: var(--cf-text-50);
   margin-left: 2px;
   vertical-align: text-bottom;
   animation: cursorBlink 1s step-end infinite;
 }
 
 .chat-msg.user .chat-bubble.typing::after {
-  background: rgba(237, 232, 223, 0.4);
+  background: var(--cf-text-40);
 }
 
 /* --- Context status bar --- */
@@ -832,7 +740,7 @@ nav {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(237, 232, 223, 0.08);
+  border-bottom: 1px solid var(--cf-border-08);
   margin-bottom: 0.5rem;
 }
 
@@ -840,27 +748,27 @@ nav {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #2ECC71;
+  background: var(--cf-green);
   flex-shrink: 0;
 }
 
 .chat-context-text {
-  color: rgba(237, 232, 223, 0.5);
+  color: var(--cf-text-50);
 }
 
 .chat-context-sep {
-  color: rgba(237, 232, 223, 0.15);
+  color: var(--cf-text-15);
   margin: 0 0.1rem;
 }
 
 .chat-context-stat {
-  color: rgba(237, 232, 223, 0.25);
+  color: var(--cf-text-25);
 }
 
 /* --- Sources panel --- */
 .chat-sources {
   margin-top: 0.75rem;
-  border: 1px solid rgba(237, 232, 223, 0.08);
+  border: 1px solid var(--cf-border-08);
   border-radius: 4px;
   overflow: hidden;
   max-width: 90%;
@@ -871,16 +779,16 @@ nav {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.75rem;
-  background: rgba(237, 232, 223, 0.03);
+  background: var(--cf-border-03);
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-xs);
-  color: rgba(237, 232, 223, 0.5);
+  color: var(--cf-text-50);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .chat-sources-icon {
-  color: #74418F;
+  color: var(--cf-accent);
   font-size: 0.7rem;
 }
 
@@ -894,14 +802,14 @@ nav {
   justify-content: space-between;
   align-items: baseline;
   padding: 0.4rem 0.75rem;
-  border-top: 1px solid rgba(237, 232, 223, 0.04);
+  border-top: 1px solid var(--cf-border-04);
   gap: 1rem;
 }
 
 .chat-source-file {
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-xs);
-  color: rgba(237, 232, 223, 0.7);
+  color: var(--cf-text-70);
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
@@ -912,7 +820,7 @@ nav {
 .chat-source-ref {
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-xs);
-  color: rgba(237, 232, 223, 0.35);
+  color: var(--cf-text-35);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -953,7 +861,7 @@ nav {
 .chat-artifact-file-icon {
   width: 28px;
   height: 34px;
-  border: 1.5px solid #2ECC71;
+  border: 1.5px solid var(--cf-green);
   border-radius: 1px;
   position: relative;
   flex-shrink: 0;
@@ -966,9 +874,9 @@ nav {
   right: -1.5px;
   width: 10px;
   height: 10px;
-  background: #141413;
-  border-bottom: 1.5px solid #2ECC71;
-  border-left: 1.5px solid #2ECC71;
+  background: var(--cf-bg);
+  border-bottom: 1.5px solid var(--cf-green);
+  border-left: 1.5px solid var(--cf-green);
 }
 
 .chat-artifact-card-info {
@@ -982,7 +890,7 @@ nav {
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-md);
   font-weight: 500;
-  color: #EDE8DF;
+  color: var(--cf-text);
   letter-spacing: 0.02em;
   white-space: nowrap;
   overflow: hidden;
@@ -992,13 +900,13 @@ nav {
 .chat-artifact-card-meta {
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-xs);
-  color: rgba(237, 232, 223, 0.4);
+  color: var(--cf-text-40);
 }
 
 .chat-artifact-ready {
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-xs);
-  color: #2ECC71;
+  color: var(--cf-green);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   border: 1px solid rgba(46, 204, 113, 0.3);
@@ -1016,7 +924,7 @@ nav {
 }
 
 .chat-thinking-icon {
-  color: #74418F;
+  color: var(--cf-accent);
   font-size: 0.9rem;
   line-height: 1;
 }
@@ -1024,7 +932,7 @@ nav {
 .chat-thinking-label {
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-xs);
-  color: rgba(237, 232, 223, 0.3);
+  color: var(--cf-text-30);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -1032,7 +940,7 @@ nav {
 .chat-thinking-cursor {
   width: 8px;
   height: 16px;
-  background: #74418F;
+  background: var(--cf-accent);
   animation: cursorBlink 1s step-end infinite;
 }
 
@@ -1050,13 +958,13 @@ nav {
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-md);
   letter-spacing: 0.05em;
-  color: rgba(237, 232, 223, 0.4);
+  color: var(--cf-text-40);
   text-decoration: none;
   transition: color 0.3s;
 }
 
 .chat-try-cta a:hover {
-  color: #74418F;
+  color: var(--cf-accent);
 }
 
 /* ========== ARTIFACT PANEL ========== */
@@ -1082,11 +990,11 @@ nav {
   bottom: 0;
   width: 0;
   overflow: hidden;
-  border-left: 1px solid rgba(237, 232, 223, 0.06);
+  border-left: 1px solid var(--cf-border-06);
   display: flex;
   flex-direction: column;
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  background: #141413;
+  background: var(--cf-bg);
   z-index: 5;
 }
 
@@ -1100,8 +1008,8 @@ nav {
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1.25rem;
-  border-bottom: 1px solid rgba(237, 232, 223, 0.06);
-  background: #1A1A18;
+  border-bottom: 1px solid var(--cf-border-06);
+  background: var(--cf-surface);
   border-radius: 0 8px 0 0;
   flex-shrink: 0;
 }
@@ -1109,7 +1017,7 @@ nav {
 .artifact-panel-title {
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-sm);
-  color: rgba(237, 232, 223, 0.7);
+  color: var(--cf-text-70);
   letter-spacing: 0.05em;
   white-space: nowrap;
   overflow: hidden;
@@ -1126,14 +1034,14 @@ nav {
 .artifact-panel-page {
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-xs);
-  color: rgba(237, 232, 223, 0.3);
+  color: var(--cf-text-30);
   letter-spacing: 0.08em;
 }
 
 .artifact-panel-close {
   background: none;
-  border: 1px solid rgba(237, 232, 223, 0.1);
-  color: rgba(237, 232, 223, 0.5);
+  border: 1px solid var(--cf-border-10);
+  color: var(--cf-text-50);
   font-size: 1.1rem;
   width: 28px;
   height: 28px;
@@ -1147,8 +1055,8 @@ nav {
 }
 
 .artifact-panel-close:hover {
-  color: #EDE8DF;
-  border-color: rgba(237, 232, 223, 0.25);
+  color: var(--cf-text);
+  border-color: var(--cf-text-25);
 }
 
 /* Panel body */
@@ -1157,7 +1065,7 @@ nav {
   overflow-y: auto;
   padding: 1.5rem;
   scrollbar-width: thin;
-  scrollbar-color: rgba(237, 232, 223, 0.1) transparent;
+  scrollbar-color: var(--cf-border-10) transparent;
   border-radius: 0 0 8px 0;
 }
 
@@ -1168,7 +1076,7 @@ nav {
   background: transparent;
 }
 .artifact-panel-body::-webkit-scrollbar-thumb {
-  background: rgba(237, 232, 223, 0.1);
+  background: var(--cf-border-10);
   border-radius: 2px;
 }
 
@@ -1192,7 +1100,7 @@ nav {
   font-family: 'EB Garamond', serif;
   font-size: 1.3rem;
   font-weight: 600;
-  color: #EDE8DF;
+  color: var(--cf-text);
   letter-spacing: 0.15em;
   text-transform: uppercase;
   margin-bottom: 0.25rem;
@@ -1240,7 +1148,7 @@ nav {
 .doc-section-ref {
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-xs);
-  color: #74418F;
+  color: var(--cf-accent);
   background: rgba(116, 65, 143, 0.08);
   padding: 0.15rem 0.4rem;
   border-radius: 2px;
@@ -1327,9 +1235,9 @@ nav {
 /* --- Spreadsheet (rent roll) --- */
 .doc-spreadsheet {
   overflow-x: auto;
-  border: 1px solid rgba(237, 232, 223, 0.08);
+  border: 1px solid var(--cf-border-08);
   border-radius: 4px;
-  background: #1A1A18;
+  background: var(--cf-surface);
 }
 
 .doc-spreadsheet table {
@@ -1374,8 +1282,8 @@ nav {
 
 .doc-spreadsheet .sheet-tabs {
   display: flex;
-  border-top: 1px solid rgba(237, 232, 223, 0.06);
-  background: #1A1A18;
+  border-top: 1px solid var(--cf-border-06);
+  background: var(--cf-surface);
 }
 
 .doc-spreadsheet .sheet-tab {
@@ -1477,34 +1385,34 @@ nav {
 
 /* Progressive darkening + left border heat map */
 .pain-card[data-card-index="0"] {
-  background: var(--bg-elevated);
+  background: var(--pain-step-0);
   color: var(--cream);
   border-left-color: var(--border-strong);
 }
 .pain-card[data-card-index="1"] {
-  background: var(--bg);
+  background: var(--pain-step-1);
   color: var(--cream);
   border-left-color: var(--border);
 }
 .pain-card[data-card-index="2"] {
-  background: var(--bg-surface);
+  background: var(--pain-step-2);
   color: var(--cream);
   border-left-color: var(--accent-dim);
 }
 .pain-card[data-card-index="3"] {
-  background: var(--bg-surface);
+  background: var(--pain-step-2);
   color: var(--cream-dim);
   border-left-color: var(--accent-dim);
   box-shadow: inset 0 0 0 999px rgba(0,0,0,0.08);
 }
 .pain-card[data-card-index="4"] {
-  background: var(--bg-surface);
+  background: var(--pain-step-2);
   color: var(--cream-dim);
   border-left-color: var(--accent);
   box-shadow: inset 0 0 0 999px rgba(0,0,0,0.15);
 }
 .pain-card[data-card-index="5"] {
-  background: var(--bg-surface);
+  background: var(--pain-step-2);
   color: var(--cream-dim);
   border-color: var(--accent-dim);
   border-left-color: var(--accent);
