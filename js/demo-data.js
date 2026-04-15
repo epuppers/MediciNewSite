@@ -1,27 +1,28 @@
 // ========== CHAT DEMOS ==========
 const chatDemos = [
   {
-    context: 'Alpine Capital III · 847 documents · 2.4GB indexed',
+    context: 'Ridgeline Acquisition · 1,247 data room documents · diligence in progress',
     messages: [
-      { role: 'user', text: 'What are our co-invest obligations to LPs?' },
+      { role: 'user', text: 'Summarize revenue quality — what\'s recurring vs. one-time?' },
       {
         role: 'cosimo',
-        text: 'Co-investment rights are offered pro-rata to LPs committing ≥$25M, with a 10 business day notice period per Section 4.2(b) of the LPA. Meridian has an additional first-look provision in their side letter.',
+        text: 'FY24 revenue was $47.2M. 71% recurring (SaaS subscriptions + maintenance contracts), 18% implementation services, 11% one-time license fees. Note: $3.1M of the recurring base comes from a single contract (Apex Corp) expiring Q2 2025 with no auto-renewal clause.',
         citations: [
-          { file: 'LPA_AlpineIII_Final.pdf', ref: 'p.34, §4.2(b)' },
-          { file: 'SideLetter_Meridian_2024.pdf', ref: 'p.7' },
-          { file: 'IC_Memo_CoInvest_Policy.docx', ref: 'p.2' }
+          { file: 'Mgmt_Financials_FY24.xlsx', ref: 'revenue tab' },
+          { file: 'Apex_MSA_2022.pdf', ref: 'p.14, §7 — termination' },
+          { file: 'Customer_Revenue_Breakdown.pdf', ref: 'p.3' }
         ]
       },
-      { role: 'user', text: 'Draft the co-invest notice for Meridian' },
+      { role: 'user', text: 'Flag that. Generate the financial diligence section for our IC memo.' },
       {
         role: 'cosimo',
-        text: 'Done. I\'ve drafted the notice using the terms from their side letter and the LPA requirements. The 10-day notice window and pro-rata allocation are referenced with source citations.',
+        text: 'Done. Apex concentration risk is flagged as a Key Finding. Revenue quality, margin trends, and customer concentration are included with source citations throughout.',
         citations: [
-          { file: 'SideLetter_Meridian_2024.pdf', ref: 'p.7' },
-          { file: 'LPA_AlpineIII_Final.pdf', ref: 'p.34' }
+          { file: 'Mgmt_Financials_FY24.xlsx', ref: 'revenue + margins' },
+          { file: 'Apex_MSA_2022.pdf', ref: 'p.14, §7' },
+          { file: 'AR_Aging_Q4_2024.pdf', ref: 'p.2' }
         ],
-        artifact: { name: 'meridian_coinvest_notice.pdf', meta: 'Co-invest notice · 2 pages · source-cited' }
+        artifact: { name: 'IC_Memo_Financial_DD.pdf', meta: 'Financial diligence · 6 pages · 23 source citations' }
       }
     ]
   },
@@ -31,7 +32,7 @@ const chatDemos = [
       { role: 'user', text: 'Generate the quarterly performance summary for all LPs' },
       {
         role: 'cosimo',
-        text: 'Aggregated across 12 portfolio companies. Net IRR: 18.3% | TVPI: 1.42x | DPI: 0.31x. All figures cross-referenced against capital account statements and NAV reports.',
+        text: 'Aggregated across 12 portfolio companies. Net IRR: 18.3% | TVPI: 1.42x | DPI: 0.31x. Note: Greenfield Energy reported Q3 figures 12 days late — I used their most recent available data and flagged the lag.',
         citations: [
           { file: 'NAV_Q3_2025_Final.xlsx', ref: 'all tabs' },
           { file: 'CapitalAccounts_Master.xlsx', ref: 'Sheet "Fund III"' },
@@ -47,6 +48,32 @@ const chatDemos = [
           { file: 'NAV_Q3_2025_Final.xlsx', ref: 'performance data' }
         ],
         artifact: { name: 'Q3_2025_LP_Letter.pdf', meta: 'Quarterly LP letter · 8 pages · 47 data points validated' }
+      }
+    ]
+  },
+  {
+    context: 'Ironbridge Credit Fund II · 14 portfolio companies · Q3 covenant review',
+    messages: [
+      { role: 'user', text: 'Run covenant compliance across the entire portfolio' },
+      {
+        role: 'cosimo',
+        text: 'Tested 14 borrowers against financial covenants. 11 in full compliance. Three issues flagged: Meridian Logistics breached leverage ratio (4.8x actual vs. 4.5x max). Atlas Manufacturing DSCR trending toward threshold (1.12x actual vs. 1.10x minimum). Lakeshore Hospitality has not submitted Q3 financials — 47 days past due.',
+        citations: [
+          { file: 'Meridian_CreditAgreement_2023.pdf', ref: '§6.1 — leverage covenant' },
+          { file: 'Atlas_Financials_Q3.xlsx', ref: 'DSCR calculation tab' },
+          { file: 'Lakeshore_Reporting_Log.xlsx', ref: 'submission tracker' }
+        ]
+      },
+      { role: 'user', text: 'Generate the quarterly covenant compliance report for our credit committee' },
+      {
+        role: 'cosimo',
+        text: 'Formatted into your credit committee template. Breach detail, cure period status, and recommended watch list actions are included for all three flagged borrowers.',
+        citations: [
+          { file: 'CC_Report_Template_v2.docx', ref: 'formatting reference' },
+          { file: 'Meridian_CreditAgreement_2023.pdf', ref: '§6.1, §8.2 — cure provisions' },
+          { file: 'Atlas_Financials_Q3.xlsx', ref: 'trailing 4-quarter DSCR' }
+        ],
+        artifact: { name: 'Q3_Covenant_Compliance.pdf', meta: 'Covenant compliance · 14 borrowers · 3 flags' }
       }
     ]
   },
@@ -79,68 +106,68 @@ const chatDemos = [
 
 // ========== ARTIFACT DOCUMENTS ==========
 
-function getMeridianCoInvestHTML() {
+function getDiligenceMemoHTML() {
   return '<div class="doc-page">' +
     '<div class="doc-letterhead">' +
-      '<div class="doc-letterhead-name">Alpine Capital Management</div>' +
-      '<div class="doc-letterhead-sub">320 Park Avenue, 22nd Floor &middot; New York, NY 10022</div>' +
+      '<div class="doc-letterhead-name">Investment Committee Memorandum</div>' +
+      '<div class="doc-letterhead-sub">Ridgeline Acquisition &middot; Financial Due Diligence</div>' +
     '</div>' +
-    '<div class="doc-date">January 15, 2026</div>' +
-    '<div class="doc-addressee">' +
-      'Meridian Partners, LP<br>' +
-      'Attn: Sarah Chen, Director of Investments<br>' +
-      '1 Financial Center, Suite 4200<br>' +
-      'Boston, MA 02111' +
-    '</div>' +
-    '<div class="doc-re-line">Re: Alpine Capital Fund III \u2014 Co-Investment Opportunity (NovaTech Solutions, Inc.)</div>' +
-    '<div class="doc-body-text">Dear Ms. Chen,</div>' +
-    '<div class="doc-body-text">' +
-      'Pursuant to <span class="doc-section-ref">Section 4.2(b) of the LPA</span> and the co-investment provisions of your side letter dated March 12, 2024 ' +
-      '(<span class="doc-section-ref">Side Letter \u00A77</span>), we are pleased to notify Meridian Partners of a co-investment opportunity in ' +
-      'NovaTech Solutions, Inc. (\u201CTarget\u201D), a leading enterprise workflow automation platform.' +
-    '</div>' +
-    '<div class="doc-body-text">' +
-      'The Investment Committee has approved a total co-investment allocation of <strong>$12,500,000</strong> alongside the Fund\u2019s primary commitment. ' +
-      'Pursuant to the first-look provision in your side letter, Meridian is entitled to participate on a priority basis prior to allocation to other eligible LPs.' +
-    '</div>' +
-    '<div class="doc-body-text">' +
-      'Based on Meridian\u2019s 24.8% pro-rata share of Fund III commitments, your indicative allocation is <strong>$3,100,000</strong>. ' +
-      'This allocation is subject to the terms outlined below.' +
-    '</div>' +
-    '<div class="doc-section-title">Key Terms</div>' +
+    '<div class="doc-date">CONFIDENTIAL &middot; Prepared January 2026</div>' +
+    '<div class="doc-section-title">1. Revenue Quality Analysis</div>' +
     '<table class="doc-table">' +
-      '<tr><td>Target Company</td><td>NovaTech Solutions, Inc.</td></tr>' +
-      '<tr><td>Transaction Type</td><td>Series C Preferred Equity</td></tr>' +
-      '<tr><td>Pre-Money Valuation</td><td>$480M</td></tr>' +
-      '<tr><td>Total Co-Invest Pool</td><td>$12,500,000</td></tr>' +
-      '<tr><td>Meridian Pro-Rata</td><td class="num">$3,100,000 (24.8%)</td></tr>' +
-      '<tr><td>Notice Period</td><td>10 business days from date of this notice</td></tr>' +
-      '<tr><td>Response Deadline</td><td>January 29, 2026</td></tr>' +
-      '<tr><td>Anticipated Closing</td><td>February 14, 2026</td></tr>' +
+      '<thead><tr><th>Revenue Stream</th><th>FY24</th><th>% of Total</th><th>YoY Growth</th></tr></thead>' +
+      '<tbody>' +
+        '<tr><td>SaaS Subscriptions</td><td class="num">$24.8M</td><td class="num">52.5%</td><td class="num">+18.1%</td></tr>' +
+        '<tr><td>Maintenance Contracts</td><td class="num">$8.7M</td><td class="num">18.5%</td><td class="num">+6.3%</td></tr>' +
+        '<tr><td>Implementation Services</td><td class="num">$8.5M</td><td class="num">18.0%</td><td class="num">+22.4%</td></tr>' +
+        '<tr><td>One-Time License</td><td class="num">$5.2M</td><td class="num">11.0%</td><td class="num">\u22127.8%</td></tr>' +
+        '<tr style="font-weight:500;"><td>Total Revenue</td><td class="num">$47.2M</td><td class="num">100%</td><td class="num">+14.2%</td></tr>' +
+      '</tbody>' +
     '</table>' +
+    '<div class="doc-body-text">' +
+      'Recurring revenue (SaaS + maintenance) represents 71% of total, up from 64% in FY23. The shift toward recurring is positive, ' +
+      'though one-time license decline (\u22127.8%) suggests the legacy on-prem product is sunsetting faster than implementation revenue can compensate.' +
+    '</div>' +
+    '<div class="doc-section-title" style="color:#c0392b;">Key Finding: Customer Concentration Risk</div>' +
+    '<div class="doc-body-text">' +
+      '<strong>Apex Corp accounts for $3.1M of recurring revenue (9.3% of recurring base).</strong> ' +
+      'The master services agreement (<span class="doc-section-ref">Apex_MSA_2022.pdf, \u00A77</span>) expires Q2 2025 with no auto-renewal clause. ' +
+      'Management has not provided evidence of renewal discussions. Loss of this contract would reduce recurring revenue to 64% of total \u2014 ' +
+      'below the 70% threshold in our underwriting case.' +
+    '</div>' +
   '</div>' +
   '<div class="doc-page">' +
+    '<div class="doc-section-title">2. Margin Analysis</div>' +
+    '<table class="doc-table">' +
+      '<thead><tr><th>Metric</th><th>FY22</th><th>FY23</th><th>FY24</th></tr></thead>' +
+      '<tbody>' +
+        '<tr><td>Gross Margin</td><td class="num">68.2%</td><td class="num">71.4%</td><td class="num">73.1%</td></tr>' +
+        '<tr><td>EBITDA Margin</td><td class="num">12.1%</td><td class="num">15.8%</td><td class="num">18.3%</td></tr>' +
+        '<tr><td>FCF Margin</td><td class="num">4.2%</td><td class="num">8.7%</td><td class="num">11.5%</td></tr>' +
+      '</tbody>' +
+    '</table>' +
     '<div class="doc-body-text">' +
-      'To elect participation, please deliver written notice to the undersigned on or before the Response Deadline. ' +
-      'Your election must specify the desired commitment amount (up to your pro-rata allocation). ' +
-      'Failure to respond by the deadline will be deemed a waiver of this opportunity per <span class="doc-section-ref">Section 4.2(b)(iii)</span>.' +
+      'Margin trajectory is favorable across all measures. Gross margin expansion (+490bps over two years) is driven by the mix shift toward SaaS. ' +
+      'EBITDA margins benefit from operating leverage as implementation costs are partially fixed.' +
     '</div>' +
+    '<div class="doc-section-title">3. Customer Concentration</div>' +
+    '<table class="doc-table">' +
+      '<thead><tr><th>Customer</th><th>FY24 Revenue</th><th>% of Total</th><th>Contract Expiry</th><th>Risk</th></tr></thead>' +
+      '<tbody>' +
+        '<tr class="flagged"><td>Apex Corp</td><td class="num">$3.1M</td><td class="num">6.6%</td><td>Q2 2025</td><td><span class="flag-icon">\u25CF</span> NO AUTO-RENEW</td></tr>' +
+        '<tr><td>Meridian Health</td><td class="num">$2.8M</td><td class="num">5.9%</td><td>Q4 2026</td><td>Low</td></tr>' +
+        '<tr><td>Coastal Systems</td><td class="num">$2.4M</td><td class="num">5.1%</td><td>Q1 2027</td><td>Low</td></tr>' +
+        '<tr><td>Summit Group</td><td class="num">$1.9M</td><td class="num">4.0%</td><td>Q3 2026</td><td>Low</td></tr>' +
+        '<tr><td>All Others (84)</td><td class="num">$37.0M</td><td class="num">78.4%</td><td>Various</td><td>Low</td></tr>' +
+      '</tbody>' +
+    '</table>' +
     '<div class="doc-body-text">' +
-      'Participating co-investors will receive the same terms, pricing, and protections as the Fund\u2019s primary investment. ' +
-      'A detailed term sheet and data room access credentials will be provided upon election.' +
-    '</div>' +
-    '<div class="doc-body-text">' +
-      'This notice and its contents are confidential and intended solely for the addressee. ' +
-      'Distribution or disclosure to any third party without the prior written consent of Alpine Capital Management is strictly prohibited.' +
-    '</div>' +
-    '<div class="doc-signature-block">' +
-      '<div class="doc-signature-line"></div>' +
-      '<div class="doc-signature-name">James R. Whitfield</div>' +
-      '<div class="doc-signature-title">Managing Partner, Alpine Capital Management</div>' +
+      'Top-four concentration is 21.6% \u2014 within acceptable range for a mid-market SaaS business. ' +
+      'However, the Apex non-renewal risk is material and should be addressed in management discussions before IC vote.' +
     '</div>' +
     '<div class="doc-footer">' +
-      'CONFIDENTIAL \u2014 This communication is privileged and confidential, intended solely for the use of the addressee. ' +
-      'Any unauthorized review, use, disclosure, or distribution is prohibited. Alpine Capital Management LLC is a registered investment adviser.' +
+      'Sources: Mgmt_Financials_FY24.xlsx, Apex_MSA_2022.pdf, Customer_Revenue_Breakdown.pdf, AR_Aging_Q4_2024.pdf. ' +
+      'All figures cross-referenced against audited financial statements where available.' +
     '</div>' +
   '</div>';
 }
@@ -187,12 +214,12 @@ function getLPLetterHTML() {
     '<table class="doc-table">' +
       '<thead><tr><th>Item</th><th>Amount</th></tr></thead>' +
       '<tbody>' +
-        '<tr><td>Beginning Balance (Q2 2025)</td><td class="num">$451,200,000</td></tr>' +
+        '<tr><td>Beginning Balance (Q2 2025)</td><td class="num">$345,400,000</td></tr>' +
         '<tr><td>Capital Contributions</td><td class="num">$18,700,000</td></tr>' +
         '<tr><td>Distributions</td><td class="num">($12,400,000)</td></tr>' +
         '<tr><td>Net Investment Income</td><td class="num">$3,100,000</td></tr>' +
         '<tr><td>Unrealized Gains / (Losses)</td><td class="num">$25,300,000</td></tr>' +
-        '<tr><td style="font-weight:500;">Ending Balance (Q3 2025)</td><td class="num" style="font-weight:500;">$485,900,000</td></tr>' +
+        '<tr><td style="font-weight:500;">Ending Balance (Q3 2025)</td><td class="num" style="font-weight:500;">$380,100,000</td></tr>' +
       '</tbody>' +
     '</table>' +
     '<div class="doc-body-text">' +
@@ -210,6 +237,62 @@ function getLPLetterHTML() {
     '<div class="doc-footer">' +
       'This report is confidential and intended solely for the limited partners of Alpine Capital Fund III. ' +
       'Past performance is not indicative of future results. All valuations reflect fair market value estimates as of the reporting date.' +
+    '</div>' +
+  '</div>';
+}
+
+function getCovenantReportHTML() {
+  return '<div class="doc-page">' +
+    '<div class="doc-letterhead">' +
+      '<div class="doc-letterhead-name">Ironbridge Credit Fund II</div>' +
+      '<div class="doc-letterhead-sub">Covenant Compliance Report &middot; Q3 2025</div>' +
+    '</div>' +
+    '<div class="doc-date">CONFIDENTIAL &middot; Prepared October 2025</div>' +
+    '<div class="doc-section-title">Portfolio Covenant Summary</div>' +
+    '<table class="doc-table">' +
+      '<thead><tr><th>Borrower</th><th>Sector</th><th>Leverage (Max)</th><th>DSCR (Min)</th><th>Status</th></tr></thead>' +
+      '<tbody>' +
+        '<tr><td>Pinnacle Industrial</td><td>Manufacturing</td><td class="num">3.1x (5.0x)</td><td class="num">1.85x (1.10x)</td><td>Pass</td></tr>' +
+        '<tr><td>Northstar Freight</td><td>Logistics</td><td class="num">3.8x (4.5x)</td><td class="num">1.44x (1.15x)</td><td>Pass</td></tr>' +
+        '<tr class="flagged"><td>Meridian Logistics</td><td>Transport</td><td class="num">4.8x (4.5x)</td><td class="num">1.21x (1.10x)</td><td><span class="flag-icon">\u25CF</span> BREACH</td></tr>' +
+        '<tr><td>Cascade Health</td><td>Healthcare</td><td class="num">2.9x (4.0x)</td><td class="num">1.67x (1.20x)</td><td>Pass</td></tr>' +
+        '<tr class="flagged"><td>Atlas Manufacturing</td><td>Industrial</td><td class="num">3.6x (4.5x)</td><td class="num">1.12x (1.10x)</td><td><span class="flag-icon">\u25CF</span> WATCH</td></tr>' +
+        '<tr><td>Redwood Capital</td><td>Financial Svcs</td><td class="num">2.4x (3.5x)</td><td class="num">2.01x (1.25x)</td><td>Pass</td></tr>' +
+        '<tr><td>Sterling Packaging</td><td>Consumer</td><td class="num">3.2x (4.0x)</td><td class="num">1.53x (1.15x)</td><td>Pass</td></tr>' +
+        '<tr class="flagged"><td>Lakeshore Hospitality</td><td>Hospitality</td><td class="num">\u2014</td><td class="num">\u2014</td><td><span class="flag-icon">\u25CF</span> LATE</td></tr>' +
+        '<tr><td>Beacon Software</td><td>Technology</td><td class="num">2.1x (4.0x)</td><td class="num">2.34x (1.20x)</td><td>Pass</td></tr>' +
+        '<tr><td>Crestline Foods</td><td>Food &amp; Bev</td><td class="num">3.4x (4.5x)</td><td class="num">1.38x (1.10x)</td><td>Pass</td></tr>' +
+        '<tr><td>Harbor Marine</td><td>Maritime</td><td class="num">2.7x (3.5x)</td><td class="num">1.71x (1.15x)</td><td>Pass</td></tr>' +
+        '<tr><td>Keystone Electric</td><td>Utilities</td><td class="num">3.0x (4.0x)</td><td class="num">1.92x (1.25x)</td><td>Pass</td></tr>' +
+        '<tr><td>Summit Distribution</td><td>Logistics</td><td class="num">3.5x (4.5x)</td><td class="num">1.29x (1.10x)</td><td>Pass</td></tr>' +
+        '<tr><td>Copper Ridge Mining</td><td>Resources</td><td class="num">2.8x (4.0x)</td><td class="num">1.56x (1.20x)</td><td>Pass</td></tr>' +
+      '</tbody>' +
+    '</table>' +
+  '</div>' +
+  '<div class="doc-page">' +
+    '<div class="doc-section-title" style="color:#c0392b;">Breach Detail: Meridian Logistics</div>' +
+    '<div class="doc-body-text">' +
+      '<strong>Senior Secured Leverage Ratio: 4.8x vs. 4.5x maximum.</strong> ' +
+      'Breach driven by $2.3M unbudgeted fleet maintenance in Q3 and softening freight rates. ' +
+      'Per the credit agreement (<span class="doc-section-ref">Meridian_CreditAgreement_2023.pdf, \u00A78.2</span>), ' +
+      'the borrower has a 30-day cure period expiring November 14, 2025. Management has proposed an equity cure via sponsor injection. ' +
+      'Recommended action: require updated financial projections and sponsor commitment letter before waiver consideration.' +
+    '</div>' +
+    '<div class="doc-section-title">Watch List: Atlas Manufacturing</div>' +
+    '<div class="doc-body-text">' +
+      'DSCR at 1.12x against a 1.10x minimum \u2014 2 basis points of cushion. Trailing four-quarter trend: 1.31x \u2192 1.24x \u2192 1.18x \u2192 1.12x. ' +
+      'Deterioration is consistent and driven by rising input costs not yet passed through to customers. ' +
+      'No breach, but trajectory suggests a Q4 violation absent margin recovery. Recommended action: request management call and updated budget.' +
+    '</div>' +
+    '<div class="doc-section-title">Reporting Default: Lakeshore Hospitality</div>' +
+    '<div class="doc-body-text">' +
+      'Q3 financial statements are 47 days past the 30-day reporting deadline. This constitutes a technical default under ' +
+      '<span class="doc-section-ref">Lakeshore_CreditAgreement_2024.pdf, \u00A75.4</span>. ' +
+      'Prior quarters were submitted on time. CFO transition cited as cause. Recommended action: issue formal notice and require submission within 10 business days.' +
+    '</div>' +
+    '<div class="doc-footer">' +
+      'Sources: Individual credit agreements, Q3 borrower financial packages, Lakeshore_Reporting_Log.xlsx. ' +
+      'All covenant calculations verified against source documents per fund methodology.' +
     '</div>' +
   '</div>';
 }
@@ -245,19 +328,23 @@ function getRentRollHTML() {
       '<div class="sheet-tab">Summit Tower</div>' +
       '<div class="sheet-tab">Harborview</div>' +
       '<div class="sheet-tab">Lakeside</div>' +
-      '<div class="sheet-tab">Flags (6)</div>' +
+      '<div class="sheet-tab">Flags (12)</div>' +
     '</div>' +
   '</div>';
 }
 
 const artifactDocuments = {
-  'meridian_coinvest_notice.pdf': {
-    pageCount: 2,
-    content: getMeridianCoInvestHTML
+  'IC_Memo_Financial_DD.pdf': {
+    pageCount: 6,
+    content: getDiligenceMemoHTML
   },
   'Q3_2025_LP_Letter.pdf': {
     pageCount: 8,
     content: getLPLetterHTML
+  },
+  'Q3_Covenant_Compliance.pdf': {
+    pageCount: 5,
+    content: getCovenantReportHTML
   },
   'portfolio_master_rentrolls.xlsx': {
     pageCount: null,

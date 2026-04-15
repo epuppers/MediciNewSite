@@ -40,14 +40,42 @@ gsap.ticker.add((time) => {
   lenis.raf(time * 1000);
 });
 
-// Scroll trapping: scroll the element instead of the page,
-// but release when it hits the top/bottom so users scroll past easily.
+// Scroll trapping: when cursor is resting on the demo, scroll the element
+// instead of the page. Bypass trapping when the page is already mid-scroll
+// (coast-through). Only engage trapping after wheel events settle (~150ms gap).
+let demoScrollBypass = false;
+let bypassTimer = null;
+
+const chatFrame = document.querySelector('.chat-frame');
+chatFrame.addEventListener('mouseenter', () => {
+  demoScrollBypass = true;
+  clearTimeout(bypassTimer);
+  bypassTimer = setTimeout(() => { demoScrollBypass = false; }, 150);
+});
+chatFrame.addEventListener('mouseleave', () => {
+  demoScrollBypass = false;
+  clearTimeout(bypassTimer);
+});
+
 function trapScroll(el) {
+  let prevWheelTime = 0;
+
   el.addEventListener('wheel', (e) => {
-    const { scrollTop, scrollHeight, clientHeight } = el;
-    const atTop = scrollTop <= 0 && e.deltaY < 0;
-    const atBottom = scrollTop + clientHeight >= scrollHeight - 1 && e.deltaY > 0;
-    if (!atTop && !atBottom && scrollHeight > clientHeight) {
+    const now = Date.now();
+
+    // First wheel event on this element after a gap while the page is
+    // already scrolling — cursor just arrived via coast-through.
+    // Engage bypass even if mouseenter hasn't fired yet (race condition).
+    if (now - prevWheelTime > 200 && lenis.isScrolling) {
+      demoScrollBypass = true;
+      clearTimeout(bypassTimer);
+      bypassTimer = setTimeout(() => { demoScrollBypass = false; }, 150);
+    }
+    prevWheelTime = now;
+
+    if (demoScrollBypass) return;
+    const { scrollHeight, clientHeight } = el;
+    if (scrollHeight > clientHeight) {
       e.preventDefault();
       el.scrollTop += e.deltaY;
       lenis.stop();
