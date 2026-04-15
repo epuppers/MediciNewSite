@@ -1879,6 +1879,7 @@ footer {
 
 .foot-right {
   display: flex; gap: 2rem;
+  padding-right: 3rem;
 }
 
 .foot-right a {
