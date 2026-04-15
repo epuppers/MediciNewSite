@@ -402,10 +402,11 @@ ScrollTrigger.create({
   gsap.set(headlineAfter, { opacity: 0, y: 10 });
   gsap.set(resultSub, { opacity: 0, y: 10 });
 
-  // Scroll budget — increased to accommodate empty stage + countdown
+  // Scroll budget — responsive tiers for mobile/tablet/desktop
   var isMobile = window.innerWidth <= 640;
-  var scrollPerCard = isMobile ? 100 : 150;
-  var totalScroll = (cardCount * scrollPerCard) + (isMobile ? 1200 : 2600);
+  var isTablet = window.innerWidth <= 1024 && !isMobile;
+  var scrollPerCard = isMobile ? 80 : isTablet ? 120 : 150;
+  var totalScroll = (cardCount * scrollPerCard) + (isMobile ? 900 : isTablet ? 1800 : 2600);
 
   // Timeline positions (in timeline units)
   var cardStagger = 1.2;
@@ -513,8 +514,11 @@ ScrollTrigger.create({
     ease: 'power3.out',
   }, revealStart);
   // Scale bump — numbers grow slightly as complexity shrinks
+  var revealFontSize = isMobile ? 'clamp(1.4rem, 5vw, 2rem)'
+                     : isTablet ? 'clamp(1.8rem, 4vw, 2.8rem)'
+                     : 'clamp(2.4rem, 5.5vw, 4.2rem)';
   tl.to(tollBefores, {
-    fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)',
+    fontSize: revealFontSize,
     duration: 0.8,
     ease: 'power3.out',
   }, revealStart);

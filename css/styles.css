@@ -418,7 +418,7 @@ body.menu-open {
 
 .h-sub {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: clamp(0.8rem, 1.3vw, 1rem);
+  font-size: clamp(0.85rem, 1.3vw, 1rem);
   font-weight: 300;
   font-style: normal;
   letter-spacing: 0.06em;
@@ -1091,6 +1091,7 @@ body.menu-open {
 .artifact-panel-body {
   flex: 1;
   overflow-y: auto;
+  overflow-x: auto;
   padding: 1.5rem;
   scrollbar-width: thin;
   scrollbar-color: var(--cf-border-10) transparent;
@@ -1235,6 +1236,8 @@ body.menu-open {
   margin: 0.75rem 0 1.25rem;
   font-family: 'IBM Plex Mono', monospace;
   font-size: var(--mono-xs);
+  display: block;
+  overflow-x: auto;
 }
 
 .doc-table th {
@@ -1392,7 +1395,7 @@ body.menu-open {
 
 .pain-card {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 1.5vw + 0.5rem, 1rem);
   line-height: 1.65;
   padding: 1.2rem 2rem 1.2rem 2.25rem;
   border: 1px solid var(--border-strong);
@@ -1616,7 +1619,7 @@ body.menu-open {
 
 .arch-card-title {
   font-family: 'EB Garamond', serif;
-  font-size: 1.35rem;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
   font-weight: 500;
   margin: 0 0 0.75rem 0;
   color: var(--cream);
@@ -1695,7 +1698,7 @@ body.menu-open {
 
 .case-stat-val {
   font-family: 'EB Garamond', serif;
-  font-size: 3rem;
+  font-size: clamp(1.8rem, 5vw, 3rem);
   color: var(--cream);
   line-height: 1.1;
   margin-bottom: 0.35rem;
@@ -1717,7 +1720,7 @@ body.menu-open {
 
 .case-title {
   font-family: 'EB Garamond', serif;
-  font-size: 1.6rem;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
   font-weight: 500;
   color: var(--cream);
   margin: 0 0 1.5rem 0;
@@ -2095,6 +2098,9 @@ a, button, .btn-main, .btn-line {
     align-items: center;
     padding: 0.5rem 0;
   }
+  .arch-header h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
+  .cta-headline { font-size: clamp(2.5rem, 5vw, 4rem); }
+  .case-stat-val { font-size: clamp(2rem, 4.5vw, 2.8rem); }
 }
 
 /* ========== RESPONSIVE: LARGE MOBILE (max-width: 768px) ========== */
@@ -2133,17 +2139,34 @@ a, button, .btn-main, .btn-line {
   }
   .pain-card {
     font-size: 0.9rem;
-    padding: 1.25rem 1.5rem;
+    line-height: 1.5;
+    padding: 0.75rem 1rem 0.75rem 1.25rem;
+  }
+  .pain-card-num {
+    font-size: var(--mono-xs);
+    min-width: 1.5rem;
+    margin-right: 0.5rem;
+  }
+  .pain-toll {
+    padding: 0.75rem 0;
+    margin-top: 1rem;
   }
   .pain-toll-metric {
     padding: 0 0.75rem;
   }
+  .pain-toll-label {
+    font-size: var(--mono-xs);
+    margin-bottom: 0.4rem;
+  }
+  .pain-toll-divider {
+    height: 2.5rem;
+  }
   .pain-toll-before,
   .pain-toll-after {
-    font-size: clamp(1.6rem, 4vw, 2.5rem);
+    font-size: clamp(1.4rem, 3vw, 2rem);
   }
   .pain-toll-value {
-    height: clamp(3.5rem, 8vw, 5rem);
+    height: 3.5rem;
   }
 
   .hero-headline .h-large {
@@ -2161,6 +2184,9 @@ a, button, .btn-main, .btn-line {
   .cases-section { padding: 4rem 1.5rem; }
   .hero-ctas { flex-wrap: wrap; }
   .foot-right { padding-right: 1.5rem; }
+  .terminal-intro-left h2 { font-size: clamp(1.6rem, 4.5vw, 2.5rem); }
+  .arch-header h2 { font-size: clamp(1.6rem, 4.5vw, 2.5rem); }
+  .pain-result-sub { font-size: var(--mono-md); }
 }
 
 /* ========== RESPONSIVE: MOBILE (max-width: 640px) ========== */
@@ -2172,6 +2198,9 @@ a, button, .btn-main, .btn-line {
   .chat-frame.panel-open .artifact-panel {
     width: 100%;
     border-radius: 8px;
+  }
+  .doc-page {
+    padding: 1.25rem 1rem;
   }
 
   nav {
@@ -2220,7 +2249,7 @@ a, button, .btn-main, .btn-line {
     background: var(--accent);
     color: var(--cream);
     padding: 1rem 2rem;
-    font-size: var(--mono-md);
+    font-size: 0.9rem;
     letter-spacing: 0.12em;
   }
 
@@ -2371,24 +2400,54 @@ a, button, .btn-main, .btn-line {
     display: none;
   }
 
+  /* Pain toll: stay horizontal on mobile — vertical wastes too much pinned height */
   .pain-toll {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0;
+    padding: 0.5rem 0;
+    margin-top: 0.75rem;
   }
   .pain-toll-divider {
-    width: 40px;
-    height: 1px;
+    width: 1px;
+    height: 2rem;
   }
   .pain-toll-metric {
-    padding: 0.5rem 0;
+    padding: 0 0.5rem;
+  }
+  .pain-toll-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.25rem;
   }
   .pain-toll-value {
-    height: 4rem;
+    height: 2.5rem;
   }
   .pain-toll-before,
   .pain-toll-after {
-    font-size: clamp(1.8rem, 6vw, 2.8rem);
+    font-size: clamp(1.1rem, 4vw, 1.6rem);
+  }
+  .pain-headline-wrap {
+    margin-bottom: 0.75rem;
+  }
+  .pain-stack-wrapper {
+    min-height: 100svh;
+  }
+  .pain-card {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    padding: 0.6rem 0.75rem 0.6rem 1rem;
+  }
+  .pain-card-num {
+    font-size: 0.7rem;
+    min-width: 1.25rem;
+    margin-right: 0.4rem;
+  }
+  .pain-stack-cards {
+    gap: 0.15rem;
+  }
+  .pain-result-sub {
+    font-size: var(--mono-sm);
   }
 
   .arch-section { padding: 3rem 1.25rem; }
@@ -2399,6 +2458,7 @@ a, button, .btn-main, .btn-line {
   .foot-right { padding-right: 0; gap: 1.5rem; }
   .cases-section { padding: 3rem 1.25rem; }
   .cases-header { margin-bottom: 2rem; padding-bottom: 1.5rem; }
+  .cases-header h2 { font-size: clamp(1.5rem, 4vw, 2rem); }
 
   .hero-ctas {
     flex-direction: column;
@@ -2414,27 +2474,21 @@ a, button, .btn-main, .btn-line {
 /* ========== RESPONSIVE: SMALL MOBILE (max-width: 380px) ========== */
 @media (max-width: 380px) {
   .hero-headline .h-large {
-    font-size: 2rem;
+    font-size: clamp(1.8rem, 8vw, 2.2rem);
   }
   .hero-headline .h-italic {
-    font-size: 2rem;
-  }
-  .hero-headline .h-sub {
-    font-size: 0.85rem;
-  }
-
-  .case-stat-val {
-    font-size: 1.4rem;
+    font-size: clamp(1.8rem, 8vw, 2.2rem);
   }
 
   .cta-headline {
-    font-size: 2rem;
+    font-size: clamp(1.6rem, 5vw, 2rem);
   }
-  .pain-toll-before,
-  .pain-toll-after {
-    font-size: 1.5rem;
+  .pain-toll-value {
+    height: 2rem;
+  }
+  .pain-card {
+    padding: 0.5rem 0.6rem 0.5rem 0.8rem;
   }
   .arch-card { padding: 1.25rem 1rem; }
-  .arch-card-title { font-size: 1.1rem; }
-  .btn-main, .btn-line { padding: 0.85rem 1.5rem; font-size: 0.7rem; }
+  .btn-main, .btn-line { padding: 0.85rem 1.5rem; font-size: var(--mono-sm); }
 }
